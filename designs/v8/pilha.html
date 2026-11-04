@@ -102,6 +102,58 @@
 .ghw b{font:400 clamp(26px,2.4vw,36px)/1.05 var(--serif);color:var(--ink);letter-spacing:-.02em}
 .ghw span{font:500 12px var(--mono);color:var(--ink-soft)}
 
+/* hero mais enxuto + faixa de prova */
+.layer{padding-block:clamp(36px,4vw,64px) clamp(44px,4.4vw,72px)}
+.proof{position:relative;z-index:2;background:var(--night);padding-block:20px 26px;border-top:1px solid var(--line);overflow:hidden}
+.proof .ph{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:18px;font:500 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--fg-mute)}
+.proof .ph b{font-weight:500;color:var(--fg)}
+.track{display:flex;gap:18px;width:max-content;animation:pf 70s linear infinite}
+.proof:hover .track,.proof:focus-within .track{animation-play-state:paused}
+@keyframes pf{to{transform:translateX(-50%)}}
+.pf{display:flex;flex-direction:column;gap:8px;width:clamp(190px,16vw,250px);flex:none}
+.pf .browser{box-shadow:0 0 0 1px #2a2a3d,0 20px 40px -20px rgba(0,0,0,.8);transition:transform .3s}
+.pf:hover .browser,.pf:focus-visible .browser{transform:translateY(-6px)}
+.pf .bar{height:22px;padding:0 9px;gap:5px}.pf .bar i{width:7px;height:7px}
+.pf .url{height:14px;font-size:9.5px;max-width:170px}.pf .url::before{font-size:7px}
+.pf .lb{display:flex;justify-content:space-between;gap:8px;font:500 12px var(--mono);color:var(--fg)}
+.pf .lb span{color:var(--fg-mute);font-weight:400}
+@media (prefers-reduced-motion:reduce){.track{animation:none}.proof{overflow-x:auto}}
+
+/* 04 insights: vitrine com gráfico real */
+.ivit{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(28px,3.4vw,52px);align-items:start}
+.ilist{display:grid;gap:10px}
+.ilist button{display:grid;gap:6px;padding:20px 22px;border-radius:14px;border:1px solid var(--line);background:none;text-align:left;cursor:pointer;color:inherit;transition:background .25s,border-color .25s}
+.ilist button:hover{background:var(--night-1)}
+.ilist button[aria-selected=true]{background:var(--night-1);border-color:var(--k);box-shadow:inset 3px 0 0 var(--k)}
+.ilist .lb{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--fg-mute)}
+.ilist .big{font:500 clamp(34px,3.4vw,52px)/.95 var(--mono);color:var(--k);letter-spacing:-.06em}
+.ilist .big small{font-size:.4em;color:var(--fg-mute);letter-spacing:0}
+.ilist .t{font:500 16px/1.35 var(--sans);color:var(--fg)}
+.ipanel{border:1px solid var(--line);border-radius:18px;background:var(--night-1);padding:clamp(22px,2.6vw,34px);display:grid;gap:22px}
+.ipanel .hd2{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.ipanel .hd2 b{font:500 14px var(--mono);color:var(--fg)}
+.ipanel .hd2 span{font:400 12px var(--mono);color:var(--fg-mute)}
+.callout{font:400 clamp(24px,2.4vw,34px)/1.12 var(--serif);color:var(--fg);letter-spacing:-.01em}
+.callout em{font-style:italic;color:var(--k)}
+.bars{display:grid;gap:7px;font:400 12.5px var(--mono)}
+.br{display:grid;grid-template-columns:minmax(120px,170px) minmax(0,1fr) 84px;gap:12px;align-items:center}
+.br .n{color:var(--fg-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.br .t{height:14px;border-radius:4px;background:var(--night-3);overflow:hidden}
+.br .t i{display:block;height:100%;width:var(--w);min-width:3px;border-radius:4px;background:var(--k);transform-origin:left;animation:grow .8s cubic-bezier(.2,.7,.2,1) both}
+.br .v{text-align:right;color:var(--fg);font-variant-numeric:tabular-nums}
+.br.ext .n,.br.ext .v{color:var(--fg);font-weight:600}
+@keyframes grow{from{transform:scaleX(0)}}
+.risks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 18px;font:400 12.5px var(--mono)}
+.rk{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.rk b{font-weight:600;color:var(--fg)} .rk span{color:var(--fg-soft);min-width:0}
+.rk i{font-style:normal;font-size:10.5px;padding:2px 8px;border-radius:999px;border:1px solid var(--fg-mute);color:var(--fg-mute)}
+.rk.hi i{background:var(--k);border-color:var(--k);color:var(--night);font-weight:600}
+.tk{list-style:none;margin:0;padding:18px 0 0;border-top:1px dashed var(--line);display:grid;gap:10px;counter-reset:t}
+.tk li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;font-size:15px;color:var(--fg-soft);counter-increment:t}
+.tk li::before{content:counter(t,decimal-leading-zero);font:500 12px/1.9 var(--mono);color:var(--k)}
+.tk b{color:var(--fg);font-weight:600}
+.ipanel .ft{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;font:400 11.5px var(--mono);color:var(--fg-mute)}
+
 /* 04 insights */
 .igrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,44px)}
 .ig{display:flex;flex-direction:column;gap:12px;padding-top:20px;border-top:2px solid var(--fg)}
@@ -145,12 +197,13 @@
   .ch{position:relative;top:auto!important;min-height:0}
   .ch>.wrap{transform:none}
   .rail{display:none}
-  .ch .top,.vit,.web,.egrid,.ctg2{grid-template-columns:1fr}
+  .ch .top,.vit,.web,.egrid,.ctg2,.ivit{grid-template-columns:1fr}
   .igrid{grid-template-columns:1fr}
   .stage .badge{left:12px}
 }
 @media (max-width:640px){
-  .sgrid,.ogrid,.rules,.f2{grid-template-columns:1fr}
+  .sgrid,.ogrid,.rules,.f2,.risks{grid-template-columns:1fr}
+  .br{grid-template-columns:96px minmax(0,1fr) 70px;gap:8px}
   .tally,.sent{grid-column:auto;grid-template-columns:1fr}
   .browser .url{font-size:11px}
   .ctg2 form{padding:22px}
@@ -162,6 +215,7 @@
 <nav class="rail" id="rail" aria-label="Capítulos"></nav>
 <main id="top">
   <div id="hero"></div>
+  <section class="proof" aria-label="Produtos no ar"><div class="wrap"><div class="ph"><span><span class="dot"></span>&nbsp; <b data-i="proof"></b> · <span data-i="proof_n"></span></span><span>okamiops.com</span></div></div><div class="track" id="track"></div></section>
   <div id="stack">
     <section class="ch lobo k-o" id="produtos" data-r="l"><div class="dim"></div><div class="wrap">
       <div class="top"><div><span class="kick">01 · <span data-i="prod_k"></span></span><h2 class="H" data-i="prod_h"></h2></div><p class="lede" data-i="prod_p"></p></div>
@@ -182,7 +236,7 @@
 
     <section class="ch maq k-o" id="insights" data-r="m"><div class="dim"></div><div class="wrap">
       <div class="top"><div><span class="kick">04 · <span data-i="ins_k"></span></span><h2 class="H" data-i="ins_h"></h2></div><div style="display:grid;gap:20px;justify-items:start"><p class="lede" data-i="ins_p"></p><a class="btn btn-g" data-href="/insights/" target="_blank" rel="noopener" data-i="all_ins"></a></div></div>
-      <div class="igrid" id="igrid"></div>
+      <div class="ivit"><div class="ilist" id="ilist" role="tablist" aria-label="Insights"></div><div class="ipanel" id="ipanel" role="tabpanel" aria-live="polite"></div></div>
     </div></section>
 
     <section class="ch lobo k-o" id="empresa" data-r="l"><div class="dim"></div><div class="wrap egrid">
@@ -210,6 +264,7 @@
 <script src="okami.js"></script>
 <script src="parts.js"></script>
 <script src="extra.js"></script>
+<script src="insights.js"></script>
 <script>
 const $=s=>document.querySelector(s),E=OK.esc,P=OK.pick;
 $('#hdr').outerHTML=OKP.header();
@@ -219,7 +274,16 @@ const CH=[...document.querySelectorAll('.ch')];
 CH.slice(0,-1).forEach(c=>c.insertAdjacentHTML('afterend','<div class="hold" aria-hidden="true"></div>'));
 const NAMES={produtos:'nav_prod',servicos:'nav_serv',comunidade:'nav_comu',insights:'nav_ins',empresa:'nav_emp',contato:'ct_k'};
 const mobile=()=>matchMedia('(max-width:640px)').matches;
-let sel=0;
+let sel=0,isel=0;
+function ishow(){
+  const n=OK.INSIGHTS[isel],d=INSD[isel];
+  document.querySelectorAll('#ilist button').forEach((b,i)=>b.setAttribute('aria-selected',i===isel));
+  let chart='';
+  if(d.chart==='bars'){const mx=Math.max(...d.rows.map(r=>r[1])),mn=Math.min(...d.rows.map(r=>r[1]));chart=`<div class="bars">${d.rows.map(r=>`<div class="br ${r[1]===mx||r[1]===mn?'ext':''}"><span class="n">${E(r[0])}</span><span class="t"><i style="--w:${(r[1]/mx*100).toFixed(1)}%"></i></span><span class="v">${d.fmt(r[1])}</span></div>`).join('')}</div>`}
+  else{chart=`<div class="risks">${d.rows.map(r=>`<div class="rk ${r[2]?'hi':''}"><b>${r[0]}</b><span>${E(r[1])}</span><i>${E(P(r[2]?d.hi:d.mid))}</i></div>`).join('')}</div>`}
+  $('#ipanel').className='ipanel k-'+n.c;
+  $('#ipanel').innerHTML=`<div class="hd2"><b>${E(P(d.title))}</b><span>${d.unit?E(d.unit):''}</span></div><p class="callout">${E(P(d.callout))}</p>${chart}<ol class="tk">${d.tk.map(t=>`<li><span>${P(t)}</span></li>`).join('')}</ol><div class="ft"><span>${OK.t(d.chart==='risks'?'src3':'src')}</span><a class="btn btn-o" href="${OK.link(n.path)}" target="_blank" rel="noopener">${OK.t('read')} · ${n.min} min →</a></div>`;
+}
 function show(){
   const p=OK.PRODUCTS[sel];
   document.querySelectorAll('#plist button').forEach((b,i)=>b.setAttribute('aria-selected',i===sel));
@@ -245,7 +309,12 @@ function render(){
     card(by('OkamiUNI'))+
     `<a class="sent" href="${sn.url}" target="_blank" rel="noopener"><div><span class="tg">★ ${E(sn.plat)} · AppSec</span><h3>${E(sn.name)}</h3><p>${E(P(sn.d))}</p><span class="btn btn-o">${OK.t('open')} ${E(sn.dom)} ↗</span></div><div class="browser"><div class="bar"><i></i><i></i><i></i><span class="url">${E(sn.dom)}</span></div><div class="shot"><img src="img/sentinel-d.jpg" alt="Okami Sentinel, página inicial" loading="lazy"></div></div></a>`+
     `<a class="ghw" href="https://github.com/OkamiOps" target="_blank" rel="noopener"><b>github.com/OkamiOps</b><span>7 open-source · 1 iOS · ${OK.t('open')} ↗</span></a>`;
-  $('#igrid').innerHTML=OK.INSIGHTS.map(n=>`<a class="ig k-${n.c}" href="${OK.link(n.path)}" target="_blank" rel="noopener"><span class="lb">${E(n.cat)} · ${E(P(n.date))}</span><span class="big">${E(n.big)}<small>${E(n.unit)}</small></span><span class="lb">${E(P(n.lab))}</span><h3>${E(P(n.t))}</h3><span class="go">${OK.t('read')} · ${n.min} min →</span></a>`).join('');
+  $('#ilist').innerHTML=OK.INSIGHTS.map((n,i)=>`<button type="button" role="tab" class="k-${n.c}" aria-selected="${i===isel}"><span class="lb">${E(n.cat)} · ${E(P(n.date))} · ${n.min} min</span><span class="big">${E(n.big)}<small>${E(n.unit)}</small></span><span class="t">${E(P(n.t))}</span></button>`).join('');
+  document.querySelectorAll('#ilist button').forEach((b,i)=>{const go=()=>{if(isel!==i){isel=i;ishow()}};b.addEventListener('mouseenter',go);b.addEventListener('focus',go);b.addEventListener('click',go)});
+  ishow();
+  const PF=[...OK.PRODUCTS.map(p=>({n:p.name,d:p.dom,u:p.url,i:p.img})),...OK.OSS.filter(o=>o.img).map(o=>({n:o.name,d:o.dom,u:o.store?'https://tally.okamiops.com/':o.url,i:o.img}))];
+  const item=(x,dup)=>`<a class="pf" href="${x.u}" target="_blank" rel="noopener" ${dup?'aria-hidden="true" tabindex="-1"':''}><div class="browser"><div class="bar"><i></i><i></i><i></i><span class="url">${E(x.d)}</span></div><div class="shot"><img src="img/${x.i}-d.jpg" alt="${dup?'':E(x.n)}" loading="lazy"></div></div><span class="lb">${E(x.n)}<span>${E(x.d)}</span></span></a>`;
+  $('#track').innerHTML=PF.map(x=>item(x,false)).join('')+PF.map(x=>item(x,true)).join('');
   $('#rules').innerHTML=OKP.rules();
   $('#rail').innerHTML=CH.map(c=>{const n=OK.t(NAMES[c.id]).replace(/<[^>]+>/g,'');return `<a href="#${c.id}" class="${c.dataset.r}" aria-label="${n}"><span>${n}</span></a>`}).join('');
   fit();
