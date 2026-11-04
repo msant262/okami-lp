@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OkamiOps · Revelação</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<style>
+/* Layout: hero comparador (arraste o lobo: papel ⇄ máquina). Depois faixas alternadas papel/noite com corte diagonal. Hover em card revela a máquina. */
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:rgba(6,6,10,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.hd .wrap{display:flex;align-items:center;gap:28px;height:66px}
+.hd nav{display:flex;gap:22px;margin-right:auto;font-size:14.5px;font-weight:500;color:var(--fg-soft)}
+.hd nav a:hover{color:var(--fg)}
+.hd .btn{min-height:40px;padding:0 16px;font-size:14px}
+.burger{display:none;width:44px;height:44px;border-radius:10px;border:1px solid var(--line);background:none;color:var(--fg);cursor:pointer;margin-left:auto}
+.mnav{display:none}
+
+/* HERO comparador */
+.cmp{position:relative;display:grid;--x:50%;user-select:none;-webkit-user-select:none;overflow:hidden}
+.layer{grid-area:1/1;display:grid;align-content:center;padding-block:clamp(64px,9vw,120px) clamp(72px,9vw,128px)}
+.layer .wrap{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);gap:48px;align-items:end}
+.lp{background:var(--paper);color:var(--ink-soft)}
+.lm{background:var(--night);color:var(--fg-soft);clip-path:inset(0 0 0 var(--x))}
+.lm::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;opacity:.3;pointer-events:none}
+.lm .wrap{position:relative}
+.lp .kicker{color:var(--o-ink)} .lm .kicker{color:var(--c)}
+.lp h1{font:400 clamp(54px,8.6vw,146px)/.88 var(--serif);color:var(--ink);letter-spacing:-.04em;margin-top:22px}
+.lp h1 em{font-style:italic;color:var(--o-ink)}
+.lp h1 .l2 em{color:var(--c-ink)}
+.lm h1{font:500 clamp(30px,4.6vw,78px)/1.08 var(--mono);color:var(--fg);letter-spacing:-.05em;margin-top:22px;counter-reset:ln}
+.lm h1 .ln{display:block;counter-increment:ln}
+.lm h1 .ln::before{content:counter(ln,decimal-leading-zero);display:inline-block;width:2.6ch;margin-right:.6ch;font-size:.32em;vertical-align:.9em;color:var(--fg-mute);letter-spacing:0}
+.lm h1 em{font-style:normal;color:var(--o)}
+.lm h1 .l2 em{color:var(--c)}
+.side{display:grid;gap:22px;padding-bottom:12px}
+.lp .side p{font-size:18.5px;color:var(--ink-soft)}
+.lm .side p{font:400 14px/1.8 var(--mono)}
+.lm .side p::before{content:"// ";color:var(--c)}
+.facts{list-style:none;margin:0;padding:0;display:grid;gap:8px;font:400 13px var(--mono)}
+.lp .facts{color:var(--ink)} .lm .facts{color:var(--fg)}
+.facts li::before{content:"▸ ";color:var(--k)}
+.acts{display:flex;gap:12px;flex-wrap:wrap}
+.handle{position:absolute;top:0;bottom:0;left:var(--x);width:2px;margin-left:-1px;background:var(--seam);z-index:5;touch-action:none}
+.knob{position:absolute;top:50%;left:50%;width:clamp(96px,9vw,132px);transform:translate(-50%,-50%);cursor:grab;touch-action:none;border-radius:50%}
+.knob:active{cursor:grabbing}
+.knob:focus-visible{outline:3px solid var(--c);outline-offset:8px}
+.knob .emblem{width:100%;box-shadow:0 20px 50px -14px rgba(0,0,0,.65)}
+.hint{position:absolute;top:calc(100% + 16px);left:50%;transform:translateX(-50%);white-space:nowrap;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:6px 12px;border-radius:999px;background:var(--fg);color:var(--night)}
+.hint::before{content:"⇆  "}
+
+/* faixas com corte diagonal */
+.band{position:relative;padding-block:clamp(96px,10vw,150px) clamp(88px,9vw,130px)}
+.band+.band::before{content:"";position:absolute;left:0;right:0;top:-59px;height:60px;background:inherit;clip-path:polygon(0 100%,100% 0,100% 100%)}
+.band:nth-of-type(odd)+.band::before{clip-path:polygon(0 0,100% 100%,0 100%)}
+.head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;align-items:end;margin-bottom:56px}
+.head h2{font-size:clamp(44px,6vw,96px);line-height:.92;letter-spacing:-.03em;margin-top:18px}
+.on-paper .head h2{font-family:var(--serif)}
+.on-night .head h2{font:500 clamp(34px,4.4vw,68px)/1.02 var(--mono);letter-spacing:-.05em}
+.head p{font-size:18px;max-width:520px}
+.on-night .head p{font:400 15px/1.75 var(--mono)}
+
+/* card que revela a máquina */
+.rev{position:relative;isolation:isolate;overflow:hidden}
+.rev::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--night);clip-path:inset(0 0 0 100%);transition:clip-path .55s cubic-bezier(.2,.7,.2,1)}
+.rev::after{content:"";position:absolute;top:0;bottom:0;left:100%;width:2px;background:var(--seam);transition:left .55s cubic-bezier(.2,.7,.2,1)}
+.rev:hover::before,.rev:focus-visible::before{clip-path:inset(0 0 0 0)}
+.rev:hover::after,.rev:focus-visible::after{left:0}
+
+/* produtos */
+.prows{border-top:2px solid var(--ink)}
+.prow{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) auto;gap:32px;align-items:center;padding:30px 24px;border-bottom:1px solid var(--paper-line)}
+.prow .nm{font:400 clamp(44px,5.6vw,92px)/.92 var(--serif);color:var(--ink);letter-spacing:-.035em;transition:color .4s}
+.prow .dom{display:block;font:500 13px var(--mono);color:var(--k-ink);margin-top:10px;transition:color .4s}
+.prow p{font-size:16px;color:var(--ink-soft);transition:color .4s}
+.prow .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.chip{font:500 11px var(--mono);padding:4px 10px;border-radius:999px;border:1px solid currentColor;color:var(--ink-soft);transition:color .4s}
+.prow .go{width:56px;height:56px;border-radius:50%;border:1px solid var(--ink);display:grid;place-items:center;font:500 20px var(--mono);color:var(--ink);transition:.4s}
+.prow:hover .nm,.prow:focus-visible .nm{color:var(--fg);font-style:italic}
+.prow:hover .dom,.prow:focus-visible .dom{color:var(--k)}
+.prow:hover p,.prow:focus-visible p,.prow:hover .chip{color:var(--fg-soft)}
+.prow:hover .go,.prow:focus-visible .go{background:var(--k);border-color:var(--k);color:var(--night);transform:rotate(-45deg)}
+
+/* serviços */
+.sgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.scard{display:flex;flex-direction:column;gap:12px;padding:32px;border:1px solid var(--line);border-radius:16px;background:var(--night-1);min-height:260px;transition:border-color .25s,transform .25s}
+.scard:hover{border-color:var(--k);transform:translateY(-4px)}
+.scard .tg{font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--k)}
+.scard h3{font:600 clamp(26px,2.6vw,36px)/1.1 var(--sans);color:var(--fg);letter-spacing:-.02em}
+.scard p{font-size:16px;flex:1}
+.scard .io{display:flex;justify-content:space-between;gap:12px;padding-top:16px;border-top:1px dashed var(--line);font:400 13px var(--mono);color:var(--fg)}
+.scard .io span:last-child{color:var(--k)}
+.web{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);margin-top:16px;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.web-l{background:var(--paper);padding:40px;display:grid;gap:18px;align-content:center}
+.web-l .kicker{color:var(--c-ink)}
+.web-l h3{font:400 clamp(36px,3.6vw,56px)/.98 var(--serif);color:var(--ink);letter-spacing:-.02em}
+.web-l h3 em{font-style:italic;color:var(--c-ink)}
+.web-l p{color:var(--ink-soft)}
+.web-r{padding:32px;background:var(--night-1);font:400 13px var(--mono)}
+.web-r .h{display:flex;justify-content:space-between;gap:12px;color:var(--fg);padding-bottom:14px}
+.web-r .h span:last-child{color:var(--ok)}
+.web-r .r{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 14px;padding:13px 0;border-top:1px solid var(--line)}
+.web-r .r b{font-weight:500;color:var(--fg)}
+.web-r .r span{color:var(--fg-mute);font-size:12px}
+.web-r .r i{grid-row:1/3;grid-column:2;align-self:center;font-style:normal;font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid currentColor}
+.st-ok{color:var(--ok)} .st-c{color:var(--c)} .st-m{color:var(--m)}
+
+/* comunidade */
+.feat{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:0;border:2px solid var(--ink);margin-bottom:16px}
+.feat-l{padding:40px;display:grid;gap:16px;align-content:center}
+.feat-l .tg{font:500 12px var(--mono);color:var(--c-ink)}
+.feat-l h3{font:400 clamp(52px,6vw,96px)/.9 var(--serif);color:var(--ink);letter-spacing:-.035em}
+.feat-l p{font-size:16.5px;max-width:520px}
+.feat-r{background:var(--night);padding:36px;display:grid;gap:18px;align-content:center;font:400 12.5px var(--mono);color:var(--fg)}
+.q{display:grid;gap:7px}
+.q div{display:flex;justify-content:space-between}
+.q div span{color:var(--fg-mute)}
+.q i{display:block;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--k) var(--w),var(--night-3) var(--w))}
+.ogrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--paper-line)}
+.ocard{display:flex;flex-direction:column;gap:12px;padding:26px 24px 28px;border-right:1px solid var(--paper-line);border-bottom:1px solid var(--paper-line);min-height:250px}
+.ocard .pl{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--k-ink);transition:color .4s}
+.ocard h3{font:400 34px/1 var(--serif);color:var(--ink);letter-spacing:-.02em;transition:color .4s}
+.ocard p{font-size:14px;color:var(--ink-soft);flex:1;transition:color .4s}
+.ocard .dm{font:400 12px var(--mono);color:var(--ink);transition:color .4s;overflow-wrap:anywhere}
+.ocard:hover h3,.ocard:focus-visible h3,.ocard:hover .dm{color:var(--fg)}
+.ocard:hover p,.ocard:focus-visible p{color:var(--fg-soft)}
+.ocard:hover .pl,.ocard:focus-visible .pl{color:var(--k)}
+
+/* insights */
+.igrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.icard{display:flex;flex-direction:column;gap:16px;padding:30px;border:1px solid var(--line);border-radius:16px;background:var(--night-1);transition:border-color .25s,transform .25s}
+.icard:hover{border-color:var(--k);transform:translateY(-4px)}
+.icard .meta{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-mute)}
+.icard .big{font:500 clamp(46px,4.6vw,72px)/.95 var(--mono);color:var(--k);letter-spacing:-.05em}
+.icard .big small{font-size:.38em;color:var(--fg-mute);letter-spacing:0}
+.icard .lab{font:400 13px var(--mono);color:var(--fg-mute);margin-top:-8px}
+.icard h3{font:500 20px/1.3 var(--sans);color:var(--fg);flex:1}
+.icard .rd{font:500 13px var(--mono);color:var(--fg);display:flex;justify-content:space-between}
+
+/* empresa */
+.emp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px}
+.emp h2{font:400 clamp(52px,7vw,116px)/.88 var(--serif);color:var(--ink);letter-spacing:-.04em;margin:18px 0 24px}
+.emp>div>p{font-size:18px;max-width:520px;margin-bottom:28px}
+.estats{display:flex;gap:36px;flex-wrap:wrap;margin-bottom:28px}
+.estats div{display:grid;font-size:13px}
+.estats b{font:400 52px/1 var(--serif);color:var(--ink)}
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;align-content:start;counter-reset:r}
+.rules div{padding:20px 0;border-top:1px solid var(--ink);display:grid;gap:6px;counter-increment:r}
+.rules b{font:500 17px/1.25 var(--sans);color:var(--ink)}
+.rules b::before{content:counter(r,decimal-leading-zero);display:block;font:500 12px var(--mono);color:var(--o-ink);margin-bottom:6px}
+.rules span{font-size:14.5px}
+
+/* contato */
+.ct{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start}
+.ct h2{font:500 clamp(36px,4.6vw,72px)/1.02 var(--mono);color:var(--fg);letter-spacing:-.05em;margin:18px 0 22px}
+.ct h2 em{color:var(--o)}
+.ct>div>p{font:400 15px/1.75 var(--mono);margin-bottom:28px;max-width:480px}
+.ct .copyrow{color:var(--fg);margin-bottom:10px}
+.ct .copyrow small{color:var(--fg-mute)}
+form{display:grid;gap:16px;padding:32px;border-radius:16px;background:var(--paper)}
+form .field label{color:var(--ink-soft)}
+form .field input,form .field textarea{background:#fbfaf7;border-color:var(--paper-line);color:var(--ink)}
+form .field input:focus,form .field textarea:focus{border-color:var(--ink);box-shadow:none}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+form .btn{justify-self:start}
+form .note{color:var(--c-ink)}
+
+@media (max-width:1060px){
+  .hd nav,.hd .btn-hide{display:none}
+  .burger{display:grid;place-items:center}
+  .mnav{position:sticky;top:calc(66px + env(safe-area-inset-top,0px));z-index:55;background:var(--night);border-bottom:1px solid var(--line);padding:6px 20px 16px}
+  .mnav.open{display:grid}
+  .mnav a{padding:14px 0;border-bottom:1px solid var(--line);font:500 15px var(--sans);color:var(--fg)}
+  .layer .wrap,.head,.emp,.ct,.feat,.web{grid-template-columns:1fr}
+  .ogrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .igrid{grid-template-columns:1fr}
+  .prow{grid-template-columns:minmax(0,1fr) auto;gap:14px 20px;padding:24px 8px}
+  .prow p{grid-column:1/2}
+  .prow .go{grid-row:1/3;grid-column:2}
+}
+@media (max-width:640px){
+  .layer{padding-block:48px 120px}
+  .knob{top:auto;bottom:24px;transform:translate(-50%,0);width:84px}
+  .hint{top:auto;bottom:calc(100% + 10px)}
+  .sgrid,.ogrid,.rules,.f2{grid-template-columns:1fr}
+  .scard,.feat-l,.feat-r,.web-l,.web-r,form{padding:24px}
+  .prow .go{width:44px;height:44px}
+  .acts .btn{flex:1 1 100%}
+  .band+.band::before{top:-29px;height:30px}
+}
+</style>
+</head>
+<body>
+<header class="hd">
+  <div class="wrap">
+    <a class="wordmark" href="#top"><img src="wolf.png" alt="" width="32" height="32">OKAMI<b>OPS</b></a>
+    <nav aria-label="Principal"><a href="#produtos" data-i="nav_prod"></a><a href="#servicos" data-i="nav_serv"></a><a href="#comunidade" data-i="nav_comu"></a><a href="#insights" data-i="nav_ins"></a><a href="#empresa" data-i="nav_emp"></a><a data-href="/agents/" target="_blank" rel="noopener" data-i="nav_agents"></a></nav>
+    <div class="langs" role="group" aria-label="Idioma"><button data-lang="pt">PT</button><button data-lang="en">EN</button><button data-lang="de">DE</button></div>
+    <a class="btn btn-o btn-hide" href="#contato" data-i="cta"></a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="mnav" aria-label="Menu">☰</button>
+  </div>
+</header>
+<nav class="mnav" id="mnav" aria-label="Menu"><a href="#produtos" data-i="nav_prod"></a><a href="#servicos" data-i="nav_serv"></a><a href="#comunidade" data-i="nav_comu"></a><a href="#insights" data-i="nav_ins"></a><a href="#empresa" data-i="nav_emp"></a><a href="#contato" data-i="cta"></a></nav>
+
+<main id="top">
+  <section class="cmp" id="cmp" aria-label="Hero">
+    <div class="layer lp">
+      <div class="wrap">
+        <div><span class="kicker">OkamiOps · <span data-i="where"></span></span><h1 id="h1p"></h1></div>
+        <div class="side"><p data-i="hero_lp"></p><div class="acts"><a class="btn btn-ink" href="#contato" data-i="cta"></a><a class="btn btn-line-p" href="#produtos" data-i="see_all"></a></div></div>
+      </div>
+    </div>
+    <div class="layer lm" aria-hidden="true">
+      <div class="wrap">
+        <div><span class="kicker"><span class="dot"></span>&nbsp;okamiops --status</span><h1 id="h1m"></h1></div>
+        <div class="side"><p data-i="hero_rp"></p><ul class="facts k-c"><li>4 <span data-i="stat_prod"></span></li><li>8 <span data-i="stat_oss"></span></li><li>10+ <span data-i="stat_sec"></span></li></ul><div class="acts"><a class="btn btn-term" href="#comunidade" tabindex="-1">$ git clone github.com/OkamiOps</a></div></div>
+      </div>
+    </div>
+    <div class="handle" id="handle">
+      <div class="knob" id="knob" role="slider" tabindex="0" aria-label="Lobo ou máquina" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><div class="emblem"><img src="wolf.png" alt=""></div><span class="hint" data-i="drag"></span></div>
+    </div>
+  </section>
+
+  <section class="band on-paper k-o" id="produtos">
+    <div class="wrap">
+      <div class="head"><div><span class="kicker" data-i="prod_k"></span><h2 data-i="prod_h"></h2></div><p data-i="prod_p"></p></div>
+      <div class="prows" id="prows"></div>
+    </div>
+  </section>
+
+  <section class="band on-night k-c" id="servicos">
+    <div class="wrap">
+      <div class="head"><div><span class="kicker" data-i="serv_k"></span><h2 data-i="serv_h"></h2></div><div style="display:grid;gap:22px;justify-items:start"><p data-i="serv_p"></p><a class="btn btn-line-n" data-href="/servicos/" target="_blank" rel="noopener" data-i="plans"></a></div></div>
+      <div class="sgrid" id="sgrid"></div>
+      <div class="web">
+        <div class="web-l"><span class="kicker" data-i="web_k"></span><h3 data-i="web_h"></h3><p data-i="web_p"></p><a class="btn btn-ink" style="justify-self:start" data-href="/agents/" target="_blank" rel="noopener" data-i="web_cta"></a></div>
+        <div class="web-r" id="webt"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band on-paper k-m" id="comunidade">
+    <div class="wrap">
+      <div class="head"><div><span class="kicker" data-i="comu_k"></span><h2 data-i="comu_h"></h2></div><p data-i="comu_p"></p></div>
+      <div class="feat" id="feat"></div>
+      <div class="ogrid" id="ogrid"></div>
+    </div>
+  </section>
+
+  <section class="band on-night k-o" id="insights">
+    <div class="wrap">
+      <div class="head"><div><span class="kicker" data-i="ins_k"></span><h2 data-i="ins_h"></h2></div><div style="display:grid;gap:22px;justify-items:start"><p data-i="ins_p"></p><a class="btn btn-line-n" data-href="/insights/" target="_blank" rel="noopener" data-i="all_ins"></a></div></div>
+      <div class="igrid" id="igrid"></div>
+    </div>
+  </section>
+
+  <section class="band on-paper k-o" id="empresa">
+    <div class="wrap emp">
+      <div><span class="kicker" data-i="emp_k"></span><h2 data-i="emp_h"></h2><p data-i="emp_p"></p>
+        <div class="estats"><div><b>20+</b><span data-i="yrs_tech"></span></div><div><b>10+</b><span data-i="yrs_sec"></span></div><div><b>BR·DE</b><span data-i="stat_ops"></span></div></div>
+        <a class="btn btn-line-p" data-href="/empresa/" target="_blank" rel="noopener" data-i="emp_more"></a></div>
+      <div class="rules" id="rules"></div>
+    </div>
+  </section>
+
+  <section class="band on-night k-o" id="contato">
+    <div class="wrap ct">
+      <div><span class="kicker" data-i="ct_k"></span><h2 data-i="ct_h"></h2><p data-i="ct_p"></p>
+        <div class="copyrow"><small data-i="sales"></small><span>contato@okamiops.com</span><button type="button" data-copy="contato@okamiops.com" data-i="copy"></button></div>
+        <div class="copyrow"><small>disclosure</small><span>security@okamiops.com</span><button type="button" data-copy="security@okamiops.com" data-i="copy"></button></div></div>
+      <form data-demo>
+        <div class="f2"><div class="field"><label for="f1" data-i="f_name"></label><input id="f1" autocomplete="name" required></div><div class="field"><label for="f2" data-i="f_email"></label><input id="f2" type="email" autocomplete="email" required></div></div>
+        <div class="field"><label for="f3" data-i="f_company"></label><input id="f3" autocomplete="organization"></div>
+        <div class="field"><label for="f4" data-i="f_msg"></label><textarea id="f4" rows="5" required></textarea></div>
+        <button class="btn btn-ink" type="submit" data-i="f_send"></button>
+        <p class="note" data-note hidden></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-g">
+      <div><span class="wordmark"><img src="wolf.png" alt="" width="32" height="32">OKAMI<b>OPS</b></span><p data-i="foot"></p></div>
+      <div><h4 data-i="nav_prod"></h4><ul><li><a href="https://viberadar.si/" target="_blank" rel="noopener">Viberadar</a></li><li><a href="https://menko.cloud/" target="_blank" rel="noopener">Menko</a></li><li><a href="https://www.rakkan.org/" target="_blank" rel="noopener">Rakkan</a></li><li><a href="https://seubrasil.com/" target="_blank" rel="noopener">seubrasil</a></li></ul></div>
+      <div><h4>OkamiOps</h4><ul><li><a href="#servicos" data-i="nav_serv"></a></li><li><a href="#comunidade" data-i="nav_comu"></a></li><li><a href="#insights" data-i="nav_ins"></a></li><li><a href="#empresa" data-i="nav_emp"></a></li><li><a href="https://github.com/OkamiOps" target="_blank" rel="noopener">github.com/OkamiOps</a></li></ul></div>
+    </div>
+    <div class="foot-b"><span>© 2026 OKAMIOPS · CNPJ 66.637.891/0001-08 · <span data-i="where"></span></span><nav><a data-href="/status/" target="_blank" rel="noopener">Status</a><a data-href="/security/" target="_blank" rel="noopener">Security</a><a data-href="/privacidade/" target="_blank" rel="noopener" data-i="privacy"></a><a data-href="/termos/" target="_blank" rel="noopener" data-i="terms"></a></nav></div>
+  </div>
+</footer>
+<a class="back" href="index.html">← opções</a>
+
+<script src="okami.js"></script>
+<script>
+const $=s=>document.querySelector(s), E=OK.esc;
+const APPLE='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.77-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.28-1.6 2.78-.41 6.9 1.15 9.16.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.77.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.37-3.69zM14.1 5.86c.63-.77 1.06-1.83.94-2.89-.91.04-2.01.61-2.66 1.37-.58.67-1.09 1.75-.96 2.79 1.02.08 2.05-.52 2.68-1.27z"/></svg>';
+const QUOTAS=[['claude · 5h',72,'o'],['codex · semanal',41,'c'],['cursor · créditos',88,'m'],['grok · semanal',23,'c']];
+function render(){
+  $('#h1p').innerHTML=`${OK.t('hero_l')}<br><span class="l2">${OK.t('hero_r')}</span>`;
+  $('#h1m').innerHTML=`<span class="ln">${OK.t('hero_l')}</span><span class="ln l2">${OK.t('hero_r')}</span>`;
+  $('#prows').innerHTML=OK.PRODUCTS.map(p=>`<a class="prow rev k-${p.c}" href="${p.url}" target="_blank" rel="noopener"><div><span class="nm">${E(p.name)}</span><span class="dom">${E(p.dom)}</span></div><div><p>${E(OK.pick(p.d))}</p><div class="meta"><span class="chip">${E(OK.pick(p.kind))}</span><span class="chip">${E(OK.pick(p.model))}</span></div></div><span class="go" aria-hidden="true">→</span></a>`).join('');
+  $('#sgrid').innerHTML=OK.SERVICES.map(s=>`<a class="scard k-${s.c}" href="${OK.link(s.path)}" target="_blank" rel="noopener"><span class="tg">${s.tag}</span><h3>${E(OK.pick(s.name))}</h3><p>${E(OK.pick(s.d))}</p><span class="io"><span>${E(OK.pick(s.fmt))}</span><span>${OK.t('more')} →</span></span></a>`).join('');
+  $('#webt').innerHTML=`<div class="h"><span>${OK.t('web_status')}</span><span>● ready</span></div>`+OK.WEBMCP.map(r=>`<div class="r"><b>${E(r[0])}</b><span>${E(OK.pick(r[1]))}</span><i class="st-${r[3]}">${E(OK.pick(r[2]))}</i></div>`).join('');
+  const t=OK.OSS.find(o=>o.store);
+  $('#feat').innerHTML=`<div class="feat-l"><span class="tg">★ ${E(t.plat)}</span><h3>${E(t.name)}</h3><p>${E(OK.pick(t.d))}</p><div><a class="store" href="${t.url}" target="_blank" rel="noopener">${APPLE}<span>${OK.t('appstore_s')}<b>${OK.t('appstore_b')}</b></span></a></div></div><div class="feat-r" aria-hidden="true">${QUOTAS.map(q=>`<div class="q k-${q[2]}" style="--w:${q[1]}%"><div>${q[0]}<span>${q[1]}%</span></div><i></i></div>`).join('')}</div>`;
+  $('#ogrid').innerHTML=OK.OSS.filter(o=>!o.store).map(o=>`<a class="ocard rev k-${o.c}" href="${o.url}" target="_blank" rel="noopener"><span class="pl">${E(o.plat)}</span><h3>${E(o.name)}</h3><p>${E(OK.pick(o.d))}</p><span class="dm">${E(o.dom)} ↗</span></a>`).join('')+`<a class="ocard rev k-m" href="https://github.com/OkamiOps" target="_blank" rel="noopener"><span class="pl">GitHub</span><h3>github.com/<br>OkamiOps</h3><p>${E(OK.t('comu_p'))}</p><span class="dm">${OK.t('open')} ↗</span></a>`;
+  $('#igrid').innerHTML=OK.INSIGHTS.map(n=>`<a class="icard k-${n.c}" href="${OK.link(n.path)}" target="_blank" rel="noopener"><span class="meta">${E(n.cat)} · ${E(OK.pick(n.date))}</span><span class="big">${E(n.big)}<small>${E(n.unit)}</small></span><span class="lab">${E(OK.pick(n.lab))}</span><h3>${E(OK.pick(n.t))}</h3><span class="rd"><span>${OK.t('read')} →</span><span>${n.min} min</span></span></a>`).join('');
+  $('#rules').innerHTML=OK.RULES.map(r=>`<div><b>${E(OK.pick(r[0]))}</b><span>${E(OK.pick(r[1]))}</span></div>`).join('');
+}
+OK.onLang(render);
+OK.init();
+
+// comparador
+const cmp=$('#cmp'),knob=$('#knob');
+const set=v=>{v=Math.max(4,Math.min(96,v));cmp.style.setProperty('--x',v+'%');knob.setAttribute('aria-valuenow',Math.round(v))};
+let drag=false;
+const at=e=>{const r=cmp.getBoundingClientRect();set((e.clientX-r.left)/r.width*100)};
+knob.addEventListener('pointerdown',e=>{drag=true;knob.setPointerCapture(e.pointerId);e.preventDefault()});
+knob.addEventListener('pointermove',e=>{if(drag)at(e)});
+knob.addEventListener('pointerup',()=>drag=false);
+knob.addEventListener('keydown',e=>{const v=+knob.getAttribute('aria-valuenow');if(e.key==='ArrowLeft'){set(v-5);e.preventDefault()}if(e.key==='ArrowRight'){set(v+5);e.preventDefault()}});
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  const seq=[[0,50],[700,32],[1500,68],[2200,50]];let t0=null;
+  const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  const step=ts=>{if(drag)return;if(!t0)t0=ts;const t=ts-t0;for(let i=1;i<seq.length;i++){if(t<=seq[i][0]){const a=seq[i-1],b=seq[i],k=ease((t-a[0])/(b[0]-a[0]));set(a[1]+(b[1]-a[1])*k);return requestAnimationFrame(step)}}set(50)};
+  setTimeout(()=>requestAnimationFrame(step),600);
+}
+const bg=$('#burger'),mn=$('#mnav');
+bg.addEventListener('click',()=>{const o=mn.classList.toggle('open');bg.setAttribute('aria-expanded',o)});
+mn.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mn.classList.remove('open');bg.setAttribute('aria-expanded',false)}));
+</script>
+</body>
+</html>

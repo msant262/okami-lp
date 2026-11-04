@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OkamiOps · Costura</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<style>
+/* Layout: uma costura vertical fixa no centro. Esquerda = papel/serif (lobo, negócio). Direita = noite/mono (máquina, técnica). */
+.split{display:grid;grid-template-columns:1fr 1fr;position:relative}
+.half{min-width:0}
+.L{padding-left:max(24px,calc((100vw - var(--max))/2 + 24px),env(safe-area-inset-left,0px));padding-right:clamp(40px,6vw,96px)}
+.R{padding-right:max(24px,calc((100vw - var(--max))/2 + 24px),env(safe-area-inset-right,0px));padding-left:clamp(40px,6vw,96px);position:relative}
+.R.grid-bg::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:48px 48px;opacity:.28;pointer-events:none;mask-image:linear-gradient(90deg,transparent,#000 30%)}
+.R>*{position:relative}
+main{position:relative}
+.seam{position:absolute;top:0;bottom:0;left:50%;width:2px;margin-left:-1px;background:var(--seam);z-index:40;pointer-events:none}
+
+/* header */
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;display:grid;grid-template-columns:1fr 1fr;height:68px}
+.hd .L,.hd .R{display:flex;align-items:center;gap:24px}
+.hd .L{background:rgba(244,242,238,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--paper-line);justify-content:space-between}
+.hd .R{background:rgba(6,6,10,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);justify-content:space-between}
+.hd .wordmark{color:var(--ink)}
+.hd nav{display:flex;gap:22px;font-size:15px;font-weight:500}
+.hd .L nav a{color:var(--ink)}
+.hd .R nav a{color:var(--fg-soft);font:500 13px var(--mono)}
+.hd nav a:hover{text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px;text-decoration-color:var(--o)}
+.hd .R nav a:hover{color:var(--fg);text-decoration-color:var(--c)}
+.hd .tools{display:flex;align-items:center;gap:12px}
+.hd .btn{min-height:40px;padding:0 16px;font-size:14px}
+.burger{display:none;width:44px;height:44px;border-radius:10px;border:1px solid var(--line);background:none;color:var(--fg);cursor:pointer}
+.mnav{display:none}
+
+/* hero */
+.hero .half{padding-block:clamp(72px,9vw,120px) clamp(64px,8vw,104px);display:flex;flex-direction:column;justify-content:center;gap:26px}
+.hero h1{font-size:clamp(56px,7.4vw,124px);line-height:.9;letter-spacing:-.035em}
+.hero .L h1{font-family:var(--serif)}
+.hero .R h1{font:500 clamp(40px,5.2vw,84px)/.98 var(--mono);letter-spacing:-.05em}
+.hero .L p{font-size:19px;max-width:500px;color:var(--ink-soft)}
+.hero .R p{font:400 14px/1.8 var(--mono);max-width:440px}
+.hero .R p::before{content:"// ";color:var(--c)}
+.acts{display:flex;gap:12px;flex-wrap:wrap}
+.stats{display:flex;gap:36px;flex-wrap:wrap;padding-top:22px;border-top:1px solid var(--paper-line)}
+.R .stats{border-color:var(--line)}
+.stats div{display:grid;gap:4px;font-size:13px}
+.L .stats b{font:400 44px/1 var(--serif);color:var(--ink)}
+.R .stats b{font:500 34px/1 var(--mono);color:var(--fg)}
+.R .stats div{font-family:var(--mono);font-size:12px;color:var(--fg-mute)}
+.hero-emblem{position:absolute;left:50%;top:50%;width:clamp(150px,14vw,210px);transform:translate(-50%,-50%);z-index:45}
+.status{display:inline-flex;align-items:center;gap:10px;font:500 12px var(--mono);color:var(--fg-soft)}
+
+/* section heads */
+.sec .half{padding-block:clamp(80px,9vw,128px)}
+.sec h2{font-size:clamp(44px,5.4vw,84px);line-height:.94;letter-spacing:-.025em;margin:18px 0 20px}
+.sec .L h2{font-family:var(--serif)}
+.sec .L>p{font-size:18px;max-width:520px}
+.R h3,.R .mh{font-family:var(--mono)}
+
+/* produtos: lista (lobo) + inspetor (máquina) */
+.plist{list-style:none;margin:40px 0 0;padding:0;border-top:1px solid var(--ink)}
+.plist button{width:100%;display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:20px 0;border:0;border-bottom:1px solid var(--paper-line);background:none;cursor:pointer;text-align:left}
+.plist .nm{font:400 clamp(40px,4.4vw,68px)/1 var(--serif);color:var(--ink);letter-spacing:-.025em;transition:color .25s,transform .35s}
+.plist .tg{font:500 12px var(--mono);color:var(--ink-soft);white-space:nowrap}
+.plist button[aria-selected=true] .nm{font-style:italic;color:var(--k-ink);transform:translateX(12px)}
+.plist button[aria-selected=true] .tg{color:var(--k-ink)}
+.insp{position:sticky;top:120px;border:1px solid var(--line);border-radius:14px;background:var(--night-1);overflow:hidden}
+.insp-h{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--night-2);font:500 12px var(--mono);color:var(--fg-mute)}
+.insp-h i{width:10px;height:10px;border-radius:50%;background:var(--night-3)}
+.insp-b{padding:26px;font:400 14px/1.7 var(--mono)}
+.insp-b .cmd{color:var(--fg)} .insp-b .cmd b{color:var(--k);font-weight:500}
+.insp-b h3{font:500 clamp(30px,3vw,44px)/1 var(--sans);color:var(--fg);letter-spacing:-.03em;margin:22px 0 16px}
+.insp-b h3 span{color:var(--k)}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:8px 16px;margin:0 0 22px}
+.kv dt{color:var(--fg-mute)} .kv dd{margin:0;color:var(--fg);min-width:0;overflow-wrap:anywhere}
+.insp-b p{font:400 16px/1.6 var(--sans);color:var(--fg-soft);margin-bottom:24px}
+.insp-b .btn{border-radius:6px}
+
+/* serviços */
+.svc{display:grid;gap:12px;margin-top:8px}
+.svc a{display:grid;grid-template-columns:1fr auto;gap:6px 20px;padding:22px 24px;border:1px solid var(--line);border-radius:12px;background:rgba(11,11,18,.85);transition:border-color .25s,transform .25s}
+.svc a:hover{border-color:var(--k);transform:translateX(-4px)}
+.svc .tg{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--k)}
+.svc h3{font:600 22px/1.2 var(--sans);color:var(--fg);grid-column:1}
+.svc p{grid-column:1/-1;font-size:15px}
+.svc .io{grid-column:1/-1;font:400 12.5px var(--mono);color:var(--fg-mute)}
+.svc .ar{grid-row:1/3;grid-column:2;align-self:center;font:500 18px var(--mono);color:var(--fg-mute);transition:color .2s}
+.svc a:hover .ar{color:var(--k)}
+
+/* webmcp (lado máquina à esquerda) */
+.web .L{background:var(--night)} .web .R{background:var(--paper);color:var(--ink-soft)}
+.web .R h2{color:var(--ink);font-family:var(--serif)}
+.web .R em{font-style:italic;color:var(--c-ink)}
+.web .R .kicker{color:var(--c-ink)}
+.status-t{border:1px solid var(--line);border-radius:12px;overflow:hidden;font:400 13px var(--mono)}
+.status-t .h{display:flex;justify-content:space-between;gap:12px;padding:14px 18px;background:var(--night-2);color:var(--fg)}
+.status-t .h span:last-child{color:var(--ok)}
+.status-t .r{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;padding:14px 18px;border-top:1px solid var(--line)}
+.status-t .r b{font-weight:500;color:var(--fg)}
+.status-t .r span{grid-column:1;color:var(--fg-mute);font-size:12px}
+.status-t .r i{grid-row:1/3;grid-column:2;align-self:center;font-style:normal;font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid currentColor}
+.st-ok{color:var(--ok)} .st-c{color:var(--c)} .st-m{color:var(--m)}
+
+/* comunidade */
+.tally{margin-top:40px;border:1px solid var(--ink);padding:30px;background:#fbfaf7;display:grid;gap:14px}
+.tally .tg{font:500 12px var(--mono);color:var(--c-ink)}
+.tally h3{font:400 clamp(44px,4.4vw,64px)/.95 var(--serif);letter-spacing:-.02em}
+.tally p{font-size:15.5px}
+.ls{font:400 14px/1.6 var(--mono)}
+.ls .cmd{color:var(--fg);margin-bottom:14px} .ls .cmd b{color:var(--m);font-weight:500}
+.ls a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;padding:16px 0;border-top:1px solid var(--line);transition:padding .25s}
+.ls a:hover{padding-left:10px}
+.ls a b{font-weight:500;color:var(--fg)}
+.ls a b::before{content:"▸ ";color:var(--k)}
+.ls a .pl{font-size:11px;color:var(--k);border:1px solid var(--k);border-radius:4px;padding:1px 7px;align-self:start;white-space:nowrap}
+.ls a .ds{grid-column:1/-1;color:var(--fg-mute);font-size:12.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* insights: cada linha atravessa a costura */
+.ins-head .half{padding-block:clamp(80px,9vw,120px) 40px}
+.ins-row{border-top:1px solid var(--paper-line)}
+.ins-row .L{padding-block:34px;display:grid;gap:10px;align-content:center;border-top:1px solid var(--paper-line)}
+.ins-row .R{padding-block:34px;display:flex;flex-direction:column;justify-content:center;gap:6px;border-top:1px solid var(--line)}
+.ins-row .meta{font:500 12px var(--mono);color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase}
+.ins-row h3{font:400 clamp(26px,2.6vw,38px)/1.1 var(--serif);color:var(--ink);transition:color .25s}
+.ins-row a:hover h3{color:var(--k-ink)}
+.ins-row .rd{font:500 13px var(--sans);color:var(--ink)}
+.ins-row .big{font:500 clamp(48px,5.6vw,88px)/.95 var(--mono);color:var(--k);letter-spacing:-.05em}
+.ins-row .big small{font-size:.4em;color:var(--fg-mute);letter-spacing:0}
+.ins-row .lab{font:400 13px var(--mono);color:var(--fg-mute)}
+.ins-row:last-child .half{padding-bottom:clamp(80px,9vw,120px)}
+
+/* empresa */
+.rules{display:grid;gap:0;font:400 14px/1.6 var(--mono);counter-reset:r}
+.rules div{padding:18px 0;border-top:1px solid var(--line);display:grid;gap:4px;counter-increment:r}
+.rules b{font-weight:500;color:var(--fg)}
+.rules b::before{content:counter(r,decimal-leading-zero) "  ";color:var(--o)}
+.rules span{color:var(--fg-mute);font-size:13px;padding-left:3.2ch}
+.emp-stats{display:flex;gap:40px;flex-wrap:wrap;margin:36px 0}
+.emp-stats div{display:grid;font-size:13px}
+.emp-stats b{font:400 52px/1 var(--serif);color:var(--ink)}
+
+/* contato */
+.ct .L{display:flex;flex-direction:column;gap:22px}
+.ct .copyrow{color:var(--ink)}
+.ct .copyrow small{color:var(--ink-soft)}
+form{display:grid;gap:16px}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+form .btn{justify-self:start;border-radius:8px}
+
+/* mobile */
+@media (max-width:980px){
+  .seam{display:none}
+  .split,.hd{grid-template-columns:1fr}
+  .L,.R{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+  .hd .L{display:none}
+  .hd .R nav{display:none}
+  .hd .R .wordmark{display:inline-flex}
+  .burger{display:grid;place-items:center}
+  .hd .tools .btn{display:none}
+  .mnav{position:sticky;top:calc(68px + env(safe-area-inset-top,0px));z-index:55;background:var(--night);border-bottom:1px solid var(--line);padding:6px 20px 16px}
+  .mnav.open{display:grid}
+  .mnav a{padding:14px 0;border-bottom:1px solid var(--line);font:500 15px var(--mono);color:var(--fg)}
+  .hero-emblem{position:relative;left:auto;top:auto;transform:none;margin:-80px auto;width:160px}
+  .hero .L{padding-bottom:110px}.hero .R{padding-top:110px}
+  .insp{position:relative;top:0}
+  .web .L{order:2}
+  .ins-row .L{border-top:1px solid var(--paper-line)}
+  .ins-row .R{border-top:0;padding-top:20px}
+}
+@media (min-width:981px){.hd .R .wordmark{display:none}}
+@media (max-width:600px){
+  .f2{grid-template-columns:1fr}
+  .kv{grid-template-columns:96px 1fr}
+  .acts .btn{flex:1 1 100%}
+  .tally{padding:22px}
+  .stats{gap:24px}
+}
+</style>
+</head>
+<body>
+<header class="hd">
+  <div class="L">
+    <a class="wordmark" href="#top"><img src="wolf.png" alt="" width="32" height="32">OKAMI<b>OPS</b></a>
+    <nav aria-label="Lobo"><a href="#produtos" data-i="nav_prod"></a><a href="#servicos" data-i="nav_serv"></a><a href="#comunidade" data-i="nav_comu"></a></nav>
+  </div>
+  <div class="R">
+    <a class="wordmark" href="#top" style="color:var(--fg)"><img src="wolf.png" alt="" width="32" height="32">OKAMI<b>OPS</b></a>
+    <nav aria-label="Máquina"><a href="#insights">./insights</a><a href="#empresa">./empresa</a><a data-href="/agents/" target="_blank" rel="noopener">./agents</a></nav>
+    <div class="tools">
+      <div class="langs" role="group" aria-label="Idioma"><button data-lang="pt">PT</button><button data-lang="en">EN</button><button data-lang="de">DE</button></div>
+      <a class="btn btn-o" href="#contato" data-i="cta"></a>
+      <button class="burger" id="burger" aria-expanded="false" aria-controls="mnav" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+<nav class="mnav" id="mnav" aria-label="Menu">
+  <a href="#produtos" data-i="nav_prod"></a><a href="#servicos" data-i="nav_serv"></a><a href="#comunidade" data-i="nav_comu"></a><a href="#insights" data-i="nav_ins"></a><a href="#empresa" data-i="nav_emp"></a><a href="#contato" data-i="cta"></a>
+</nav>
+
+<main id="top">
+  <div class="seam" aria-hidden="true"></div>
+  <section class="split hero">
+    <div class="half L on-paper k-o">
+      <span class="kicker">OkamiOps · <span data-i="wolf"></span></span>
+      <h1 data-i="hero_l"></h1>
+      <p data-i="hero_lp"></p>
+      <div class="acts"><a class="btn btn-ink" href="#contato" data-i="cta"></a><a class="btn btn-line-p" href="#produtos" data-i="see_all"></a></div>
+      <div class="stats"><div><b>4</b><span data-i="stat_prod"></span></div><div><b>8</b><span data-i="stat_oss"></span></div></div>
+    </div>
+    <div class="hero-emblem emblem" aria-hidden="true"><img src="wolf.png" alt=""></div>
+    <div class="half R on-night grid-bg k-c">
+      <span class="status"><span class="dot"></span><span data-i="online"></span> · <span data-i="where"></span></span>
+      <h1 data-i="hero_r"></h1>
+      <p data-i="hero_rp"></p>
+      <div class="acts"><a class="btn btn-term" href="#comunidade">$ git clone github.com/OkamiOps</a></div>
+      <div class="stats"><div><b>10+</b><span data-i="stat_sec"></span></div><div><b>100%</b><span data-i="stat_ops"></span></div></div>
+    </div>
+  </section>
+
+  <section class="split sec" id="produtos">
+    <div class="half L on-paper k-o">
+      <span class="kicker">01 · <span data-i="prod_k"></span></span>
+      <h2 data-i="prod_h"></h2>
+      <p data-i="prod_p"></p>
+      <ul class="plist" id="plist" role="tablist" aria-label="Produtos"></ul>
+    </div>
+    <div class="half R on-night grid-bg">
+      <div class="insp" id="insp" role="tabpanel" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="split sec" id="servicos">
+    <div class="half L on-paper k-c">
+      <span class="kicker">02 · <span data-i="serv_k"></span></span>
+      <h2 data-i="serv_h"></h2>
+      <p data-i="serv_p"></p>
+      <div class="acts" style="margin-top:32px"><a class="btn btn-ink" data-href="/servicos/" target="_blank" rel="noopener" data-i="plans"></a></div>
+    </div>
+    <div class="half R on-night grid-bg"><div class="svc" id="svc"></div></div>
+  </section>
+
+  <section class="split sec web">
+    <div class="half L on-night"><div class="status-t" id="webt"></div></div>
+    <div class="half R k-c">
+      <span class="kicker" data-i="web_k"></span>
+      <h2 data-i="web_h"></h2>
+      <p style="font-size:18px;max-width:520px" data-i="web_p"></p>
+      <div class="acts" style="margin-top:28px"><a class="btn btn-line-p" data-href="/agents/" target="_blank" rel="noopener" data-i="web_cta"></a></div>
+    </div>
+  </section>
+
+  <section class="split sec" id="comunidade">
+    <div class="half L on-paper k-m">
+      <span class="kicker">03 · <span data-i="comu_k"></span></span>
+      <h2 data-i="comu_h"></h2>
+      <p data-i="comu_p"></p>
+      <div class="tally" id="tally"></div>
+    </div>
+    <div class="half R on-night grid-bg"><div class="ls" id="ls"></div></div>
+  </section>
+
+  <section id="insights">
+    <div class="split ins-head">
+      <div class="half L on-paper k-o"><span class="kicker">04 · <span data-i="ins_k"></span></span><h2 class="serif" style="font-size:clamp(44px,5.4vw,84px);line-height:.94;letter-spacing:-.025em;margin-top:18px" data-i="ins_h"></h2></div>
+      <div class="half R on-night" style="display:flex;flex-direction:column;justify-content:flex-end;gap:20px"><p class="mono" style="font-size:14px;max-width:420px" data-i="ins_p"></p><a class="btn btn-term" style="align-self:flex-start" data-href="/insights/" target="_blank" rel="noopener" data-i="all_ins"></a></div>
+    </div>
+    <div id="ins"></div>
+  </section>
+
+  <section class="split sec" id="empresa">
+    <div class="half L on-paper k-o">
+      <span class="kicker">05 · <span data-i="emp_k"></span></span>
+      <h2 data-i="emp_h"></h2>
+      <p data-i="emp_p"></p>
+      <div class="emp-stats"><div><b>20+</b><span data-i="yrs_tech"></span></div><div><b>10+</b><span data-i="yrs_sec"></span></div><div><b>BR·DE</b><span data-i="stat_ops"></span></div></div>
+      <a class="btn btn-line-p" data-href="/empresa/" target="_blank" rel="noopener" data-i="emp_more"></a>
+    </div>
+    <div class="half R on-night grid-bg"><p class="mono" style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-mute);margin-bottom:12px" data-i="emp_rules"></p><div class="rules" id="rules"></div></div>
+  </section>
+
+  <section class="split sec ct" id="contato">
+    <div class="half L on-paper k-o">
+      <span class="kicker">06 · <span data-i="ct_k"></span></span>
+      <h2 data-i="ct_h"></h2>
+      <p data-i="ct_p"></p>
+      <div class="copyrow"><small data-i="sales"></small><span>contato@okamiops.com</span><button type="button" data-copy="contato@okamiops.com" data-i="copy"></button></div>
+      <div class="copyrow"><small>disclosure</small><span>security@okamiops.com</span><button type="button" data-copy="security@okamiops.com" data-i="copy"></button></div>
+    </div>
+    <div class="half R on-night grid-bg">
+      <form data-demo>
+        <div class="f2"><div class="field"><label for="f1" data-i="f_name"></label><input id="f1" autocomplete="name" required></div><div class="field"><label for="f2" data-i="f_email"></label><input id="f2" type="email" autocomplete="email" required></div></div>
+        <div class="field"><label for="f3" data-i="f_company"></label><input id="f3" autocomplete="organization"></div>
+        <div class="field"><label for="f4" data-i="f_msg"></label><textarea id="f4" rows="5" required></textarea></div>
+        <button class="btn btn-o" type="submit" data-i="f_send"></button>
+        <p class="note" data-note hidden></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-g">
+      <div><span class="wordmark"><img src="wolf.png" alt="" width="32" height="32">OKAMI<b>OPS</b></span><p data-i="foot"></p></div>
+      <div><h4 data-i="nav_prod"></h4><ul><li><a href="https://viberadar.si/" target="_blank" rel="noopener">Viberadar</a></li><li><a href="https://menko.cloud/" target="_blank" rel="noopener">Menko</a></li><li><a href="https://www.rakkan.org/" target="_blank" rel="noopener">Rakkan</a></li><li><a href="https://seubrasil.com/" target="_blank" rel="noopener">seubrasil</a></li></ul></div>
+      <div><h4>OkamiOps</h4><ul><li><a href="#servicos" data-i="nav_serv"></a></li><li><a href="#comunidade" data-i="nav_comu"></a></li><li><a href="#insights" data-i="nav_ins"></a></li><li><a href="#empresa" data-i="nav_emp"></a></li><li><a href="https://github.com/OkamiOps" target="_blank" rel="noopener">github.com/OkamiOps</a></li></ul></div>
+    </div>
+    <div class="foot-b"><span>© 2026 OKAMIOPS · CNPJ 66.637.891/0001-08 · <span data-i="where"></span></span><nav><a data-href="/status/" target="_blank" rel="noopener">Status</a><a data-href="/security/" target="_blank" rel="noopener">Security</a><a data-href="/privacidade/" target="_blank" rel="noopener" data-i="privacy"></a><a data-href="/termos/" target="_blank" rel="noopener" data-i="terms"></a></nav></div>
+  </div>
+</footer>
+<a class="back" href="index.html">← opções</a>
+
+<script src="okami.js"></script>
+<script>
+const $=s=>document.querySelector(s), E=OK.esc;
+const APPLE='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.77-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.28-1.6 2.78-.41 6.9 1.15 9.16.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.77.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.37-3.69zM14.1 5.86c.63-.77 1.06-1.83.94-2.89-.91.04-2.01.61-2.66 1.37-.58.67-1.09 1.75-.96 2.79 1.02.08 2.05-.52 2.68-1.27z"/></svg>';
+let sel=0;
+function inspect(){
+  const p=OK.PRODUCTS[sel];
+  $('#insp').className='insp k-'+p.c;
+  $('#insp').innerHTML=`<div class="insp-h"><i></i><i></i><i></i>&nbsp; okamiops — inspect</div>
+  <div class="insp-b"><div class="cmd">❯ okami inspect <b>${E(p.id)}</b></div>
+  <h3>${E(p.name)}<span>.</span></h3>
+  <dl class="kv"><dt>url</dt><dd>${E(p.dom)}</dd><dt>status</dt><dd><span class="dot"></span>&nbsp; ${OK.t('online')}</dd><dt>billing</dt><dd>${E(OK.pick(p.model))}</dd><dt>type</dt><dd>${E(OK.pick(p.kind))}</dd></dl>
+  <p>${E(OK.pick(p.d))}</p>
+  <a class="btn btn-o" href="${p.url}" target="_blank" rel="noopener">${OK.t('visit')} ${E(p.dom)} ↗</a></div>`;
+  document.querySelectorAll('#plist button').forEach((b,i)=>b.setAttribute('aria-selected',i===sel));
+}
+function render(){
+  $('#plist').innerHTML=OK.PRODUCTS.map((p,i)=>`<li class="k-${p.c}"><button role="tab" aria-selected="${i===sel}" data-i2="${i}"><span class="nm">${E(p.name)}</span><span class="tg">${E(p.dom)}</span></button></li>`).join('');
+  document.querySelectorAll('#plist button').forEach(b=>{const go=()=>{sel=+b.dataset.i2;inspect()};b.addEventListener('mouseenter',go);b.addEventListener('focus',go);b.addEventListener('click',go)});
+  inspect();
+  $('#svc').innerHTML=OK.SERVICES.map(s=>`<a class="k-${s.c}" href="${OK.link(s.path)}" target="_blank" rel="noopener"><span class="tg">${s.tag}</span><h3>${E(OK.pick(s.name))}</h3><p>${E(OK.pick(s.d))}</p><span class="io">${E(OK.pick(s.fmt))}</span><span class="ar">→</span></a>`).join('');
+  $('#webt').innerHTML=`<div class="h"><span>${OK.t('web_status')}</span><span>● ready</span></div>`+OK.WEBMCP.map(r=>`<div class="r"><b>${E(r[0])}</b><span>${E(OK.pick(r[1]))}</span><i class="st-${r[3]}">${E(OK.pick(r[2]))}</i></div>`).join('');
+  const t=OK.OSS.find(o=>o.store);
+  $('#tally').innerHTML=`<span class="tg">★ ${E(t.plat)}</span><h3>${E(t.name)}</h3><p>${E(OK.pick(t.d))}</p><div><a class="store" href="${t.url}" target="_blank" rel="noopener">${APPLE}<span>${OK.t('appstore_s')}<b>${OK.t('appstore_b')}</b></span></a></div>`;
+  $('#ls').innerHTML=`<div class="cmd">❯ ls <b>~/okamiops/open-source</b></div>`+OK.OSS.map(o=>`<a class="k-${o.c}" href="${o.url}" target="_blank" rel="noopener"><b>${E(o.name)}</b><span class="pl">${E(o.plat)}</span><span class="ds">${E(o.dom)} · ${E(OK.pick(o.d))}</span></a>`).join('');
+  $('#ins').innerHTML=OK.INSIGHTS.map(n=>`<a class="split ins-row k-${n.c}" href="${OK.link(n.path)}" target="_blank" rel="noopener"><div class="half L on-paper"><span class="meta">${E(n.cat)} · ${E(OK.pick(n.date))} · ${n.min} min</span><h3>${E(OK.pick(n.t))}</h3><span class="rd">${OK.t('read')} →</span></div><div class="half R on-night"><span class="big">${E(n.big)}<small>${E(n.unit)}</small></span><span class="lab">${E(OK.pick(n.lab))}</span></div></a>`).join('');
+  $('#rules').innerHTML=OK.RULES.map(r=>`<div><b>${E(OK.pick(r[0]))}</b><span>${E(OK.pick(r[1]))}</span></div>`).join('');
+}
+OK.onLang(render);
+OK.init();
+const bg=$('#burger'),mn=$('#mnav');
+bg.addEventListener('click',()=>{const o=mn.classList.toggle('open');bg.setAttribute('aria-expanded',o)});
+mn.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mn.classList.remove('open');bg.setAttribute('aria-expanded',false)}));
+</script>
+</body>
+</html>

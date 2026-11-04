@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OkamiOps · Modo Duplo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<style>
+/* Layout: hero sempre dividido. Abaixo, uma chave global troca a página inteira entre Lobo (papel, serif, negócio) e Máquina (noite, mono, spec técnica). */
+body{--bg:var(--paper);--bg2:var(--paper-2);--card:#fbfaf7;--tx:var(--ink-soft);--hd:var(--ink);--rule:var(--paper-line);--rule2:var(--ink);
+  --ao:var(--o-ink);--ac:var(--c-ink);--am:var(--m-ink);--disp:var(--serif);--dw:400;--dls:-.035em;--ds:1;--dstyle:italic;
+  background:var(--bg);color:var(--tx);transition:background .4s,color .4s;color-scheme:light}
+body[data-mode=maquina]{--bg:var(--night);--bg2:var(--night-1);--card:var(--night-1);--tx:var(--fg-soft);--hd:var(--fg);--rule:var(--line);--rule2:var(--line);
+  --ao:var(--o);--ac:var(--c);--am:var(--m);--disp:var(--mono);--dw:500;--dls:-.055em;--ds:.74;--dstyle:normal;color-scheme:dark}
+.k-o{--a:var(--ao)} .k-c{--a:var(--ac)} .k-m{--a:var(--am)} .k-p{--a:var(--hd)}
+.H{font-family:var(--disp);font-weight:var(--dw);letter-spacing:var(--dls);color:var(--hd)}
+.H em{font-style:var(--dstyle);color:var(--a,var(--ao))}
+body[data-mode=maquina] .H em::before{content:"‹"} body[data-mode=maquina] .H em::after{content:"›"}
+.spec{display:none}
+body[data-mode=maquina] .spec{display:grid}
+body[data-mode=maquina] .biz{font-family:var(--mono);font-size:.86em}
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+::view-transition-new(root){animation:wipe .7s cubic-bezier(.65,0,.35,1)}
+@keyframes wipe{from{clip-path:circle(0 at var(--vx,50%) var(--vy,0))}to{clip-path:circle(150% at var(--vx,50%) var(--vy,0))}}
+
+/* header */
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule);transition:background .4s}
+.hd .wrap{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:28px;height:70px}
+.hd .center{display:flex;justify-content:center;min-width:0}
+.hd .wordmark{color:var(--hd)}
+.hd nav{display:flex;gap:20px;font-size:14px;font-weight:500;color:var(--tx)}
+.hd nav a:hover{color:var(--hd)}
+.hd .right{display:flex;justify-content:flex-end;align-items:center;gap:12px}
+.hd .langs{border-color:var(--rule)}
+.hd .langs button[aria-pressed=true]{background:var(--hd);color:var(--bg)}
+.hd .btn{min-height:40px;padding:0 16px;font-size:14px}
+
+/* chave lobo/máquina */
+.switch{position:relative;display:grid;grid-template-columns:1fr 1fr;align-items:center;width:230px;height:46px;padding:4px;border-radius:999px;border:1px solid var(--rule2);background:var(--bg2);cursor:pointer;font:600 12px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.switch span{position:relative;z-index:2;text-align:center;transition:color .3s;color:var(--tx)}
+.switch .thumb{position:absolute;z-index:1;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:999px;background:var(--ink);transition:transform .45s cubic-bezier(.65,0,.35,1),background .3s;display:flex;align-items:center;padding-left:4px}
+.switch .thumb img{width:30px;height:30px}
+.switch[aria-checked=false] span:first-child,.switch[aria-checked=true] span:last-of-type{color:var(--paper)}
+.switch[aria-checked=true] .thumb{transform:translateX(100%);background:var(--night-3)}
+.switch[aria-checked=true] span:last-of-type{color:var(--c)}
+.switch span:first-child{padding-left:26px}
+.switch span:last-of-type{padding-left:26px}
+.switch[aria-checked=true] span:first-child{padding-left:0}
+
+/* hero sempre dividido */
+.hero{display:grid;grid-template-columns:1fr 1fr;position:relative}
+.hero>.hl,.hero>.hr{padding-block:clamp(72px,9vw,120px);display:flex;flex-direction:column;gap:24px;justify-content:center;min-width:0}
+.hl{background:var(--paper);color:var(--ink-soft);padding-left:max(24px,calc((100vw - var(--max))/2 + 24px),env(safe-area-inset-left,0px));padding-right:clamp(40px,6vw,96px)}
+.hr{background:var(--night);color:var(--fg-soft);padding-right:max(24px,calc((100vw - var(--max))/2 + 24px),env(safe-area-inset-right,0px));padding-left:clamp(40px,6vw,96px)}
+.hl .kicker{color:var(--o-ink)} .hr .kicker{color:var(--c)}
+.hl h1{font:400 clamp(56px,7.6vw,128px)/.88 var(--serif);color:var(--ink);letter-spacing:-.04em}
+.hl h1 em{font-style:italic;color:var(--o-ink)}
+.hr h1{font:500 clamp(38px,5vw,82px)/1 var(--mono);color:var(--fg);letter-spacing:-.055em}
+.hr h1 em{font-style:normal;color:var(--c)}
+.hl p{font-size:18.5px;max-width:500px}
+.hr p{font:400 14px/1.8 var(--mono);max-width:440px}
+.hr p::before{content:"// ";color:var(--c)}
+.hero .seam{position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--seam)}
+.mid{position:absolute;left:50%;bottom:clamp(28px,4vw,48px);transform:translateX(-50%);z-index:4;display:grid;justify-items:center;gap:12px;text-align:center}
+.mid .switch{background:var(--night-1);border-color:var(--line);box-shadow:0 18px 40px -16px rgba(0,0,0,.6)}
+.mid .switch span{color:var(--fg-soft)}
+.mid .switch[aria-checked=false] span:first-child{color:var(--paper)}
+.mid .switch[aria-checked=false] .thumb{background:var(--o-ink)}
+.mid small{max-width:260px;font:400 12px/1.5 var(--mono);color:var(--fg);background:var(--night);padding:6px 12px;border-radius:8px;border:1px solid var(--line)}
+.acts{display:flex;gap:12px;flex-wrap:wrap}
+.hero-emblem{position:absolute;left:50%;top:42%;width:clamp(120px,11vw,170px);transform:translate(-50%,-50%);z-index:3}
+
+/* seções */
+.sec{padding-block:clamp(88px,10vw,140px);border-top:1px solid var(--rule)}
+.head{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;align-items:end;margin-bottom:52px}
+.head .kicker{color:var(--a)}
+.head h2{font-size:calc(clamp(46px,6vw,98px) * var(--ds));line-height:.94;margin-top:18px}
+.head p{font-size:18px;max-width:520px}
+body[data-mode=maquina] .head p{font:400 15px/1.75 var(--mono)}
+.card{display:flex;flex-direction:column;gap:14px;padding:30px;border:1px solid var(--rule);border-radius:16px;background:var(--card);transition:border-color .25s,transform .25s,background .4s}
+.card:hover{border-color:var(--a);transform:translateY(-4px)}
+.card .tg{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--a)}
+.card h3{font-size:calc(clamp(34px,3.4vw,52px) * var(--ds));line-height:1}
+.card .biz{font-size:16px;flex:1}
+.spec{grid-template-columns:auto minmax(0,1fr);gap:6px 16px;margin:0;padding:14px 0 0;border-top:1px dashed var(--rule);font:400 12.5px var(--mono)}
+.spec dt{color:var(--fg-mute)} .spec dd{margin:0;color:var(--fg);overflow-wrap:anywhere}
+.card .go{font:500 13px var(--mono);color:var(--hd)}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.pcard{min-height:300px}
+.pcard h3{font-size:calc(clamp(48px,5vw,84px) * var(--ds))}
+.pcard .dm{font:500 13px var(--mono);color:var(--a)}
+
+/* serviços em linhas */
+.srow{display:grid;grid-template-columns:140px minmax(0,1fr) minmax(0,1fr) auto;gap:28px;align-items:center;padding:26px 0;border-top:1px solid var(--rule2)}
+.srow .tg{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--a)}
+.srow h3{font-size:calc(clamp(30px,3vw,46px) * var(--ds));line-height:1.02}
+.srow .spec{border:0;padding:0}
+.srow .go{font:500 18px var(--mono);color:var(--a)}
+.srow:hover h3{color:var(--a)}
+.web{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;margin-top:48px;border-radius:16px;overflow:hidden;border:1px solid var(--rule)}
+.web-l{padding:40px;display:grid;gap:18px;align-content:center;background:var(--card)}
+.web-l .kicker{color:var(--ac)}
+.web-l h3{font-size:calc(clamp(36px,3.6vw,56px) * var(--ds));line-height:1}
+.web-r{padding:32px;background:var(--night);font:400 13px var(--mono)}
+.web-r .h{display:flex;justify-content:space-between;gap:12px;color:var(--fg);padding-bottom:14px}
+.web-r .h span:last-child{color:var(--ok)}
+.web-r .r{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 14px;padding:13px 0;border-top:1px solid var(--line)}
+.web-r .r b{font-weight:500;color:var(--fg)} .web-r .r span{color:var(--fg-mute);font-size:12px}
+.web-r .r i{grid-row:1/3;grid-column:2;align-self:center;font-style:normal;font-size:11px;padding:3px 9px;border-radius:999px;border:1px solid currentColor}
+.st-ok{color:var(--ok)} .st-c{color:var(--c)} .st-m{color:var(--m)}
+
+/* comunidade */
+.tally{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:0;padding:0;overflow:hidden;margin-bottom:16px}
+.tally:hover{transform:none}
+.tally .l{padding:40px;display:grid;gap:16px;align-content:center}
+.tally .l h3{font-size:calc(clamp(52px,6vw,96px) * var(--ds))}
+.tally .r{background:var(--night);padding:34px;display:grid;gap:18px;align-content:center;font:400 12.5px var(--mono);color:var(--fg)}
+.q{display:grid;gap:7px}
+.q div{display:flex;justify-content:space-between} .q div span{color:var(--fg-mute)}
+.q i{display:block;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--k) var(--w),var(--night-3) var(--w))}
+body[data-mode=maquina] .store{background:var(--fg);color:var(--night)}
+
+/* insights */
+.icard .big{font:500 calc(clamp(52px,5vw,80px) * 1)/.95 var(--disp);color:var(--a);letter-spacing:-.04em}
+body[data-mode=maquina] .icard .big{font-size:clamp(40px,3.8vw,60px)}
+.icard .lab{font:400 13px var(--mono);color:var(--tx);margin-top:-6px}
+.icard h3{font:500 20px/1.3 var(--sans);color:var(--hd);flex:1}
+
+/* empresa */
+.emp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px}
+.emp h2{font-size:calc(clamp(52px,7vw,116px) * var(--ds));line-height:.9;margin:18px 0 22px}
+.emp .kicker{color:var(--ao)}
+.estats{display:flex;gap:36px;flex-wrap:wrap;margin:28px 0}
+.estats div{display:grid;font-size:13px}
+.estats b{font:var(--dw) calc(52px * var(--ds))/1 var(--disp);color:var(--hd)}
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;align-content:start;counter-reset:r}
+.rules div{padding:20px 0;border-top:1px solid var(--rule2);display:grid;gap:6px;counter-increment:r}
+.rules b{font:500 17px/1.25 var(--sans);color:var(--hd)}
+.rules b::before{content:counter(r,decimal-leading-zero);display:block;font:500 12px var(--mono);color:var(--ao);margin-bottom:6px}
+body[data-mode=maquina] .rules b{font:500 14px var(--mono)}
+.rules span{font-size:14.5px}
+
+/* contato */
+.ct{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start}
+.ct h2{font-size:calc(clamp(46px,6vw,98px) * var(--ds));line-height:.94;margin:18px 0 22px}
+.ct .kicker{color:var(--ao)}
+.ct .copyrow{color:var(--hd);margin-top:10px}
+form{display:grid;gap:16px;padding:32px;border-radius:16px;background:var(--night);border:1px solid var(--line)}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+form .btn{justify-self:start;border-radius:8px}
+
+@media (max-width:1320px){.hd nav{display:none}}
+@media (max-width:1060px){
+  .hd .wrap{grid-template-columns:auto 1fr;height:auto;padding-block:10px;row-gap:10px}
+  .hd .center{display:none}
+  .hd .btn{display:none}
+  .hd .right{flex-wrap:wrap}
+  .hero{grid-template-columns:1fr}
+  .hl,.hr{padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+  .hero .seam,.mid{display:none}
+  .hero-emblem{position:relative;left:auto;top:auto;transform:none;margin:-70px auto;width:140px}
+  .hl{padding-bottom:100px!important}.hr{padding-top:100px!important}
+  .head,.emp,.ct,.web,.tally{grid-template-columns:1fr}
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g3{grid-template-columns:1fr}
+  .srow{grid-template-columns:minmax(0,1fr) auto;gap:10px 20px}
+  .srow .tg{grid-column:1/-1}
+  .srow .biz,.srow .spec{grid-column:1/2}
+  .srow .go{grid-row:2;grid-column:2}
+}
+@media (max-width:640px){
+  .g2,.g4,.rules,.f2{grid-template-columns:1fr}
+  .card,.tally .l,.tally .r,.web-l,.web-r,form{padding:24px}
+  .acts .btn{flex:1 1 100%}
+  .switch{width:210px}
+}
+</style>
+</head>
+<body data-mode="lobo">
+<header class="hd">
+  <div class="wrap">
+    <a class="wordmark" href="#top"><img src="wolf.png" alt="" width="32" height="32">OKAMI<b>OPS</b></a>
+    <div class="center"><nav aria-label="Principal"><a href="#produtos" data-i="nav_prod"></a><a href="#servicos" data-i="nav_serv"></a><a href="#comunidade" data-i="nav_comu"></a><a href="#insights" data-i="nav_ins"></a><a href="#empresa" data-i="nav_emp"></a></nav></div>
+    <div class="right"><button class="switch" data-switch role="switch" aria-checked="false" aria-label="Lobo ou Máquina"><span data-i="mode_l"></span><span data-i="mode_m"></span><i class="thumb"><img src="wolf.png" alt=""></i></button><div class="langs" role="group" aria-label="Idioma"><button data-lang="pt">PT</button><button data-lang="en">EN</button><button data-lang="de">DE</button></div><a class="btn btn-o" href="#contato" data-i="cta"></a></div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="hl">
+      <span class="kicker">OkamiOps · <span data-i="where"></span></span>
+      <h1 data-i="hero_l"></h1>
+      <p data-i="hero_lp"></p>
+      <div class="acts"><a class="btn btn-ink" href="#contato" data-i="cta"></a><a class="btn btn-line-p" href="#produtos" data-i="see_all"></a></div>
+    </div>
+    <div class="hero-emblem emblem" aria-hidden="true"><img src="wolf.png" alt=""></div>
+    <div class="hr">
+      <span class="kicker"><span class="dot"></span>&nbsp;<span data-i="online"></span></span>
+      <h1 data-i="hero_r"></h1>
+      <p data-i="hero_rp"></p>
+      <div class="acts"><a class="btn btn-term" href="#comunidade">$ git clone github.com/OkamiOps</a></div>
+    </div>
+    <div class="seam" aria-hidden="true"></div>
+    <div class="mid"><button class="switch" data-switch role="switch" aria-checked="false" aria-label="Lobo ou Máquina"><span data-i="mode_l"></span><span data-i="mode_m"></span><i class="thumb"><img src="wolf.png" alt=""></i></button><small data-i="mode_hint"></small></div>
+  </section>
+
+  <section class="sec k-o" id="produtos"><div class="wrap">
+    <div class="head"><div><span class="kicker" data-i="prod_k"></span><h2 class="H" data-i="prod_h"></h2></div><p data-i="prod_p"></p></div>
+    <div class="g2" id="prods"></div>
+  </div></section>
+
+  <section class="sec k-c" id="servicos"><div class="wrap">
+    <div class="head"><div><span class="kicker" data-i="serv_k"></span><h2 class="H" data-i="serv_h"></h2></div><div style="display:grid;gap:22px;justify-items:start"><p data-i="serv_p"></p><a class="btn btn-o" data-href="/servicos/" target="_blank" rel="noopener" data-i="plans"></a></div></div>
+    <div id="srows" style="border-bottom:1px solid var(--rule2)"></div>
+    <div class="web k-c"><div class="web-l"><span class="kicker" data-i="web_k"></span><h3 class="H" data-i="web_h"></h3><p data-i="web_p"></p><a class="btn btn-o" style="justify-self:start" data-href="/agents/" target="_blank" rel="noopener" data-i="web_cta"></a></div><div class="web-r" id="webt"></div></div>
+  </div></section>
+
+  <section class="sec k-m" id="comunidade"><div class="wrap">
+    <div class="head"><div><span class="kicker" data-i="comu_k"></span><h2 class="H" data-i="comu_h"></h2></div><p data-i="comu_p"></p></div>
+    <div class="card tally k-c" id="tally"></div>
+    <div class="g4" id="oss"></div>
+  </div></section>
+
+  <section class="sec k-o" id="insights"><div class="wrap">
+    <div class="head"><div><span class="kicker" data-i="ins_k"></span><h2 class="H" data-i="ins_h"></h2></div><div style="display:grid;gap:22px;justify-items:start"><p data-i="ins_p"></p><a class="btn btn-o" data-href="/insights/" target="_blank" rel="noopener" data-i="all_ins"></a></div></div>
+    <div class="g3" id="ins"></div>
+  </div></section>
+
+  <section class="sec k-o" id="empresa"><div class="wrap emp">
+    <div><span class="kicker" data-i="emp_k"></span><h2 class="H" data-i="emp_h"></h2><p data-i="emp_p"></p>
+      <div class="estats"><div><b>20+</b><span data-i="yrs_tech"></span></div><div><b>10+</b><span data-i="yrs_sec"></span></div><div><b>BR·DE</b><span data-i="stat_ops"></span></div></div>
+      <a class="btn btn-o" data-href="/empresa/" target="_blank" rel="noopener" data-i="emp_more"></a></div>
+    <div class="rules" id="rules"></div>
+  </div></section>
+
+  <section class="sec k-o" id="contato"><div class="wrap ct">
+    <div><span class="kicker" data-i="ct_k"></span><h2 class="H" data-i="ct_h"></h2><p data-i="ct_p"></p>
+      <div class="copyrow"><small data-i="sales"></small><span>contato@okamiops.com</span><button type="button" data-copy="contato@okamiops.com" data-i="copy"></button></div>
+      <div class="copyrow"><small>disclosure</small><span>security@okamiops.com</span><button type="button" data-copy="security@okamiops.com" data-i="copy"></button></div></div>
+    <form data-demo>
+      <div class="f2"><div class="field"><label for="f1" data-i="f_name"></label><input id="f1" autocomplete="name" required></div><div class="field"><label for="f2" data-i="f_email"></label><input id="f2" type="email" autocomplete="email" required></div></div>
+      <div class="field"><label for="f3" data-i="f_company"></label><input id="f3" autocomplete="organization"></div>
+      <div class="field"><label for="f4" data-i="f_msg"></label><textarea id="f4" rows="5" required></textarea></div>
+      <button class="btn btn-o" type="submit" data-i="f_send"></button>
+      <p class="note" data-note hidden></p>
+    </form>
+  </div></section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-g">
+      <div><span class="wordmark"><img src="wolf.png" alt="" width="32" height="32">OKAMI<b>OPS</b></span><p data-i="foot"></p></div>
+      <div><h4 data-i="nav_prod"></h4><ul><li><a href="https://viberadar.si/" target="_blank" rel="noopener">Viberadar</a></li><li><a href="https://menko.cloud/" target="_blank" rel="noopener">Menko</a></li><li><a href="https://www.rakkan.org/" target="_blank" rel="noopener">Rakkan</a></li><li><a href="https://seubrasil.com/" target="_blank" rel="noopener">seubrasil</a></li></ul></div>
+      <div><h4>OkamiOps</h4><ul><li><a href="#servicos" data-i="nav_serv"></a></li><li><a href="#comunidade" data-i="nav_comu"></a></li><li><a href="#insights" data-i="nav_ins"></a></li><li><a href="#empresa" data-i="nav_emp"></a></li><li><a href="https://github.com/OkamiOps" target="_blank" rel="noopener">github.com/OkamiOps</a></li></ul></div>
+    </div>
+    <div class="foot-b"><span>© 2026 OKAMIOPS · CNPJ 66.637.891/0001-08 · <span data-i="where"></span></span><nav><a data-href="/status/" target="_blank" rel="noopener">Status</a><a data-href="/security/" target="_blank" rel="noopener">Security</a><a data-href="/privacidade/" target="_blank" rel="noopener" data-i="privacy"></a><a data-href="/termos/" target="_blank" rel="noopener" data-i="terms"></a></nav></div>
+  </div>
+</footer>
+<a class="back" href="index.html">← opções</a>
+
+<script src="okami.js"></script>
+<script>
+const $=s=>document.querySelector(s), E=OK.esc;
+const APPLE='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.77-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.28-1.6 2.78-.41 6.9 1.15 9.16.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.77.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.37-3.69zM14.1 5.86c.63-.77 1.06-1.83.94-2.89-.91.04-2.01.61-2.66 1.37-.58.67-1.09 1.75-.96 2.79 1.02.08 2.05-.52 2.68-1.27z"/></svg>';
+const QUOTAS=[['claude · 5h',72,'o'],['codex · semanal',41,'c'],['cursor · créditos',88,'m'],['grok · semanal',23,'c']];
+const dl=rows=>`<dl class="spec">${rows.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join('')}</dl>`;
+function render(){
+  $('#prods').innerHTML=OK.PRODUCTS.map(p=>`<a class="card pcard k-${p.c}" href="${p.url}" target="_blank" rel="noopener"><span class="tg">${E(OK.pick(p.kind))}</span><h3 class="H">${E(p.name)}</h3><span class="dm">${E(p.dom)}</span><p class="biz">${E(OK.pick(p.d))}</p>${dl([['status','<span class="dot"></span> '+OK.t('online')],['billing',E(OK.pick(p.model))],['url',E(p.dom)]])}<span class="go">${OK.t('visit')} ↗</span></a>`).join('');
+  $('#srows').innerHTML=OK.SERVICES.map(s=>`<a class="srow k-${s.c}" href="${OK.link(s.path)}" target="_blank" rel="noopener"><span class="tg">${s.tag}</span><h3 class="H">${E(OK.pick(s.name))}</h3><div><p class="biz">${E(OK.pick(s.d))}</p>${dl([['flow',E(OK.pick(s.fmt))],['mode','remote · BR/DE']])}</div><span class="go">→</span></a>`).join('');
+  $('#webt').innerHTML=`<div class="h"><span>${OK.t('web_status')}</span><span>● ready</span></div>`+OK.WEBMCP.map(r=>`<div class="r"><b>${E(r[0])}</b><span>${E(OK.pick(r[1]))}</span><i class="st-${r[3]}">${E(OK.pick(r[2]))}</i></div>`).join('');
+  const t=OK.OSS.find(o=>o.store);
+  $('#tally').innerHTML=`<div class="l"><span class="tg">★ ${E(t.plat)}</span><h3 class="H">${E(t.name)}</h3><p class="biz">${E(OK.pick(t.d))}</p>${dl([['dist','App Store · iOS 17+'],['backend','none'],['web',E(t.dom)]])}<div><a class="store" href="${t.url}" target="_blank" rel="noopener">${APPLE}<span>${OK.t('appstore_s')}<b>${OK.t('appstore_b')}</b></span></a></div></div><div class="r" aria-hidden="true">${QUOTAS.map(q=>`<div class="q k-${q[2]}" style="--w:${q[1]}%"><div>${q[0]}<span>${q[1]}%</span></div><i></i></div>`).join('')}</div>`;
+  $('#oss').innerHTML=OK.OSS.filter(o=>!o.store).map(o=>`<a class="card k-${o.c}" href="${o.url}" target="_blank" rel="noopener"><span class="tg">${E(o.plat)}</span><h3 class="H">${E(o.name)}</h3><p class="biz" style="font-size:14.5px">${E(OK.pick(o.d))}</p>${dl([['host',E(o.dom)],['license','open-source']])}<span class="go">${OK.t('open')} ↗</span></a>`).join('')+`<a class="card k-m" href="https://github.com/OkamiOps" target="_blank" rel="noopener"><span class="tg">GitHub</span><h3 class="H">OkamiOps</h3><p class="biz" style="font-size:14.5px">github.com/OkamiOps</p><span class="go">${OK.t('open')} ↗</span></a>`;
+  $('#ins').innerHTML=OK.INSIGHTS.map(n=>`<a class="card icard k-${n.c}" href="${OK.link(n.path)}" target="_blank" rel="noopener"><span class="tg">${E(n.cat)} · ${E(OK.pick(n.date))}</span><span class="big">${E(n.big)}${n.unit?`<small style="font-size:.4em">${E(n.unit)}</small>`:''}</span><span class="lab">${E(OK.pick(n.lab))}</span><h3>${E(OK.pick(n.t))}</h3><span class="go">${OK.t('read')} · ${n.min} min →</span></a>`).join('');
+  $('#rules').innerHTML=OK.RULES.map(r=>`<div><b>${E(OK.pick(r[0]))}</b><span>${E(OK.pick(r[1]))}</span></div>`).join('');
+}
+OK.onLang(render);
+OK.init();
+
+// chave lobo/máquina
+const sw=[...document.querySelectorAll('[data-switch]')];
+let mode='lobo';try{const s=localStorage.getItem('okami-mode');if(s==='maquina')mode=s}catch(e){}
+const apply=m=>{mode=m;document.body.dataset.mode=m;sw.forEach(b=>b.setAttribute('aria-checked',m==='maquina'));try{localStorage.setItem('okami-mode',m)}catch(e){}};
+apply(mode);
+sw.forEach(b=>b.addEventListener('click',e=>{
+  const next=mode==='lobo'?'maquina':'lobo';
+  const r=b.getBoundingClientRect();
+  document.documentElement.style.setProperty('--vx',(r.left+r.width/2)+'px');
+  document.documentElement.style.setProperty('--vy',(r.top+r.height/2)+'px');
+  if(document.startViewTransition&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.startViewTransition(()=>apply(next));else apply(next);
+}));
+</script>
+</body>
+</html>
