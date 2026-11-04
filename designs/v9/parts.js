@@ -19,12 +19,30 @@
 
   const NAV = [['#produtos', 'nav_prod'], ['#servicos', 'nav_serv'], ['#comunidade', 'nav_comu'], ['#insights', 'nav_ins'], ['#empresa', 'nav_emp']];
 
+  /* assinatura do rodapé: wordmark oficial (JetBrains Mono, OPS ciano→magenta) em escala de cartaz */
+  function sig() {
+    const wrap = document.querySelector('.foot .wrap'); if (!wrap || wrap.querySelector('.sig')) return;
+    wrap.insertAdjacentHTML('beforeend', `<div class="sig" aria-hidden="true">
+      <span class="sig-glow"></span><img class="sig-wolf" src="wolf.png" alt="">
+      <div class="sig-w"><span class="sig-a">OKAMI</span><span class="sig-b">OPS</span><i class="sig-c"></i></div>
+      <div class="sig-w sig-hl"><span class="sig-a">OKAMI</span><span class="sig-b">OPS</span><i class="sig-c"></i></div>
+    </div>`);
+    const x = wrap.querySelector('.sig'), w = x.querySelector('.sig-w');
+    const fit = () => { x.style.fontSize = '100px'; x.style.fontSize = (100 * x.clientWidth / w.scrollWidth).toFixed(2) + 'px'; x.style.setProperty('--bx', w.querySelector('.sig-b').offsetLeft + 'px'); };
+    fit(); addEventListener('resize', fit); document.fonts && document.fonts.ready.then(fit);
+    const foot = x.closest('.foot');
+    foot.addEventListener('pointermove', (e) => { const r = x.getBoundingClientRect(); x.style.setProperty('--mx', (e.clientX - r.left) + 'px'); x.style.setProperty('--my', (e.clientY - r.top) + 'px'); x.classList.add('lit'); });
+    foot.addEventListener('pointerleave', () => x.classList.remove('lit'));
+    if ('IntersectionObserver' in window) new IntersectionObserver(([en]) => x.classList.toggle('in', en.isIntersecting), { threshold: .25 }).observe(x);
+    else x.classList.add('in');
+  }
   window.OKP = {
+    sig,
     APPLE, QUOTAS, dl, store,
     nav: () => NAV.map((n) => `<a href="${n[0]}" data-i="${n[1]}"></a>`).join(''),
     header(extra) {
       return `<header class="hd"><div class="wrap">
-        <a class="wordmark" href="#top"><img src="wolf.png" alt="" width="32" height="32">OKAMI<b>OPS</b></a>
+        <a class="wordmark" href="#top"><img src="wolf.png" alt="" width="32" height="32"><span>OKAMI<b>OPS</b></span></a>
         <nav aria-label="Principal">${OKP.nav()}</nav>
         <div class="tools">${extra || ''}<div class="langs" role="group" aria-label="Idioma"><button data-lang="pt">PT</button><button data-lang="en">EN</button><button data-lang="de">DE</button></div>
         <a class="btn btn-o btn-hide" href="#contato" data-i="cta"></a>
@@ -100,7 +118,7 @@
     },
     footer() {
       return `<footer class="foot"><div class="wrap"><div class="foot-g">
-        <div><span class="wordmark"><img src="wolf.png" alt="" width="32" height="32">OKAMI<b>OPS</b></span><p data-i="foot"></p></div>
+        <div><span class="wordmark"><img src="wolf.png" alt="" width="32" height="32"><span>OKAMI<b>OPS</b></span></span><p data-i="foot"></p></div>
         <div><h4 data-i="nav_prod"></h4><ul>${OK.PRODUCTS.map((p) => `<li><a href="${p.url}" target="_blank" rel="noopener">${E(p.name)}</a></li>`).join('')}</ul></div>
         <div><h4>OkamiOps</h4><ul><li><a href="servicos.html" data-i="nav_serv"></a></li><li><a href="planos.html">Planos</a></li><li><a href="comunidade.html" data-i="nav_comu"></a></li><li><a href="insights.html" data-i="nav_ins"></a></li><li><a href="empresa.html" data-i="nav_emp"></a></li><li><a href="https://github.com/OkamiOps" target="_blank" rel="noopener">github.com/OkamiOps</a></li></ul></div>
         </div><div class="foot-b"><span>© 2026 OKAMIOPS · CNPJ 66.637.891/0001-08 · <span data-i="where"></span></span><nav><a href="mapa.html">Mapa do site</a><a href="status.html">Status</a><a href="security.html">Security</a><a href="privacidade.html" data-i="privacy"></a><a href="termos.html" data-i="terms"></a></nav></div></div></footer>

@@ -24,13 +24,6 @@
       </div>
     </div></section>`;
 
-  function fitX() {
-    const x = $('.foot-x'); if (!x) return;
-    const p = x.parentElement, cs = getComputedStyle(p);
-    x.style.fontSize = '100px';
-    const w = p.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-    x.style.fontSize = (100 * w / x.scrollWidth).toFixed(1) + 'px';
-  }
   function toc() {
     const t = $('.toc[data-auto]'); if (!t) return;
     const hs = [...document.querySelectorAll('.prose h2[id], .doc h2[id]')];
@@ -48,14 +41,13 @@
       $('#hdr').outerHTML = NAV.html;
       const end = $('#end'); if (end) end.outerHTML = CONTACT;
       $('#ft').outerHTML = OKP.footer();
-      document.querySelector('.foot .wrap').insertAdjacentHTML('beforeend', '<div class="foot-x" aria-hidden="true">OKAMI<em>OPS</em></div>');
       if (render) OK.onLang(render);
       OK.onLang(() => CONTACT && window.CONTACT && window.CONTACT.render());
       OK.init();
       if ($('#ctform')) window.CONTACT.init();
       NAV.init();
       toc();
-      fitX(); addEventListener('resize', fitX); document.fonts && document.fonts.ready.then(fitX);
+      OKP.sig();
     },
   };
 })();

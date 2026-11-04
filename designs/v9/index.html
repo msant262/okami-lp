@@ -7,7 +7,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;800&family=Space+Grotesk:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="base.css">
 <link rel="stylesheet" href="modes.css">
 <link rel="stylesheet" href="site.css">
@@ -87,9 +87,7 @@ const $=s=>document.querySelector(s),E=OK.esc,P=OK.pick;
 $('#hdr').outerHTML=NAV.html;
 $('#hero').outerHTML=HEROES.c;
 $('#ft').outerHTML=OKP.footer();
-document.querySelector('.foot .wrap').insertAdjacentHTML('beforeend','<div class="foot-x" aria-hidden="true">OKAMI<em>OPS</em></div>');
-function fitX(){const x=document.querySelector('.foot-x');if(!x)return;x.style.fontSize='100px';const w=x.parentElement.clientWidth-parseFloat(getComputedStyle(x.parentElement).paddingLeft)-parseFloat(getComputedStyle(x.parentElement).paddingRight);x.style.fontSize=(100*w/x.scrollWidth).toFixed(1)+'px'}
-addEventListener('resize',fitX);document.fonts&&document.fonts.ready.then(fitX);fitX();
+OKP.sig();
 const CH=[...document.querySelectorAll('.ch')];
 CH.slice(0,-1).forEach(c=>c.insertAdjacentHTML('afterend','<div class="hold" aria-hidden="true"></div>'));
 const NAMES={produtos:'nav_prod',servicos:'nav_serv',comunidade:'nav_comu',insights:'nav_ins',empresa:'nav_emp',contato:'ct_k'};
