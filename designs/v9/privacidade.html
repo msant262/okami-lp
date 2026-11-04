@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Privacidade · OkamiOps</title>
+<meta name="description" content="O que o site coleta, por quê e por quanto tempo.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="privacidade">
+<div id="hdr"></div>
+<main id="top">
+  <header class="ph">
+    <div class="ph-l"><nav class="crumb" aria-label="Você está em"><a href="index.html">Início</a><span aria-hidden="true">/</span><span aria-current="page">Privacidade</span></nav>
+      <span class="kicker">LGPD · GDPR · atualizada em setembro de 2026</span>
+      <h1>Seus dados: <em>o mínimo</em>, pelo tempo mínimo, para uma finalidade só.</h1>
+      <p class="lede">Esta página explica, sem juridiquês, o que este site coleta, por quê, com quem passa e por quanto tempo fica. Ela cobre okamiops.com e os formulários do site. Os produtos têm política própria, e ela cabe numa frase: o dado fica no seu aparelho.</p>
+      <div class="acts"><a class="btn btn-ink" href="#contato">Exercer um direito</a></div>
+    </div>
+    <div class="ph-r"><div class="bigstat"><div><b>0</b><span>cookies · nenhum banner</span></div><div><b>0</b><span>rastreadores · sem analytics, sem pixel</span></div><div><b style="font-size:clamp(22px,2vw,30px)">LGPD + GDPR</b><span>Brasil e União Europeia</span></div><div><b>15</b><span>dias corridos para responder</span></div></div></div>
+  </header>
+  <section class="sx lobo k-o"><div class="wrap legal">
+    <nav class="toc" data-auto aria-label="Nesta página"><b>Nesta página</b></nav>
+    <article class="prose">
+      <h2 id="coleta">O que coletamos</h2>
+      <p>Tudo que chega até nós passa por um formulário que você preencheu ou por um e-mail que você mandou. A exceção são os logs do edge, que existem para manter o site no ar e somem sozinhos.</p>
+      <div class="tbl"><table><thead><tr><th>Fonte</th><th>Dados</th><th>Para quê</th><th>Fica por</th></tr></thead><tbody>
+        <tr><td>Formulário de contato</td><td>Nome, e-mail, empresa e a mensagem que você escreveu</td><td>Responder ao pedido e preparar a conversa de descoberta</td><td>Enquanto a conversa durar; 24 meses depois do último contato</td></tr>
+        <tr><td>Baseline SecOps</td><td>Nome, e-mail, empresa, cargo e stack de CI/CD</td><td>Enviar o material e, se você quiser, falar sobre o pipeline</td><td>24 meses, ou até você pedir para apagar</td></tr>
+        <tr><td>Fila do Okami Mentor</td><td>Nome, e-mail e o módulo de interesse</td><td>Avisar quando a turma abrir</td><td>Até a turma abrir, ou até você sair da fila</td></tr>
+        <tr><td>Logs do edge</td><td>IP, user agent, URL, status e horário da requisição</td><td>Segurança, bloqueio de abuso e diagnóstico de erro</td><td>Dias, no provedor de edge</td></tr>
+        <tr><td>E-mail direto</td><td>O que você escrever para contato@ ou security@</td><td>Responder; em disclosure, coordenar a correção</td><td>Enquanto o assunto estiver aberto; reports de segurança, 5 anos</td></tr>
+      </tbody></table></div>
+      <h2 id="navegador">O que o site guarda no seu navegador</h2>
+      <div class="store2"><div><code>okami.lang</code><span>Sua preferência de idioma (pt, en ou de), em localStorage. Não sai do aparelho e não identifica ninguém.</span></div><div><code>rascunho de contato</code><span>Quando um agente de IA pré-preenche o formulário, o rascunho fica em sessionStorage e é apagado assim que a página lê.</span></div><div><code>cookies</code><span>Nenhum. Por isso não há banner de consentimento: não existe nada para consentir.</span></div></div>
+      <h2 id="nao">O que não fazemos</h2>
+      <ul class="nolist"><li>Não usamos Google Analytics, Meta Pixel, Hotjar nem qualquer script de medição de audiência.</li><li>Não vendemos, alugamos nem trocamos dados de contato com ninguém.</li><li>Não colocamos você em cadência automática de e-mail por ter baixado um material.</li><li>Não tomamos decisão automatizada nem fazemos perfilamento com os dados do site.</li><li>Não coletamos dados de menores: o site é dirigido a empresas.</li></ul>
+      <h2 id="bases">Bases legais e operadores</h2>
+      <p>A controladora é a OKAMIOPS, CNPJ 66.637.891/0001-08, com operação no Brasil e na Alemanha. Para titulares na União Europeia, o GDPR se aplica em paralelo à LGPD.</p>
+      <p class="proto">Protótipo: as seções seguintes da política atual (operadores, direitos, transferência internacional e encarregado) entram neste mesmo modelo na implementação.</p>
+    </article>
+  </div></section>
+
+  <div id="end"></div>
+</main>
+<div id="ft"></div>
+<script src="okami.js"></script>
+<script src="routes.js"></script>
+<script src="parts.js"></script>
+<script src="extra.js"></script>
+<script src="contact.js"></script>
+<script src="nav.js"></script>
+<script src="page.js"></script>
+<script>
+PAGE.init();
+</script>
+</body>
+</html>

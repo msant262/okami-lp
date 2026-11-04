@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quanto custa implementar IA em 2026 · OkamiOps</title>
+<meta name="description" content="As três faixas de custo de IA, com as contas abertas.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="insights">
+<div id="hdr"></div>
+<main id="top">
+  <header class="ph">
+    <div class="ph-l"><nav class="crumb" aria-label="Você está em"><a href="index.html">Início</a><span aria-hidden="true">/</span><a href="insights.html">Insights</a><span aria-hidden="true">/</span><span aria-current="page">Consultoria</span></nav>
+      <span class="kicker">Consultoria · Ago 2026 · 6 min · 8 fontes</span>
+      <h1 style="font-size:clamp(40px,4.6vw,76px);line-height:.95">Quanto custa implementar IA em 2026: as três faixas, com as <em>contas abertas</em>.</h1>
+      <p class="lede">Dez pessoas usando assinaturas prontas custam US$ 317 por mês. A automação via API que trata 4.000 tickets no mesmo mês custa US$ 90, US$ 0,02 por ticket, com roteamento e cache. A faixa cara não é a que você imagina, e a conta que decide o projeto não está na fatura do fornecedor.</p>
+    </div>
+    <div class="ph-r">
+      <span class="lb">Custo por tarefa automatizada</span>
+      <b style="font:500 clamp(56px,6vw,96px)/.9 var(--mono);color:var(--o);letter-spacing:-.06em">US$ 0,02<small style="font-size:.32em;color:var(--fg-mute);letter-spacing:0">/ticket</small></b>
+      <p>É o que custa triar e responder um ticket na faixa 2, com roteamento e cache. Sem roteamento, o mesmo ticket custa US$ 0,10: cinco vezes mais.</p>
+      <dl class="kvt"><dt>Categoria</dt><dd>Consultoria</dd><dt>Data</dt><dd>Ago 2026</dd><dt>Leitura</dt><dd>6 min</dd><dt>Fontes</dt><dd>8</dd></dl>
+    </div>
+  </header>
+  <section class="sx lobo k-o"><div class="wrap art">
+    <nav class="toc" data-auto aria-label="Neste artigo"><b>Neste artigo</b></nav>
+    <article class="prose">
+      <h2 id="tres">Três compras diferentes, não uma decisão</h2>
+      <p>A pergunta chega sempre no mesmo formato: quanto custa colocar IA na empresa? Não existe um número porque não existe uma compra. Existem três, de naturezas distintas: assinatura por pessoa, consumo por token e projeto de engenharia. Abaixo estão as três, com as contas abertas. Premissa fixa em todos os exemplos: empresa de 10 pessoas, sendo 3 no time técnico, preços de lista em dólar consultados em setembro de 2026.</p>
+      <p>O contexto ajuda a calibrar a urgência. No Brasil, 52% dos donos de pequenos negócios disseram ter usado IA nas duas semanas anteriores à entrevista, contra 21% nos Estados Unidos, segundo pesquisa do Sebrae com 7.182 respondentes, aplicada entre 24 de março e 8 de maio de 2026. Seu concorrente já está na faixa 1. A vantagem deixou de estar em adotar e passou a estar em saber quanto se paga, por quê, e o que a fatura não cobre.</p>
+      <h2 id="f1">Faixa 1: assinaturas prontas, US$ 317 por mês</h2>
+      <p>Um assento de Claude Team custa US$ 20 por pessoa/mês no plano anual e US$ 25 no mensal, para times de 2 a 150 pessoas. O GitHub Copilot Pro custa US$ 10 e inclui US$ 15 de créditos mensais; o Pro+ custa US$ 39 e inclui US$ 70 de créditos, sendo cada crédito US$ 0,01. Dez assentos padrão mais três assentos Pro+ para o time técnico fecham em <b>US$ 317 por mês</b>. É o piso realista de um stack de IA numa empresa pequena, e o número que a maioria superestima antes de sentar e somar.</p>
+      <figure><figcaption>Dez assentos: padrão vs. premium <span>US$/mês</span></figcaption><div class="bars k-o"><div class="br ext"><span class="n">10 assentos padrão</span><span class="t"><i style="--w:28.4%"></i></span><span class="v">US$ 317</span></div><div class="br ext"><span class="n">10 assentos premium</span><span class="t"><i style="--w:100.0%"></i></span><span class="v">US$ 1117</span></div></div></figure>
+      <p>O que essa faixa compra: redação, análise, leitura de documento longo, pesquisa e código, disponíveis no primeiro dia, sem projeto. O que ela não compra: nada conectado aos seus sistemas, nenhum registro por processo e nenhuma garantia de que alguém vai usar. Os mesmos 10 assentos em plano premium custam US$ 1.117 por mês, 3,5 vezes mais. Isso só vale para quem comprovadamente estoura o limite do plano padrão, e isso se mede olhando o uso, não pedindo opinião.</p>
+      <h2 id="f2">Faixa 2: automação via API, a mais barata das três</h2>
+      <p>Premissas explícitas, para você refazer a conta com os seus volumes: 4.000 tickets por mês, 4 chamadas de modelo por ticket, 3.000 tokens de entrada e 400 de saída por chamada. Dá 48 milhões de tokens de entrada e 6,4 milhões de saída por mês. Mesma carga, 16 vezes de diferença, só pela escolha do modelo.</p>
+      <figure><figcaption>Mesmo volume da faixa 2, quatro modelos <span>US$/mês</span></figcaption><div class="bars k-c"><div class="br ext"><span class="n">gpt-5-mini</span><span class="t"><i style="--w:6.2%"></i></span><span class="v">US$ 24,80</span></div><div class="br"><span class="n">gemini 3.5 flash-lite</span><span class="t"><i style="--w:7.6%"></i></span><span class="v">US$ 30,40</span></div><div class="br"><span class="n">claude sonnet 5</span><span class="t"><i style="--w:40.0%"></i></span><span class="v">US$ 160,00</span></div><div class="br ext"><span class="n">claude opus 5</span><span class="t"><i style="--w:100.0%"></i></span><span class="v">US$ 400,00</span></div></div></figure>
+      <p>Duas alavancas cortam essa conta antes de qualquer negociação. <b>Roteamento</b>: mande os 80% de casos simples para o modelo pequeno e reserve o modelo forte para os 20% difíceis; com essa divisão, a conta cai para cerca de US$ 52. <b>Cache de prompt</b>: na OpenAI, o token de entrada em cache custa 10% do preço cheio. E lote: a Message Batches API da Anthropic processa em até 24 horas pela metade do preço, o que serve bem para classificação e enriquecimento noturnos.</p>
+      <p>Falta o gateway. Ele centraliza chaves, limita gasto por time, faz cache e deixa você trocar de fornecedor sem reescrever código. Somando tokens roteados, observabilidade e gateway, a automação inteira fica em torno de <b>US$ 90 por mês: US$ 0,02 por ticket</b>. Sem roteamento e sem cache, o mesmo ticket custa US$ 0,10.</p>
+      <p>O que a faixa 2 compra: volume. O que ela não compra: acerto. Sem um conjunto de avaliação, 200 casos rotulados à mão com a resposta certa ao lado, você não sabe se trocar de modelo melhorou ou piorou o resultado, e vai descobrir pelo cliente. Montar esse conjunto custa de 3 a 5 dias de alguém que conhece o processo por dentro.</p>
+      <h2 id="f3">Faixa 3: IA embutida no produto, a fatura engana</h2>
+      <p>Aqui a intuição erra feio. Multiplique o volume da faixa 2 por dez, porque agora quem usa é o cliente e não o time interno: os tokens roteados vão para cerca de US$ 520 por mês. Some US$ 200 de observabilidade e avaliação e US$ 200 de gateway, logs e homologação. Total: cerca de <b>US$ 920 por mês</b> de fatura de fornecedor. Três vezes a faixa 1, não quarenta.</p>
+      <figure><figcaption>Fatura mensal de fornecedor por faixa <span>não inclui tempo de gente</span></figcaption><div class="bars k-o"><div class="br"><span class="n">faixa 1 · 10 assentos padrão</span><span class="t"><i style="--w:28.4%"></i></span><span class="v">US$ 317</span></div><div class="br ext"><span class="n">faixa 1 · 10 assentos premium</span><span class="t"><i style="--w:100.0%"></i></span><span class="v">US$ 1117</span></div><div class="br ext"><span class="n">faixa 2 · API roteada + cache</span><span class="t"><i style="--w:8.1%"></i></span><span class="v">US$ 90</span></div><div class="br"><span class="n">faixa 2 · mesma carga, modelo de topo</span><span class="t"><i style="--w:35.8%"></i></span><span class="v">US$ 400</span></div><div class="br"><span class="n">faixa 3 · IA no produto</span><span class="t"><i style="--w:82.4%"></i></span><span class="v">US$ 920</span></div></div></figure>
+      <p>O custo dominante da faixa 3 não está nessa conta: é gente e é risco. A Gartner projeta que mais de 40% dos projetos de IA agêntica serão cancelados até o fim de 2027, por custos crescentes, valor de negócio pouco claro ou controles de risco insuficientes.</p>
+      <div class="tbl"><table><thead><tr><th>Faixa</th><th>Compra</th><th>Não compra</th></tr></thead><tbody>
+        <tr><td>1 · assinaturas</td><td>Redação, análise, leitura de documento longo, pesquisa e código</td><td>Nada conectado aos sistemas, registro por processo ou garantia de uso</td></tr>
+        <tr><td>2 · API</td><td>Volume</td><td>Acerto: sem conjunto de avaliação você não sabe se piorou</td></tr>
+        <tr><td>3 · produto</td><td>Uma funcionalidade pela qual o cliente paga</td><td>Isenção: logs com dado de cliente, prompt injection, retenção e contrato seguem seus</td></tr>
+      </tbody></table></div>
+      <h2 id="ocultos">Os custos que não aparecem na fatura</h2>
+      <p>Cinco itens aparecem em todo projeto e em nenhuma tabela de preço. Integração: conectar CRM, ERP ou base de conhecimento se mede em dias de engenharia, não em tokens. Avaliação: cada troca de modelo exige rodar a regressão de novo. Segurança: rotação de chaves, retenção de log e revisão de injeção de prompt. Compliance: contrato de tratamento de dados, política de retenção e registro de decisão automatizada. Tempo de gente: treino, mudança de processo e a semana em que o time trabalha do jeito antigo e do jeito novo ao mesmo tempo.</p>
+      <p>Quem monta o business case só com preço de token erra por uma ordem de grandeza. Nas faixas 2 e 3, o token costuma ser a menor linha do orçamento.</p>
+      <h2 id="subir">Quando subir de faixa, e o checklist antes de assinar</h2>
+      <p>Dois gatilhos, e só dois. Suba da faixa 1 para a 2 quando a mesma tarefa se repetir mais de 500 vezes por mês com formato de entrada estável; abaixo disso, uma pessoa com assinatura resolve mais barato. Suba da 2 para a 3 quando um cliente pagar pelo resultado, e não apenas o time interno usar. Concorrente subindo de faixa não é gatilho.</p>
+      <ol class="ck7"><li><b>Qual é a tarefa</b>Medida em quantidade por mês</li><li><b>Quanto custa hoje</b>Em horas de trabalho</li><li><b>Critério de sucesso</b>E quem valida o resultado</li><li><b>Assentos sem uso</b>Quantos ficaram ociosos nos últimos 30 dias</li><li><b>Custo por tarefa</b>Com o modelo pequeno e com o modelo grande</li><li><b>Onde ficam os logs</b>E por quanto tempo são retidos</li><li><b>Saída do fornecedor</b>Como você sai do contrato se precisar</li></ol>
+      <div class="callout"><b>O que fazer amanhã</b>Refaça as três contas com os seus volumes antes de escolher a faixa: assento por pessoa, custo por tarefa e dias de gente. Se o custo por tarefa não estiver medido, você não está economizando, está adivinhando.</div>
+      <h2 id="fontes">Fontes desta análise</h2>
+      <ol class="srcs"><li>Claude · Pricing</li><li>OpenAI · API pricing</li><li>Google · Gemini API pricing</li><li>Anthropic · Batch processing with the Message Batches API</li><li>GitHub · Copilot plans</li><li>Cloudflare · AI Gateway pricing</li><li>Sebrae · Pequenos negócios do Brasil usam mais IA que os norte-americanos</li><li>Gartner · Over 40% of agentic AI projects will be canceled by end of 2027</li></ol>
+    </article>
+    <aside class="aside" aria-label="Resumo"><span class="lb">Resumo</span><span class="big">US$ 90<small>/mês</small></span><p>4.000 tickets via API, com roteamento, cache e gateway. Dez assentos prontos custam US$ 317.</p><a class="btn btn-o" href="#contato">Falar com quem escreveu isto</a></aside>
+  </div></section>
+  <section class="sx maq k-o"><div class="wrap">
+    <div class="head" style="display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap"><div><span class="kick">Continue lendo</span><h2 class="H">Mais <em>artigos</em>.</h2></div><a class="btn btn-line-n" href="insights.html">Todos os insights</a></div>
+    <div class="alist">
+      <a class="ai k-c" href="https://okamiops.com/pt/insights/llm-cost-spread-2026/" target="_blank" rel="noopener"><span class="mt"><b>Gateway</b>Jul 2026 · 6 min</span><div><h3>Output de LLM varia 106× entre fornecedores. Sua PME paga o teto.</h3></div><span class="big">106×</span></a>
+      <a class="ai k-m" href="https://okamiops.com/pt/insights/owasp-llm-top-10-2025/" target="_blank" rel="noopener"><span class="mt"><b>AppSec</b>Abr 2026 · 8 min</span><div><h3>OWASP LLM Top 10 (2025): cinco riscos que já viraram incidente, e como cobrir cada um</h3></div><span class="big">US$ 5</span></a>
+      <a class="ai k-c" href="https://okamiops.com/pt/insights/eu-ai-act-timeline/" target="_blank" rel="noopener"><span class="mt"><b>Compliance</b>Mar 2026 · 7 min</span><div><h3>EU AI Act depois do Digital Omnibus: o calendário real e o plano de 90 dias</h3></div><span class="big">dez/2027</span></a>
+    </div>
+  </div></section>
+
+  <div id="end"></div>
+</main>
+<div id="ft"></div>
+<script src="okami.js"></script>
+<script src="routes.js"></script>
+<script src="parts.js"></script>
+<script src="extra.js"></script>
+<script src="contact.js"></script>
+<script src="nav.js"></script>
+<script src="page.js"></script>
+<script>
+PAGE.init();
+</script>
+</body>
+</html>

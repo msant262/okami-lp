@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OkamiOps · Serviços</title>
+<meta name="description" content="Consultoria remota em IA, AppSec e compliance.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="servicos">
+<div id="hdr"></div>
+<main id="top">
+  <header class="ph">
+    <div class="ph-l"><nav class="crumb" aria-label="Você está em"><a href="index.html">Início</a><span aria-hidden="true">/</span><span aria-current="page">Serviços</span></nav>
+      <span class="kicker">Serviços · 100% remoto</span>
+      <h1>Consultoria remota em IA, AppSec e <em>compliance</em>.</h1>
+      <p class="lede">Quatro frentes, todas remotas. Escopo definido ou retainer mensal, com hand-off técnico documentado.</p>
+      <div class="acts"><a class="btn btn-ink" href="#contato">Falar com a gente</a><a class="btn btn-line-p" href="planos.html">Ver planos</a></div>
+    </div>
+    <div class="ph-r">
+      <span class="lb">Três formatos de contratação</span>
+      <dl class="kvt"><dt>Discovery</dt><dd>Diagnóstico · 2–6 semanas</dd><dt>Build</dt><dd>Projeto · por escopo</dd><dt>Operate</dt><dd>Retainer contínuo · <b>recomendado</b></dd></dl>
+      <a class="btn btn-o" style="align-self:flex-start" href="planos.html">Comparar planos →</a>
+    </div>
+  </header>
+  <section class="sx lobo k-c"><div class="wrap">
+    <div class="srows" id="srows"></div>
+    <p class="proto">Protótipo: Consultoria tem página montada aqui. Gateway, Compliance e Desenvolvimento usam o mesmo modelo e por enquanto abrem a página atual.</p>
+  </div></section>
+  <section class="sx maq k-c"><div class="wrap fx">
+    <div><span class="kick" data-i="web_k"></span><h2 class="H" style="font-size:calc(clamp(36px,4vw,64px) * var(--ds));line-height:1;margin:16px 0 18px" data-i="web_h"></h2><p class="lede" data-i="web_p"></p><a class="btn btn-o" style="margin-top:24px" href="https://okamiops.com/pt/agents/" target="_blank" rel="noopener">Ver como este site faz ↗</a></div>
+    <div id="webt"></div>
+  </div></section>
+  <section class="sx lobo k-o"><div class="wrap ctab">
+    <h2>Três formatos, todos remotos e com <em>escopo claro</em>.</h2>
+    <div class="acts"><a class="btn btn-ink" href="planos.html">Ver planos</a><a class="btn btn-line-p" href="#contato">Falar com a gente</a></div>
+  </div></section>
+
+  <div id="end"></div>
+</main>
+<div id="ft"></div>
+<script src="okami.js"></script>
+<script src="routes.js"></script>
+<script src="parts.js"></script>
+<script src="extra.js"></script>
+<script src="contact.js"></script>
+<script src="nav.js"></script>
+<script src="page.js"></script>
+<script>
+function render(){
+  const E=OK.esc,P=OK.pick;
+  document.getElementById('srows').innerHTML=OK.SERVICES.map(s=>{const l=OK.link(s.path),loc=!/^https?:/.test(l);return `<a class="srow2 k-${s.c}" href="${l}" ${loc?'':'target="_blank" rel="noopener"'}><span class="tg">${s.tag}</span><h3>${E(P(s.name))}</h3><p>${E(P(s.d))}</p><span class="ar" aria-hidden="true">${loc?'→':'↗'}</span></a>`}).join('');
+  document.getElementById('webt').innerHTML=OKP.webTable();
+}
+PAGE.init(render);
+</script>
+</body>
+</html>

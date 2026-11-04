@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OkamiOps · Comunidade</title>
+<meta name="description" content="Os 8 projetos open-source da OkamiOps.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="comunidade">
+<div id="hdr"></div>
+<main id="top">
+  <header class="ph">
+    <div class="ph-l"><nav class="crumb" aria-label="Você está em"><a href="index.html">Início</a><span aria-hidden="true">/</span><span aria-current="page">Comunidade</span></nav>
+      <span class="kicker">Open-source · 8 projetos</span>
+      <h1>Código aberto, <em>auditável</em> por qualquer um.</h1>
+      <p class="lede">Oito publicados: sete com código aberto no GitHub e um app de iPhone. O código que usamos nos projetos é o mesmo que está público.</p>
+      <div class="acts"><a class="btn btn-ink" href="https://github.com/OkamiOps" target="_blank" rel="noopener">github.com/OkamiOps ↗</a><a class="btn btn-line-p" href="comunidade-okami-agent.html">Ver o Okami Agent</a></div>
+    </div>
+    <div class="ph-r">
+      <span class="lb">Filtrar por plataforma</span>
+      <div class="chips2" id="plat" role="group" aria-label="Plataforma"></div>
+      <div class="bigstat" style="margin-top:8px"><div><b>8</b><span>projetos publicados</span></div><div><b>7</b><span>open-source no GitHub</span></div><div><b>1</b><span>app na App Store</span></div><div><b>BR·DE</b><span>mantidos por um time remoto</span></div></div>
+    </div>
+  </header>
+  <section class="sx lobo k-m"><div class="wrap">
+    <div class="pgrid2" id="pgrid"></div>
+    <p class="proto">Protótipo: só o Okami Agent tem página montada aqui. Os outros usam o mesmo modelo e por enquanto abrem a página atual.</p>
+  </div></section>
+  <section class="sx maq k-o"><div class="wrap ctab">
+    <h2>Quer um desses rodando <em>no seu time?</em></h2>
+    <div class="acts"><a class="btn btn-o" href="#contato">Falar com a gente</a><a class="btn btn-line-n" href="planos.html">Ver planos</a></div>
+  </div></section>
+
+  <div id="end"></div>
+</main>
+<div id="ft"></div>
+<script src="okami.js"></script>
+<script src="routes.js"></script>
+<script src="parts.js"></script>
+<script src="extra.js"></script>
+<script src="contact.js"></script>
+<script src="nav.js"></script>
+<script src="page.js"></script>
+<script>
+const SLUG={'Okami Agent':'okami-agent','Okami Monitor':'okami-monitor','OkamiCode':'okamicode','Okami Maturity':'okami-maturity','Okami Tally':'okami-tally','Okami Sentinel':'okami-sentinel','OkTally':'oktally','OkamiUNI':'okami-uni'};
+const GROUP=o=>o.plat.startsWith('iOS')?'iOS':o.plat;
+let plat='Todos';
+function render(){
+  const E=OK.esc,P=OK.pick;
+  const plats=['Todos',...new Set(OK.OSS.map(GROUP))];
+  document.getElementById('plat').innerHTML=plats.map(p=>`<button type="button" aria-pressed="${p===plat}" data-p="${E(p)}">${E(p)}</button>`).join('');
+  document.querySelectorAll('#plat button').forEach(b=>b.onclick=()=>{plat=b.dataset.p;render()});
+  document.getElementById('pgrid').innerHTML=OK.OSS.map(o=>{
+    const local=SLUG[o.name]==='okami-agent';
+    const href=local?'comunidade-okami-agent.html':'https://okamiops.com/pt/produtos/'+SLUG[o.name]+'/';
+    const shot=o.img?`<img src="img/${o.img}-d.jpg" alt="${E(o.name)}, página inicial" loading="lazy">`:'sem site próprio · releases no GitHub';
+    return `<a class="pj k-${o.c} ${o.img?'':'txt'}" href="${href}" ${local?'':'target="_blank" rel="noopener"'} ${plat==='Todos'||GROUP(o)===plat?'':'hidden'}><div class="browser"><div class="bar"><i></i><i></i><i></i><span class="url">${E(o.dom)}</span></div><div class="shot">${shot}</div></div><div class="row"><h3>${E(o.name)}</h3><span class="pl">${E(o.plat)}</span></div><p>${E(P(o.d))}</p><span class="go">${local?'Ver projeto →':'Página atual ↗'}</span></a>`}).join('');
+}
+PAGE.init(render);
+</script>
+</body>
+</html>
