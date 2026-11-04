@@ -1,0 +1,79 @@
+<title>OkamiOps Landing v7</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600&display=swap">
+<style>
+/* Layout: capa dividida e as 3 opções como faixas intercaladas papel/noite, igual ao conceito que elas propõem. */
+:root{--paper:#f4f2ee;--paper-line:#d9d6cf;--ink:#14141a;--ink-soft:#55566a;--night:#060609;--night-1:#0b0b12;--line:#1f1f2e;--fg:#f4f4f8;--fg-soft:#b9bac8;--fg-mute:#7d7e93;--o:#ff7a3d;--c:#3fd8d4;--m:#ff3fb0;--o-ink:#c2410c;--c-ink:#0e7c7b;--m-ink:#b8007a;
+  --serif:"Instrument Serif",Georgia,serif;--sans:"Space Grotesk",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--night);color:var(--fg-soft);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+h1,h2,p{margin:0}
+.in{max-width:1280px;margin-inline:auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+.top{display:grid;grid-template-columns:1fr 1fr;position:relative}
+.top>div{padding-block:56px 48px;min-width:0}
+.pl{background:var(--paper);color:var(--ink-soft);padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:clamp(32px,5vw,72px)}
+.pr{padding-right:max(24px,env(safe-area-inset-right,0px));padding-left:clamp(32px,5vw,72px);display:flex;flex-direction:column;justify-content:flex-end;gap:10px;font:400 13px/1.7 var(--mono)}
+.seam{position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:linear-gradient(var(--o) 0 33.3%,var(--c) 33.3% 66.6%,var(--m) 66.6%)}
+.k{font:500 12px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--o-ink)}
+h1{font:400 clamp(44px,6vw,92px)/.9 var(--serif);color:var(--ink);letter-spacing:-.035em;margin-top:16px;text-wrap:balance}
+h1 em{color:var(--o-ink)}
+.pl p{margin-top:18px;max-width:480px;font-size:17px}
+.pr b{font-weight:500;color:var(--fg)} .pr .c{color:var(--c)}
+.opt{display:block;position:relative;padding-block:52px}
+.opt.l{background:var(--paper);color:var(--ink-soft)}
+.opt.m{background:var(--night);color:var(--fg-soft)}
+.opt .in{display:grid;grid-template-columns:120px minmax(0,1fr) minmax(0,.9fr) auto;gap:32px;align-items:center}
+.opt .n{font:500 13px var(--mono);color:var(--a)}
+.opt h2{font:400 clamp(40px,4.6vw,72px)/.95 var(--serif);letter-spacing:-.03em;transition:color .3s}
+.opt.l h2{color:var(--ink)}
+.opt.m h2{font:500 clamp(30px,3.4vw,52px)/1 var(--mono);color:var(--fg);letter-spacing:-.05em}
+.opt p{font-size:16px}
+.opt.m p{font:400 13.5px/1.7 var(--mono)}
+.opt ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:4px;font:400 12.5px var(--mono)}
+.opt li::before{content:"▸ ";color:var(--a)}
+.go{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;font:500 20px var(--mono);border:1px solid currentColor;transition:.3s}
+.opt.l .go{color:var(--ink)} .opt.m .go{color:var(--fg)}
+.opt:hover .go{background:var(--a);border-color:var(--a);color:var(--night);transform:rotate(-45deg)}
+.opt.l:hover h2{font-style:italic;color:var(--a2)}
+.opt.m:hover h2{color:var(--a)}
+.opt+.opt::before{content:"";position:absolute;left:0;right:0;top:-29px;height:30px;background:inherit;clip-path:polygon(0 100%,100% 0,100% 100%)}
+.foot{padding:28px 0 40px;font:400 12px var(--mono);color:var(--fg-mute)}
+.foot .in{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+@media (max-width:900px){
+  .top{grid-template-columns:1fr}.seam{display:none}
+  .pl,.pr{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .opt .in{grid-template-columns:minmax(0,1fr) auto;gap:14px 20px}
+  .opt .n{grid-column:1/-1}.opt .d{grid-column:1/2}.opt .go{grid-row:2;grid-column:2;width:48px;height:48px}
+  .in{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="pl">
+    <span class="k">OkamiOps · landing v7</span>
+    <h1>Circuito, <em>bem desenhado.</em></h1>
+    <p>Gráficos refeitos do zero: chips com encapsulamento, pernas metálicas e serigrafia, trilhas a 45° com vias e sinal correndo, osciloscópios nos insights. Em duas versões.</p>
+  </div>
+  <div class="pr">
+    <span><b>base</b> hero arrastável · faixas diagonais · conteúdo oficial</span>
+    <span><b>idiomas</b> PT · EN · DE</span>
+    <span><b>teste</b> desktop e celular · <span class="c">veja a placa do código aberto</span></span>
+  </div>
+  <div class="seam" aria-hidden="true"></div>
+</header>
+
+<main>
+  <a class="opt m" href="c1-circuito.html" style="--a:var(--c)"><div class="in">
+    <span class="n">C1</span><h2>Circuito</h2>
+    <div class="d"><p>O Circuito da v6 com todos os gráficos refeitos. O código aberto agora é uma placa de verdade: Tally como chip QFP, os outros como DIP, furos de fixação e serigrafia.</p><ul><li>trilhas 45° com vias e sinal animado</li><li>osciloscópio em cada insight</li></ul></div>
+    <span class="go">→</span></div></a>
+  <a class="opt l" href="c2-pilha.html" style="--a:var(--o);--a2:var(--o-ink)"><div class="in">
+    <span class="n">C2</span><h2>Circuito em Pilha</h2>
+    <div class="d"><p>O mesmo visual dentro da mecânica da Pilha: cada seção desliza sobre a anterior, que escurece e recua. O trilho lateral é uma trilha de circuito com um sinal que desce conforme você rola.</p><ul><li>no celular vira rolagem normal</li><li>números de capítulo vazados</li></ul></div>
+    <span class="go">→</span></div></a>
+</main>
+<div class="foot"><div class="in"><span>© 2026 OKAMIOPS · protótipos de design</span><span>rodadas anteriores continuam nos outros artefatos</span></div></div>

@@ -1,0 +1,21 @@
+/* v7 · camada Pilha: seções viram capítulos que deslizam um sobre o outro */
+@media (min-width:901px){
+  main>.S{position:sticky;top:68px;min-height:calc(100vh - 68px);display:flex;flex-direction:column;justify-content:center;
+    clip-path:polygon(0 clamp(36px,5vw,72px),100% 0,100% 100%,0 100%);margin-top:calc(-1 * clamp(36px,5vw,72px));padding-top:clamp(120px,11vw,170px)}
+  main>.S:nth-of-type(odd){clip-path:polygon(0 0,100% clamp(36px,5vw,72px),100% 100%,0 100%)}
+  main>.S>.wrap{transform:scale(var(--sc,1));transform-origin:50% 0;width:100%}
+  main>.S>.dim{position:absolute;inset:0;background:#000;opacity:var(--dim,0);pointer-events:none;z-index:3}
+}
+.S>.cnum{position:absolute;z-index:0;right:max(24px,env(safe-area-inset-right,0px));top:clamp(84px,8vw,124px);font:500 clamp(80px,11vw,180px)/.8 var(--mono);letter-spacing:-.06em;color:transparent;-webkit-text-stroke:1px #d2cec4;pointer-events:none}
+.S.night>.cnum{-webkit-text-stroke-color:#24243a}
+
+/* trilho = trilha de circuito */
+.trail{position:fixed;z-index:65;left:max(18px,env(safe-area-inset-left,0px));top:50%;transform:translateY(-50%);height:min(56vh,420px);width:20px;transition:opacity .3s}
+.trail::before{content:"";position:absolute;left:9px;top:0;bottom:0;width:2px;background:linear-gradient(var(--o) 0 33.3%,var(--c) 33.3% 66.6%,var(--m) 66.6%);opacity:.45}
+.trail .sig{position:absolute;left:4px;top:calc(var(--tp,0) * 100% - 6px);width:12px;height:12px;border-radius:50%;background:var(--fg);box-shadow:0 0 0 3px rgba(6,6,10,.8),0 0 16px 4px rgba(63,216,212,.7);transition:top .15s linear}
+.trail a{position:absolute;left:3px;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:var(--night);border:3px solid #6a6a80;transition:border-color .25s,transform .25s}
+.trail a.p{background:var(--paper)}
+.trail a.on{border-color:var(--o);transform:scale(1.25)}
+.trail a span{position:absolute;left:24px;top:50%;transform:translate(-4px,-50%);white-space:nowrap;font:500 11px var(--mono);color:var(--fg);background:var(--night);padding:3px 8px;border-radius:6px;opacity:0;transition:.2s;pointer-events:none;border:1px solid var(--line)}
+.trail a:hover span,.trail a:focus-visible span{opacity:1;transform:translate(0,-50%)}
+@media (max-width:900px){.trail{display:none}.S>.cnum{font-size:72px}}
