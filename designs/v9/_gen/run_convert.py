@@ -16,15 +16,16 @@ jobs=[
  ('insights_owasp-llm-top-10-2025','insights-owasp.html','insights',[I,('OWASP LLM Top 10',None)],'lobo','article'),
  ('insights_eu-ai-act-timeline','insights-eu-ai-act.html','insights',[I,('EU AI Act',None)],'lobo','article'),
  ('insights_appsec-maturity-smb-2026','insights-samm.html','insights',[I,('Maturidade AppSec',None)],'lobo','article'),
- ('status','status.html','status',[('Status',None)],'maq','generic'),
- ('security','security.html','security',[('Security',None)],'maq','generic'),
- ('termos','termos.html','termos',[('Termos',None)],'lobo','generic'),
- ('privacidade','privacidade.html','privacidade',[('Privacidade',None)],'lobo','generic'),
+ ('status','status.html','status',[('Status',None)],'lobo','doc','STATUS · verificado ao abrir'),
+ ('security','security.html','security',[('Security',None)],'lobo','doc','POLÍTICA · RFC 9116'),
+ ('termos','termos.html','termos',[('Termos',None)],'lobo','doc','TERMOS · versão set 2026'),
+ ('privacidade','privacidade.html','privacidade',[('Privacidade',None)],'lobo','doc','LGPD · GDPR · set 2026'),
 ]
-for src,out,pk,cr,st,k in jobs:
+for j in jobs:
+    src,out,pk,cr,st,k=j[:6]; stamp=j[6] if len(j)>6 else ''
     t,d=meta(src)
     try:
-        convert(L+src+'.html',out,t,d,pk,cr,start=st,kind=k); print('ok',out)
+        convert(L+src+'.html',out,t,d,pk,cr,start=st,kind=k,stamp=stamp); print('ok',out)
     except Exception as e:
         import traceback; traceback.print_exc(); print('FAIL',out)
 

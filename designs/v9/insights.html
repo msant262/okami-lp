@@ -61,7 +61,7 @@ function render(){
   const cats=['Todos',...new Set(ARTS.map(a=>a.cat))];
   document.getElementById('cats').innerHTML=cats.map(c=>`<button type="button" aria-pressed="${c===cat}" data-c="${E(c)}">${E(c)}</button>`).join('');
   document.querySelectorAll('#cats button').forEach(b=>b.onclick=()=>{cat=b.dataset.c;render()});
-  document.getElementById('alist').innerHTML=ARTS.map(a=>{const loc=!/^https?:/.test(a.href);return `<a class="ai k-${a.c}" href="${a.href}" ${loc?'':'target="_blank" rel="noopener"'} ${cat==='Todos'||a.cat===cat?'':'hidden'}><span class="mt"><b>${E(a.cat)}</b>${E(a.date)} · ${a.min} min</span><div><h3>${E(a.t)}</h3><p>${E(a.d)}</p></div><span class="big">${E(a.big)}</span></a>`}).join('');
+  document.getElementById('alist').innerHTML=ARTS.map(a=>{const loc=!/^https?:/.test(a.href);return `<a class="ai k-${a.c}" href="${a.href}" ${loc?'':'target="_blank" rel="noopener"'} ${cat==='Todos'||a.cat===cat?'':'hidden'}><span class="am"><b>${E(a.cat)}</b>${E(a.date)} · ${a.min} min</span><div><h3>${E(a.t)}</h3><p>${E(a.d)}</p></div><span class="big">${E(a.big)}</span></a>`}).join('');
 }
 PAGE.init(render);
 </script>

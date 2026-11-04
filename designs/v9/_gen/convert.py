@@ -114,6 +114,9 @@ def block(n, ctx):
     if t == 'blockquote': return f'<blockquote>{inline(n)}</blockquote>'
     if t in ('ul', 'ol') and 'fig-list' not in c and 'fig-steps' not in c and 'fig-timeline' not in c:
         if 'checks' in c:
+            lis = [li for li in n.c if isinstance(li, N) and li.tag == 'li']
+            if lis and all(norm(li.text()).startswith('Não ') for li in lis):
+                return '<ul class="nolist">' + ''.join(f'<li>{inline(li)}</li>' for li in lis) + '</ul>'
             return '<ul class="checks">' + ''.join(f'<li>{inline(li)}</li>' for li in n.c if isinstance(li, N) and li.tag == 'li') + '</ul>'
         items = ''.join(f'<li>{inline(li) if not li.find(lambda x: x.tag in ("h3","p","div")) else "".join(block(z, ctx) for z in li.c)}</li>' for li in n.c if isinstance(li, N) and li.tag == 'li')
         return f'<{t} class="gl">{items}</{t}>'
@@ -215,11 +218,19 @@ def block(n, ctx):
     return kids(n, ctx)
 
 def table(n):
-    out = ''
-    for r in n.find_all(tg('tr')):
-        cells = ''.join(f'<{c.tag}>{inline(c)}</{c.tag}>' for c in r.c if isinstance(c, N) and c.tag in ('th', 'td'))
+    rows = n.find_all(tg('tr')); out = ''; hdr = []
+    for i, r in enumerate(rows):
+        cs = [c for c in r.c if isinstance(c, N) and c.tag in ('th', 'td')]
+        if i == 0 and all(c.tag == 'th' for c in cs):
+            hdr = [norm(c.text()) for c in cs]
+            out += '<thead><tr>' + ''.join(f'<th scope="col">{inline(c)}</th>' for c in cs) + '</tr></thead><tbody>'
+            continue
+        cells = ''
+        for j, c in enumerate(cs):
+            lab = hdr[j] if j < len(hdr) else ''
+            cells += f'<{c.tag}' + (f' data-l="{esc(lab)}"' if lab else '') + f'>{inline(c)}</{c.tag}>'
         out += f'<tr>{cells}</tr>'
-    return out
+    return out + ('</tbody>' if hdr else '')
 
 def kids(n, ctx):
     # agrupa FAQs e passos numerados consecutivos (só filhos diretos)
@@ -244,7 +255,7 @@ def kids(n, ctx):
     return ''.join(out)
 
 # ---- página ----
-def convert(src_file, out_file, title, desc, page_key, crumbs, start='lobo', kind='generic'):
+def convert(src_file, out_file, title, desc, page_key, crumbs, start='lobo', kind='generic', stamp=''):
     root = parse(open(src_file, encoding='utf-8', errors='ignore').read())
     hero = root.find(has('page-hero'))
     eyebrow = norm(hero.find(has('eyebrow')).text()) if hero.find(has('eyebrow')) else ''
@@ -260,7 +271,14 @@ def convert(src_file, out_file, title, desc, page_key, crumbs, start='lobo', kin
             acts += f'<a class="btn {cls}" href="{h}"' + (' target="_blank" rel="noopener"' if ext else '') + f'>{inline(a)}{" ↗" if ext and not h.startswith("mailto:") else ""}</a>'
     strip = hero.find_all(has('strip-item'))
     right = ''
-    if strip:
+    if strip and kind == 'doc':
+        tiles = ''
+        for s_ in strip:
+            k = norm(s_.find(has('strip-k')).text()); v = s_.find(has('strip-v'))
+            sm = v.find(tg('small')); main = norm(''.join(x if isinstance(x, str) else '' for x in v.c))
+            tiles += f'<div><span class="fk">{esc(k)}</span><b data-v>{esc(main)}</b>{f"<small>{esc(norm(sm.text()))}</small>" if sm else ""}</div>'
+        right = f'<div class="stamp"><span>{esc(stamp)}</span><i aria-hidden="true"></i></div><div class="facts4">{tiles}</div>'
+    elif strip:
         vals = []
         for s in strip:
             k = norm(s.find(has('strip-k')).text()); v = s.find(has('strip-v'))
@@ -280,6 +298,32 @@ def convert(src_file, out_file, title, desc, page_key, crumbs, start='lobo', kin
     <div class="ph-r">{right}</div>
   </header>
 '''
+    if kind == 'doc':
+        secs = root.find_all(lambda n: n.tag == 'section' and 'sec' in n.cls)
+        tones = ['k-o', 'k-c', 'k-m']
+        out = ''
+        for i, sec in enumerate(secs):
+            num = sec.find(has('sec-num'))
+            parts = [norm(x.text()) for x in num.c if isinstance(x, N)] if num else []
+            nlab = parts[0].replace('§', '') if parts else f'{i+1:02d}'
+            tlab = parts[1] if len(parts) > 1 else ''
+            h2 = sec.find(lambda n: n.tag == 'h2' and 'sec-title' in n.cls)
+            if not h2: continue  # banda de CTA final: o contato da página já cobre
+            lead2 = sec.find(has('sec-lead')); bodyn = sec.find(has('sec-body'))
+            sid = sec.a.get('id') or re.sub(r'[^a-z0-9]+', '-', tlab.lower().encode('ascii', 'ignore').decode()).strip('-') or f's{i}'
+            out += f'''    <section class="dsec {tones[i % 3]}" aria-labelledby="{sid}">
+      <header class="dh"><span class="dn">§{esc(nlab)}</span><div><span class="dl">{esc(tlab)}</span><h2 id="{sid}" data-toc="{esc(tlab)}">{inline(h2)}</h2>{f'<p class="dlede">{inline(lead2)}</p>' if lead2 else ''}</div></header>
+      <div class="db">{kids(bodyn, {}) if bodyn else ''}</div>
+    </section>
+'''
+        body += f'''  <section class="sx lobo k-o"><div class="wrap legal2">
+    <nav class="toc" data-auto aria-label="Nesta página"><b>Nesta página</b></nav>
+    <div class="doc">
+{out}    </div>
+  </div></section>
+'''
+        page(out_file, title, desc, page_key, body)
+        return out_file
     modes = ['lobo', 'maq'] if start == 'lobo' else ['maq', 'lobo']
     tones = ['k-o', 'k-c', 'k-m']
     for i, sec in enumerate(root.find_all(lambda n: n.tag == 'section' and 'sec' in n.cls)):

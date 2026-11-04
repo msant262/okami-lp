@@ -33,8 +33,8 @@
   }
   function toc() {
     const t = $('.toc[data-auto]'); if (!t) return;
-    const hs = [...document.querySelectorAll('.prose h2[id]')];
-    t.insertAdjacentHTML('beforeend', hs.map((h) => `<a href="#${h.id}">${h.textContent}</a>`).join(''));
+    const hs = [...document.querySelectorAll('.prose h2[id], .doc h2[id]')];
+    t.insertAdjacentHTML('beforeend', hs.map((h) => `<a href="#${h.id}">${h.dataset.toc || h.textContent}</a>`).join(''));
     const links = [...t.querySelectorAll('a')];
     addEventListener('scroll', () => {
       let cur = hs[0];
