@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Okami · C1 · Noir Editorial</title>
+<meta name="description" content="Okami: produtos SaaS, serviços de IA sob medida e ferramentas open source.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+<style>
+:root{
+  --bg:#0c0a0e;--bg2:#141118;--paper:#efe9df;--text:#c4bdb3;--muted:#8a8392;--line:#2a2530;
+  --o:#ff731d;--m:#e040fb;--c:#00e5ff;
+  --tri:linear-gradient(100deg,var(--o) 5%,var(--m) 50%,var(--c) 95%);
+  --serif:'Instrument Serif',Georgia,serif;--sans:'Inter Tight',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
+  --max:1320px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.07;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.wrap{width:min(100% - 48px,var(--max));margin-inline:auto}
+:focus-visible{outline:2px solid var(--c);outline-offset:3px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;color:var(--paper);margin:0;letter-spacing:-.015em}
+.it{font-style:italic}
+.tri{background:var(--tri);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic;padding-right:.06em}
+.o{color:var(--o)}.m{color:var(--m)}.c{color:var(--c)}
+
+/* nav */
+.nav{position:sticky;top:0;z-index:50;background:rgba(12,10,14,.8);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px;gap:24px}
+.word{display:flex;align-items:center;gap:12px;font:600 14px var(--sans);letter-spacing:.34em;color:var(--paper)}
+.word img{width:34px;height:34px;border-radius:50%}
+.nav ul{display:flex;gap:34px;list-style:none;margin:0;padding:0;font-size:15px}
+.nav ul a{position:relative;padding:6px 0;color:var(--paper)}
+.nav ul sup{font:500 10px var(--mono);margin-right:5px;color:var(--k)}
+.nav ul a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--k);transition:right .35s}
+.nav ul a:hover::after{right:0}
+.pill{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 24px;border-radius:999px;font:500 15px var(--sans);color:#0c0a0e;background:var(--paper);overflow:hidden;isolation:isolate;white-space:nowrap;transition:color .35s}
+.pill::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--tri);transform:translateY(101%);transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+.pill:hover::before{transform:none}
+.pill.ghost{background:transparent;color:var(--paper);border:1px solid #4a4452}
+.pill.ghost:hover{color:#0c0a0e;border-color:transparent}
+.burger{display:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--paper)}
+
+/* hero */
+.hero{position:relative;padding:64px 0 0;overflow:hidden}
+.spot{position:absolute;inset:0;pointer-events:none;background:radial-gradient(600px circle at var(--x,70%) var(--y,30%),rgba(224,64,251,.13),transparent 60%);transition:background .1s}
+.meta{display:flex;justify-content:space-between;gap:16px;font:500 12px var(--mono);letter-spacing:.06em;color:var(--muted);padding-bottom:18px;border-bottom:1px solid var(--line);position:relative}
+.meta i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#3ddc97;margin-right:8px;box-shadow:0 0 8px #3ddc97}
+.hero-g{display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:center;padding:48px 0 56px;position:relative}
+.hero h1{font-size:clamp(64px,11vw,184px);line-height:.86;letter-spacing:-.04em}
+.hero h1 .l2{display:block;padding-left:.9em}
+.hero-low{display:flex;gap:40px;align-items:flex-end;justify-content:space-between;margin-top:40px;flex-wrap:wrap}
+.hero-low p{max-width:480px;margin:0;font-size:19px}
+.acts{display:flex;gap:12px;flex-wrap:wrap}
+.emblem{position:relative;aspect-ratio:1;width:100%;max-width:420px;justify-self:end}
+.ring{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,var(--o),transparent 22%,var(--c) 40%,transparent 60%,var(--m) 78%,transparent 95%,var(--o));-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1px));mask:radial-gradient(farthest-side,transparent calc(100% - 2px),#000 calc(100% - 1px));animation:spin 18s linear infinite}
+.ring.r2{inset:22px;animation-duration:28s;animation-direction:reverse;opacity:.5}
+@keyframes spin{to{transform:rotate(360deg)}}
+.emblem img{position:absolute;inset:44px;width:calc(100% - 88px);height:calc(100% - 88px);border-radius:50%;object-fit:cover;filter:saturate(1.15) contrast(1.05)}
+.emblem .lab{position:absolute;font:500 11px var(--mono);color:var(--muted);letter-spacing:.08em}
+.emblem .lab.a{top:8%;left:-6%}.emblem .lab.b{bottom:10%;right:-4%}.emblem .lab.c{top:50%;right:-2%;transform:translateX(30%)}
+.emblem .lab b{font-weight:500}
+
+/* marquee */
+.marq{border-block:1px solid var(--line);overflow:hidden;padding:22px 0;background:var(--bg2)}
+.marq-t{display:flex;gap:48px;width:max-content;animation:mq 38s linear infinite;font:400 clamp(30px,3.6vw,48px)/1 var(--serif);white-space:nowrap}
+.marq-t span{color:transparent;-webkit-text-stroke:1px #5d5666}
+.marq-t span.f{color:var(--paper);-webkit-text-stroke:0;font-style:italic}
+.marq-t i{font-style:normal;color:var(--m);font-size:.6em;align-self:center}
+.marq:hover .marq-t{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* toc */
+.toc{display:grid;grid-template-columns:repeat(3,1fr)}
+.toc a{position:relative;display:flex;flex-direction:column;gap:30px;padding:34px 30px 38px;border-right:1px solid var(--line);overflow:hidden;isolation:isolate}
+.toc a:last-child{border-right:0}
+.toc a::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--k);transform:scaleY(0);transform-origin:bottom;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.toc a:hover::before{transform:none}
+.toc a:hover,.toc a:hover h2,.toc a:hover .top{color:#0c0a0e}
+.toc .top{display:flex;justify-content:space-between;font:500 12px var(--mono);color:var(--k);transition:color .3s}
+.toc h2{font-size:clamp(40px,4.4vw,64px);line-height:.95;transition:color .3s}
+.toc p{margin:8px 0 0;font-size:15px;transition:color .3s}
+.toc a:hover p{color:#0c0a0e}
+
+/* chapters */
+.ch{padding:130px 0;border-top:1px solid var(--line)}
+.ch-head{display:grid;grid-template-columns:260px 1fr;gap:48px;margin-bottom:72px}
+.num{font:400 clamp(110px,13vw,210px)/.78 var(--serif);color:transparent;-webkit-text-stroke:1.5px var(--k);letter-spacing:-.04em}
+.ch-head .lbl{font:500 12px var(--mono);letter-spacing:.12em;color:var(--k);text-transform:uppercase;display:block;margin-bottom:18px}
+.ch-head h2{font-size:clamp(46px,6.4vw,96px);line-height:.93;margin-bottom:24px}
+.ch-head p{max-width:580px;margin:0;font-size:19px}
+
+/* produtos */
+.prods{border-top:1px solid var(--paper)}
+.prod{position:relative;display:grid;grid-template-columns:180px 1fr 1fr 64px;gap:40px;align-items:center;padding:34px 0;border-bottom:1px solid var(--line);isolation:isolate}
+.prod::before{content:"";position:absolute;inset:0 -24px;z-index:-1;background:linear-gradient(90deg,color-mix(in srgb,var(--pc) 22%,transparent),transparent 70%);transform:scaleX(0);transform-origin:left;transition:transform .55s cubic-bezier(.2,.7,.2,1)}
+.prod:hover::before{transform:none}
+.prod .dom{font:500 13px var(--mono);color:var(--pc)}
+.prod .dom::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--pc);margin-right:10px;box-shadow:0 0 14px var(--pc)}
+.prod h3{font-size:clamp(46px,6vw,92px);line-height:.9;transition:font-style 0s,letter-spacing .4s}
+.prod:hover h3{font-style:italic;letter-spacing:-.03em}
+.prod .d{font-size:16px}
+.prod .d small{display:block;margin-top:10px;font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.prod .ar{width:60px;height:60px;border-radius:50%;border:1px solid #4a4452;display:grid;place-items:center;color:var(--paper);transition:.4s}
+.prod:hover .ar{background:var(--pc);border-color:var(--pc);color:#0c0a0e;transform:rotate(-45deg)}
+
+/* serviços */
+.svc-list{display:grid;grid-template-columns:1fr 1fr;column-gap:72px}
+.svc-item{display:grid;grid-template-columns:60px 1fr;gap:18px;padding:32px 0;border-top:1px solid var(--line);transition:border-color .3s}
+.svc-item:hover{border-color:var(--c)}
+.svc-item span{font:italic 400 28px var(--serif);color:var(--c);line-height:1.05}
+.svc-item h3{font-size:34px;line-height:1.05;margin-bottom:8px}
+.svc-item p{margin:0;font-size:16px;color:var(--muted)}
+.svc-item .io{display:block;margin-top:12px;font:400 12.5px var(--mono);color:var(--text)}
+.svc-item .io b{font-weight:400;color:var(--c)}
+.quote{margin-top:88px;display:grid;grid-template-columns:260px 1fr;gap:48px;align-items:center}
+.quote blockquote{margin:0;font:400 clamp(32px,4vw,56px)/1.08 var(--serif);color:var(--paper)}
+.quote blockquote u{text-decoration:none;background:linear-gradient(transparent 62%,rgba(0,229,255,.35) 62%)}
+
+/* comunidade */
+.tally{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);background:radial-gradient(circle at 100% 0%,rgba(224,64,251,.22),transparent 50%),var(--bg2)}
+.tally-l{padding:52px;border-right:1px solid var(--line)}
+.tally-l .lbl{font:500 12px var(--mono);letter-spacing:.12em;color:var(--m);text-transform:uppercase}
+.tally-l h3{font-size:clamp(56px,6vw,92px);line-height:.9;margin:20px 0}
+.tally-l p{margin:0 0 30px;max-width:440px}
+.astore{display:inline-flex;align-items:center;gap:12px;padding:10px 22px 10px 18px;border-radius:14px;background:var(--paper);color:#000;transition:transform .2s,box-shadow .3s}
+.astore:hover{transform:translateY(-2px);box-shadow:0 14px 40px -12px var(--m)}
+.astore i{font-size:28px}.astore span{display:flex;flex-direction:column;line-height:1.1;font-size:11px}.astore b{font:600 19px var(--sans)}
+.tally-r{padding:52px;display:flex;flex-direction:column;justify-content:center;gap:24px}
+.bar{display:grid;gap:9px}
+.bar div{display:flex;justify-content:space-between;font:400 13px var(--mono);color:var(--paper)}
+.bar div span{color:var(--muted)}
+.bar i{position:relative;display:block;height:4px;background:var(--line);overflow:hidden}
+.bar i::after{content:"";position:absolute;inset:0;right:calc(100% - var(--w));background:var(--tri);transform-origin:left;animation:grow 1.6s cubic-bezier(.2,.7,.2,1) both}
+@keyframes grow{from{transform:scaleX(0)}}
+.oss{display:grid;grid-template-columns:repeat(3,1fr);border-left:1px solid var(--line)}
+.oss a{position:relative;display:flex;flex-direction:column;gap:14px;min-height:240px;padding:34px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);transition:background .35s}
+.oss a:hover{background:#17131b}
+.oss a::after{content:"";position:absolute;left:0;top:0;height:2px;width:0;background:var(--tri);transition:width .5s}
+.oss a:hover::after{width:100%}
+.oss .n{font:italic 400 24px var(--serif);color:var(--m)}
+.oss h3{font-size:38px;line-height:1}
+.oss p{margin:0;font-size:15px;flex:1}
+.oss .gh{font:500 13px var(--mono);color:var(--paper);display:flex;align-items:center;gap:8px}
+
+/* contato */
+.contact{padding:150px 0 110px;text-align:center;border-top:1px solid var(--line);position:relative;overflow:hidden}
+.contact::before{content:"";position:absolute;left:50%;top:60%;width:900px;height:500px;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(224,64,251,.16),rgba(0,229,255,.06) 45%,transparent 70%);pointer-events:none}
+.contact h2{font-size:clamp(60px,11vw,180px);line-height:.88;letter-spacing:-.04em;margin-bottom:32px;position:relative}
+.contact p{max-width:520px;margin:0 auto 38px;font-size:19px;position:relative}
+.contact .acts{justify-content:center;position:relative}
+footer{border-top:1px solid var(--line);padding:28px 0 40px;font:400 12px var(--mono);color:var(--muted)}
+.ft{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.ft nav{display:flex;gap:22px;flex-wrap:wrap}
+.ft a:hover{color:var(--paper)}
+
+.rv{opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+
+@media (max-width:1100px){
+  .hero-g{grid-template-columns:1fr}
+  .emblem{max-width:320px;justify-self:start;order:-1}
+  .emblem .lab{display:none}
+  .ch-head,.quote{grid-template-columns:1fr;gap:12px}
+  .prod{grid-template-columns:1fr 60px;gap:10px 24px}
+  .prod .dom{grid-column:1/-1}
+  .prod .ar{grid-row:2/4;grid-column:2}
+  .svc-list{grid-template-columns:1fr}
+  .tally{grid-template-columns:1fr}.tally-l{border-right:0;border-bottom:1px solid var(--line)}
+  .oss{grid-template-columns:1fr 1fr}
+}
+@media (max-width:820px){
+  .burger{display:grid;place-items:center}
+  .nav .pill.hide-m{display:none}
+  .nav ul{position:absolute;top:68px;left:0;right:0;flex-direction:column;gap:0;padding:8px 24px 20px;background:var(--bg);border-bottom:1px solid var(--line);display:none}
+  .nav ul.open{display:flex}
+  .nav ul a{display:block;padding:16px 0;border-bottom:1px solid var(--line);font:400 30px var(--serif)}
+  .toc{grid-template-columns:1fr}
+  .toc a{border-right:0;border-bottom:1px solid var(--line);padding:24px 20px}
+}
+@media (max-width:640px){
+  .wrap{width:min(100% - 32px,var(--max))}
+  .meta span:last-child{display:none}
+  .hero-g{padding:32px 0 40px}
+  .emblem{max-width:220px}
+  .hero h1 .l2{padding-left:0}
+  .ch{padding:84px 0}
+  .ch-head{margin-bottom:44px}
+  .prod{padding:26px 0}.prod .ar{width:46px;height:46px}
+  .oss{grid-template-columns:1fr;border-left:0}
+  .oss a{border-right:0;min-height:0;padding:28px 0}
+  .tally-l,.tally-r{padding:30px 22px}
+  .acts .pill{flex:1 1 100%;justify-content:center}
+  .contact{padding:100px 0 72px}
+}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="word" href="#top"><img src="../assets/images/logo-sem-fundo.jpg" alt="" width="34" height="34">OKAMI</a>
+    <ul id="menu">
+      <li><a href="#produtos" style="--k:var(--o)"><sup>01</sup>Produtos</a></li>
+      <li><a href="#servicos" style="--k:var(--c)"><sup>02</sup>Serviços</a></li>
+      <li><a href="#comunidade" style="--k:var(--m)"><sup>03</sup>Comunidade</a></li>
+      <li><a href="#contato" style="--k:var(--paper)"><sup>04</sup>Contato</a></li>
+    </ul>
+    <a class="pill hide-m" href="https://wa.me/5511983539463" target="_blank" rel="noopener">Diagnóstico gratuito <i class="fas fa-arrow-right"></i></a>
+    <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><i class="fas fa-bars"></i></button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" id="hero">
+    <div class="spot" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="meta"><span><i></i>4 produtos no ar · 7 projetos abertos</span><span>Okami · Estúdio de tecnologia e IA · 2026</span></div>
+      <div class="hero-g">
+        <div class="rv">
+          <h1>Um lobo,<span class="l2"><span class="tri">três</span> territórios.</span></h1>
+          <div class="hero-low">
+            <p>Produtos que <span class="o">faturam</span>. IA sob medida que <span class="c">resolve</span>. Código aberto que <span class="m">devolve</span>. Tudo saindo do mesmo time.</p>
+            <div class="acts"><a class="pill" href="#produtos">Ver o que construímos</a><a class="pill ghost" href="https://wa.me/5511983539463" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i>Conversar</a></div>
+          </div>
+        </div>
+        <div class="emblem rv" aria-hidden="true">
+          <div class="ring"></div><div class="ring r2"></div>
+          <img src="../assets/images/logo-sem-fundo.jpg" alt="">
+          <span class="lab a"><b class="o">●</b> produtos</span><span class="lab c"><b class="c">●</b> serviços</span><span class="lab b"><b class="m">●</b> comunidade</span>
+        </div>
+      </div>
+    </div>
+    <div class="marq" aria-hidden="true">
+      <div class="marq-t">
+        <span class="f">Viberadar</span><i>✦</i><span>Menko</span><i>✦</i><span class="f">Rakkan</span><i>✦</i><span>seubrasil</span><i>✦</i><span class="f">Okami Tally</span><i>✦</i><span>OkamiAgent</span><i>✦</i><span class="f">Sentinel</span><i>✦</i><span>Automação com IA</span><i>✦</i>
+        <span class="f">Viberadar</span><i>✦</i><span>Menko</span><i>✦</i><span class="f">Rakkan</span><i>✦</i><span>seubrasil</span><i>✦</i><span class="f">Okami Tally</span><i>✦</i><span>OkamiAgent</span><i>✦</i><span class="f">Sentinel</span><i>✦</i><span>Automação com IA</span><i>✦</i>
+      </div>
+    </div>
+    <div class="wrap">
+      <nav class="toc" aria-label="Índice">
+        <a href="#produtos" style="--k:var(--o)"><span class="top"><span>01 · 4 produtos</span><i class="fas fa-arrow-down"></i></span><span><h2>Produtos</h2><p>SaaS próprios, no ar e faturando.</p></span></a>
+        <a href="#servicos" style="--k:var(--c)"><span class="top"><span>02 · 6 frentes</span><i class="fas fa-arrow-down"></i></span><span><h2>Serviços</h2><p>IA, automação e sistemas sob medida.</p></span></a>
+        <a href="#comunidade" style="--k:var(--m)"><span class="top"><span>03 · 7 projetos</span><i class="fas fa-arrow-down"></i></span><span><h2>Comunidade</h2><p>Ferramentas abertas, feitas em público.</p></span></a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="ch" id="produtos" style="--k:var(--o)">
+    <div class="wrap">
+      <div class="ch-head rv"><span class="num">01</span><div><span class="lbl">Produtos</span><h2>Software que <span class="it o">se paga.</span></h2><p>Nada de vaporware. Quatro produtos em produção, com clientes pagantes, rodando na mesma base de segurança que entregamos a quem nos contrata.</p></div></div>
+      <div class="prods">
+        <a class="prod rv" href="https://viberadar.si/" target="_blank" rel="noopener" style="--pc:#E25BD8"><span class="dom">viberadar.si</span><h3>Viberadar</h3><span class="d">Descubra apps, compare assinaturas e encontre prompts completos.<small>Assinatura · 4 idiomas</small></span><span class="ar"><i class="fas fa-arrow-right"></i></span></a>
+        <a class="prod rv" href="https://menko.cloud/" target="_blank" rel="noopener" style="--pc:#3DD6C6"><span class="dom">menko.cloud</span><h3>Menko</h3><span class="d">Cartões de visita digitais para equipes e empresas.<small>Assinatura</small></span><span class="ar"><i class="fas fa-arrow-right"></i></span></a>
+        <a class="prod rv" href="https://www.rakkan.org/" target="_blank" rel="noopener" style="--pc:#FF7A59"><span class="dom">rakkan.org</span><h3>Rakkan</h3><span class="d">Propostas, contratos e atendimento num fluxo só.<small>Assinatura · trial de 15 dias</small></span><span class="ar"><i class="fas fa-arrow-right"></i></span></a>
+        <a class="prod rv" href="https://seubrasil.com/" target="_blank" rel="noopener" style="--pc:#F5C542"><span class="dom">seubrasil.com</span><h3>seubrasil</h3><span class="d">Apuração e dados políticos para entender o país com números.<small>Patrocínio</small></span><span class="ar"><i class="fas fa-arrow-right"></i></span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="servicos" style="--k:var(--c)">
+    <div class="wrap">
+      <div class="ch-head rv"><span class="num">02</span><div><span class="lbl">Serviços</span><h2>IA sob medida, <span class="it c">sem promessa vazia.</span></h2><p>O time que constrói nossos produtos resolve o seu problema. Diagnóstico gratuito, ciclos curtos e resultado medido no seu caixa.</p></div></div>
+      <div class="svc-list">
+        <div class="svc-item rv"><span>i.</span><div><h3>Automação com IA</h3><p>Fluxos inteligentes que eliminam retrabalho e erro manual.</p><span class="io">planilha manual <b>→</b> fluxo automático</span></div></div>
+        <div class="svc-item rv"><span>ii.</span><div><h3>Chatbots inteligentes</h3><p>Atendimento e qualificação 24/7 no WhatsApp e no site.</p><span class="io">lead esperando <b>→</b> lead respondido</span></div></div>
+        <div class="svc-item rv"><span>iii.</span><div><h3>Análise de dados</h3><p>Dashboards claros para decidir com segurança.</p><span class="io">achismo <b>→</b> indicador</span></div></div>
+        <div class="svc-item rv"><span>iv.</span><div><h3>Sistemas customizados</h3><p>Software que se adapta ao seu processo, não o contrário.</p><span class="io">gambiarra <b>→</b> sistema</span></div></div>
+        <div class="svc-item rv"><span>v.</span><div><h3>Integração de APIs</h3><p>CRM, financeiro, estoque e atendimento conversando.</p><span class="io">5 abas abertas <b>→</b> 1 fonte de verdade</span></div></div>
+        <div class="svc-item rv"><span>vi.</span><div><h3>Consultoria em IA</h3><p>Prioridades, riscos e custo-benefício com clareza.</p><span class="io">hype <b>→</b> roadmap</span></div></div>
+      </div>
+      <div class="quote rv"><a class="pill" href="https://wa.me/5511983539463" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i>Diagnóstico de 30 min</a><blockquote>“Primeiro a gente entende o <u>gargalo</u>. Depois escolhe a tecnologia. Nunca o contrário.”</blockquote></div>
+    </div>
+  </section>
+
+  <section class="ch" id="comunidade" style="--k:var(--m)">
+    <div class="wrap">
+      <div class="ch-head rv"><span class="num">03</span><div><span class="lbl">Comunidade</span><h2>Código aberto, <span class="it m">feito em público.</span></h2><p>As ferramentas que usamos todo dia, abertas para usar, auditar e contribuir. IA e segurança não deveriam ser caixa-preta.</p></div></div>
+      <div class="tally rv">
+        <div class="tally-l">
+          <span class="lbl">Em destaque · iOS</span>
+          <h3>Okami <span class="tri">Tally</span></h3>
+          <p>Suas cotas de IA espalhadas em vários serviços, numa tela só: quanto resta, quando renova e o ritmo seguro por dia. Sem servidor intermediário, credenciais no Keychain.</p>
+          <a class="astore" href="https://apps.apple.com/de/app/okami-tally/id6795536973" target="_blank" rel="noopener"><i class="fab fa-apple"></i><span>Baixar na<b>App Store</b></span></a>
+        </div>
+        <div class="tally-r" aria-hidden="true">
+          <div class="bar" style="--w:72%"><div>claude · 5h<span>72% · renova 2h14</span></div><i></i></div>
+          <div class="bar" style="--w:41%"><div>codex · semanal<span>41% · renova 3d</span></div><i></i></div>
+          <div class="bar" style="--w:88%"><div>cursor · créditos<span>88% · atenção</span></div><i></i></div>
+          <div class="bar" style="--w:23%"><div>grok · semanal<span>23% · folga</span></div><i></i></div>
+        </div>
+      </div>
+      <div class="oss">
+        <a class="rv" href="#"><span class="n">a.</span><h3>OkamiAgent</h3><p>Base para agentes e orquestração multi-agente.</p><span class="gh"><i class="fab fa-github"></i>github →</span></a>
+        <a class="rv" href="#"><span class="n">b.</span><h3>Okami Monitor</h3><p>Chamados, receita e saúde de vários produtos num painel federado.</p><span class="gh"><i class="fab fa-github"></i>github →</span></a>
+        <a class="rv" href="#"><span class="n">c.</span><h3>OkamiCode</h3><p>Ferramental de desenvolvimento assistido por IA.</p><span class="gh"><i class="fab fa-github"></i>github →</span></a>
+        <a class="rv" href="#"><span class="n">d.</span><h3>Okami Maturity</h3><p>Avaliação de maturidade em segurança e engenharia.</p><span class="gh"><i class="fab fa-github"></i>github →</span></a>
+        <a class="rv" href="#"><span class="n">e.</span><h3>Okami Sentinel</h3><p>Vigilância contínua de segurança para aplicações.</p><span class="gh"><i class="fab fa-github"></i>github →</span></a>
+        <a class="rv" href="#"><span class="n">f.</span><h3>OkamiUNI</h3><p>Trilhas abertas de aprendizado em IA e segurança.</p><span class="gh"><i class="fab fa-github"></i>github →</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contato">
+    <div class="wrap rv">
+      <h2>Vamos <span class="tri">conversar?</span></h2>
+      <p>Conte o desafio. Em até 24h úteis você recebe o melhor próximo passo, seja um produto nosso ou uma solução sob medida.</p>
+      <div class="acts"><a class="pill" href="https://wa.me/5511983539463" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i>WhatsApp</a><a class="pill ghost" href="mailto:contato@okami.com">contato@okami.com</a></div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap ft"><span>© 2026 okami · custom solutions, ai innovation</span><nav><a href="https://viberadar.si/">viberadar</a><a href="https://menko.cloud/">menko</a><a href="https://www.rakkan.org/">rakkan</a><a href="https://seubrasil.com/">seubrasil</a></nav></div></footer>
+
+<script>
+const b=document.getElementById('burger'),m=document.getElementById('menu');
+b.addEventListener('click',()=>{const o=m.classList.toggle('open');b.setAttribute('aria-expanded',o)});
+m.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{m.classList.remove('open');b.setAttribute('aria-expanded',false)}));
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+const hero=document.getElementById('hero');
+if(matchMedia('(pointer:fine)').matches)hero.addEventListener('pointermove',e=>{const r=hero.getBoundingClientRect();hero.style.setProperty('--x',(e.clientX-r.left)+'px');hero.style.setProperty('--y',(e.clientY-r.top)+'px')});
+</script>
+</body>
+</html>
