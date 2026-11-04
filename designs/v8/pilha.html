@@ -12,8 +12,10 @@
 <link rel="stylesheet" href="modes.css">
 <style>
 /* Layout: hero arrastável; capítulos empilhados (sticky) alternando lobo/papel e máquina/noite. Sem ilustração: tipografia, lobo oficial e prints reais dos produtos. */
-.ch{position:sticky;top:68px;min-height:calc(100vh - 68px);min-height:calc(100svh - 68px);display:flex;flex-direction:column;justify-content:center;padding-block:clamp(104px,9vw,140px) clamp(56px,5vw,80px);clip-path:polygon(0 clamp(36px,5vw,72px),100% 0,100% 100%,0 100%);margin-top:calc(-1 * clamp(36px,5vw,72px))}
-.ch:nth-child(even){clip-path:polygon(0 0,100% clamp(36px,5vw,72px),100% 100%,0 100%)}
+.ch{position:sticky;top:68px;min-height:calc(100vh - 68px);min-height:calc(100svh - 68px);display:flex;flex-direction:column;justify-content:center;padding-block:clamp(104px,9vw,140px) clamp(120px,10vw,160px);clip-path:polygon(0 clamp(36px,5vw,72px),100% 0,100% 100%,0 100%);margin-top:calc(-1 * clamp(36px,5vw,72px))}
+.ch:nth-of-type(even){clip-path:polygon(0 0,100% clamp(36px,5vw,72px),100% 100%,0 100%)}
+.hold{height:55vh;pointer-events:none}
+@media (max-width:900px){.hold{display:none}}
 .ch>.dim{position:absolute;inset:0;background:#000;opacity:var(--dim,0);pointer-events:none;z-index:3}
 .ch>.wrap{position:relative;z-index:1;width:100%;transform:scale(var(--sc,1));transform-origin:50% 0}
 .ch .top{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;align-items:end;margin-bottom:clamp(32px,4vw,52px)}
@@ -85,6 +87,20 @@
 .tally h3{font:400 clamp(44px,4vw,64px)/.92 var(--serif);color:var(--fg);letter-spacing:-.035em;margin:10px 0 12px}
 .tally p{font-size:15px;margin-bottom:18px}
 .tally .store{background:var(--paper);color:var(--ink)}
+.sent{grid-column:3/5;grid-row:span 2;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:24px;align-items:center;padding:24px;border-radius:18px;background:var(--night);color:var(--fg-soft)}
+.sent .tg{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--o)}
+.sent h3{font:400 clamp(44px,4vw,64px)/.92 var(--serif);color:var(--fg);letter-spacing:-.035em;margin:10px 0 12px}
+.sent p{font-size:15px;margin-bottom:18px}
+.sent .browser{box-shadow:0 0 0 1px #2a2a3d,0 40px 80px -30px rgba(0,0,0,.8)}
+.sent .browser .shot{aspect-ratio:4/3}
+.sent:hover .browser .shot img{transform:scale(1.03)}
+.oc.txt{justify-content:space-between;padding:22px;border-radius:14px;background:var(--night);color:var(--fg-soft)}
+.oc.txt h3{color:var(--fg)}
+.oc.txt p{-webkit-line-clamp:4;color:var(--fg-soft)}
+.oc.txt .go{font:500 12px var(--mono);color:var(--fg)}
+.ghw{grid-column:1/3;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:24px 26px;border-radius:14px;border:1.5px solid var(--ink)}
+.ghw b{font:400 clamp(26px,2.4vw,36px)/1.05 var(--serif);color:var(--ink);letter-spacing:-.02em}
+.ghw span{font:500 12px var(--mono);color:var(--ink-soft)}
 
 /* 04 insights */
 .igrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(24px,3vw,44px)}
@@ -121,7 +137,9 @@
 @media (max-width:1100px){
   .sgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .ogrid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .tally{grid-row:auto}
+  .tally,.sent{grid-row:auto}
+  .sent{grid-column:1/-1}
+  .ghw{grid-column:1/-1}
 }
 @media (max-width:900px){
   .ch{position:relative;top:auto!important;min-height:0}
@@ -133,7 +151,7 @@
 }
 @media (max-width:640px){
   .sgrid,.ogrid,.rules,.f2{grid-template-columns:1fr}
-  .tally{grid-column:auto;grid-template-columns:1fr}
+  .tally,.sent{grid-column:auto;grid-template-columns:1fr}
   .browser .url{font-size:11px}
   .ctg2 form{padding:22px}
 }
@@ -198,6 +216,7 @@ $('#hdr').outerHTML=OKP.header();
 $('#hero').outerHTML=OKP.hero();
 $('#ft').outerHTML=OKP.footer();
 const CH=[...document.querySelectorAll('.ch')];
+CH.slice(0,-1).forEach(c=>c.insertAdjacentHTML('afterend','<div class="hold" aria-hidden="true"></div>'));
 const NAMES={produtos:'nav_prod',servicos:'nav_serv',comunidade:'nav_comu',insights:'nav_ins',empresa:'nav_emp',contato:'ct_k'};
 const mobile=()=>matchMedia('(max-width:640px)').matches;
 let sel=0;
@@ -217,8 +236,15 @@ function render(){
   $('#sgrid').innerHTML=OK.SERVICES.map(s=>`<a class="sv k-${s.c}" href="${OK.link(s.path)}" target="_blank" rel="noopener"><span class="tg">${s.tag}</span><h3>${E(P(s.name))}</h3><p>${E(P(s.d))}</p><span class="io">$ ${E(P(s.fmt))}</span></a>`).join('');
   $('#webt').innerHTML=OKP.webTable();
   const t=OK.OSS.find(o=>o.store);
+  const card=o=>`<a class="oc k-${o.c}" href="${o.url}" target="_blank" rel="noopener"><div class="browser"><div class="bar"><i></i><i></i><i></i><span class="url">${E(o.dom)}</span></div><div class="shot"><img src="img/${o.img}-d.jpg" alt="${E(o.name)}, página inicial" loading="lazy"></div></div><div class="row"><h3>${E(o.name)}</h3><span class="pl">${E(o.plat)}</span></div><p>${E(P(o.d))}</p></a>`;
+  const by=n=>OK.OSS.find(o=>o.name===n);
+  const sn=by('Okami Sentinel'),ok=by('OkTally');
   $('#ogrid').innerHTML=`<div class="tally"><div class="phone"><img src="img/tally-m.jpg" alt="Okami Tally no iPhone" loading="lazy"></div><div><span class="tg">★ ${E(t.plat)}</span><h3>${E(t.name)}</h3><p>${E(P(t.d))}</p>${OKP.store(t)}</div></div>`+
-    OK.OSS.filter(o=>!o.store).map(o=>`<a class="oc k-${o.c} ${o.img?'':'noimg'}" href="${o.url}" target="_blank" rel="noopener"><div class="browser"><div class="bar"><i></i><i></i><i></i><span class="url">${E(o.dom)}</span></div><div class="shot">${o.img?`<img src="img/${o.img}-d.jpg" alt="${E(o.name)}, página inicial" loading="lazy">`:'github.com/OkamiOps'}</div></div><div class="row"><h3>${E(o.name)}</h3><span class="pl">${E(o.plat)}</span></div><p>${E(P(o.d))}</p></a>`).join('');
+    ['Okami Agent','Okami Monitor','OkamiCode','Okami Maturity'].map(n=>card(by(n))).join('')+
+    `<a class="oc txt k-${ok.c}" href="${ok.url}" target="_blank" rel="noopener"><div><div class="row" style="margin-top:0"><h3>${E(ok.name)}</h3><span class="pl">${E(ok.plat)}</span></div><p style="margin-top:12px">${E(P(ok.d))}</p></div><span class="go">github.com/OkamiOps ↗</span></a>`+
+    card(by('OkamiUNI'))+
+    `<a class="sent" href="${sn.url}" target="_blank" rel="noopener"><div><span class="tg">★ ${E(sn.plat)} · AppSec</span><h3>${E(sn.name)}</h3><p>${E(P(sn.d))}</p><span class="btn btn-o">${OK.t('open')} ${E(sn.dom)} ↗</span></div><div class="browser"><div class="bar"><i></i><i></i><i></i><span class="url">${E(sn.dom)}</span></div><div class="shot"><img src="img/sentinel-d.jpg" alt="Okami Sentinel, página inicial" loading="lazy"></div></div></a>`+
+    `<a class="ghw" href="https://github.com/OkamiOps" target="_blank" rel="noopener"><b>github.com/OkamiOps</b><span>7 open-source · 1 iOS · ${OK.t('open')} ↗</span></a>`;
   $('#igrid').innerHTML=OK.INSIGHTS.map(n=>`<a class="ig k-${n.c}" href="${OK.link(n.path)}" target="_blank" rel="noopener"><span class="lb">${E(n.cat)} · ${E(P(n.date))}</span><span class="big">${E(n.big)}<small>${E(n.unit)}</small></span><span class="lb">${E(P(n.lab))}</span><h3>${E(P(n.t))}</h3><span class="go">${OK.t('read')} · ${n.min} min →</span></a>`).join('');
   $('#rules').innerHTML=OKP.rules();
   $('#rail').innerHTML=CH.map(c=>{const n=OK.t(NAMES[c.id]).replace(/<[^>]+>/g,'');return `<a href="#${c.id}" class="${c.dataset.r}" aria-label="${n}"><span>${n}</span></a>`}).join('');
