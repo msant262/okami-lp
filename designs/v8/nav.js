@@ -17,9 +17,9 @@
   const N2 = `<header class="nv n2"><div class="in">${wm(false)}<nav aria-label="Capítulos">${links(true)}</nav><div class="tools">${langs}<a class="btn btn-o" href="#contato" data-i="cta"></a>${mbtn}</div></div></header>`;
   const N3 = `<header class="nv n3"><div class="pill">${wm(false)}<span class="cur" aria-live="polite"><i>§</i> <span id="curlab"></span></span><nav aria-label="Principal">${links(false)}</nav><span class="sep"></span>${langs}<a class="btn btn-o" href="#contato" data-i="cta"></a>${mbtn}</div></header>`;
 
-  const OVL = `<div class="ovl" id="ovl" hidden><div class="ovl-top"><div class="ovl-h">${wm(true)}<button type="button" class="mb close" data-close><span data-i="close"></span><i aria-hidden="true"></i></button></div>
+  const OVL = `<div class="ovl" id="ovl" tabindex="-1" role="dialog" aria-modal="true" aria-label="Menu" hidden><div class="ovl-top"><div class="ovl-h">${wm(true)}<button type="button" class="mb close" data-close><span data-i="close"></span><i aria-hidden="true"></i></button></div>
       <nav class="ovl-links" aria-label="Menu">${CHS.map(([id, k], i) => `<a href="#${id}"><i>0${i + 1}</i><span data-i="${k}"></span></a>`).join('')}<a href="#contato"><i>06</i><span data-i="ct_k"></span></a></nav></div>
-    <div class="ovl-bot">${langs}<a class="btn btn-o" href="#contato" data-i="cta"></a><span class="ovl-m">contato@okamiops.com</span></div></div>`;
+    <div class="ovl-bot">${langs}<a class="btn btn-o" href="#contato" data-i="cta"></a><span class="ovl-m">contato@okamiops.com</span><span class="ovl-r" data-i="remote"></span></div></div>`;
 
   function clocks() {
     document.querySelectorAll('[data-clk]').forEach((b) => {
@@ -58,7 +58,7 @@
       let n = 'n2'; try { const s = localStorage.getItem('okami-nav'); if (['n1', 'n2', 'n3'].includes(s)) n = s; } catch (e) {}
       document.querySelectorAll('.nsw button').forEach((b) => b.addEventListener('click', () => NAV.set(b.dataset.n)));
       const ovl = document.getElementById('ovl');
-      const open = (o) => { ovl.hidden = !o; document.documentElement.style.overflow = o ? 'hidden' : ''; document.querySelectorAll('[data-menu]').forEach((b) => b.setAttribute('aria-expanded', o)); if (o) ovl.querySelector('a').focus(); };
+      const open = (o) => { ovl.hidden = !o; document.documentElement.style.overflow = o ? 'hidden' : ''; document.querySelectorAll('[data-menu]').forEach((b) => b.setAttribute('aria-expanded', o)); if (o) ovl.focus({ preventScroll: true }); };
       document.querySelectorAll('[data-menu]').forEach((b) => b.addEventListener('click', () => open(true)));
       ovl.querySelector('[data-close]').addEventListener('click', () => open(false));
       ovl.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => open(false)));

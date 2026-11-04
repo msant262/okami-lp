@@ -224,19 +224,20 @@ body.scrolled .n3 .pill:not(:hover):not(:focus-within) .cur{max-width:260px;opac
 .n3 .mb{color:var(--fg);--mbx:var(--night)}
 
 /* menu de tela cheia */
-.ovl{position:fixed;inset:0;z-index:100;display:grid;grid-template-rows:1fr auto;background:var(--night);animation:ovl .45s cubic-bezier(.2,.7,.2,1)}
+.ovl{position:fixed;inset:0;z-index:100;display:grid;grid-template-rows:auto 1fr;outline:none;background:var(--night);animation:ovl .45s cubic-bezier(.2,.7,.2,1)}
 .ovl[hidden]{display:none}
 @keyframes ovl{from{clip-path:circle(0 at calc(100% - 40px) 34px)}to{clip-path:circle(150% at calc(100% - 40px) 34px)}}
 .ovl-top{background:var(--paper);padding:calc(14px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) 28px max(20px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;overflow:auto}
 .ovl-h{display:flex;justify-content:space-between;align-items:center;min-height:48px}
 .ovl-h .mb{display:inline-flex;color:var(--ink);--mbx:var(--paper)}
-.ovl-links{display:flex;flex-direction:column;margin-top:auto;padding-top:28px}
-.ovl-links a{display:flex;align-items:baseline;gap:14px;padding:6px 0;border-bottom:1px solid var(--paper-line);font:400 clamp(44px,12vw,72px)/1.05 var(--serif);color:var(--ink);letter-spacing:-.03em}
+.ovl-links{display:flex;flex-direction:column;padding-top:clamp(20px,4vh,40px)}
+.ovl-links a{display:flex;align-items:baseline;gap:14px;padding:6px 0;border-bottom:1px solid var(--paper-line);font:400 clamp(40px,11vw,64px)/1.08 var(--serif);color:var(--ink);letter-spacing:-.03em}
 .ovl-links a i{font:500 13px var(--mono);font-style:normal;color:var(--o-ink);letter-spacing:0;min-width:22px}
 .ovl-links a:active,.ovl-links a:hover{font-style:italic;color:var(--o-ink)}
-.ovl-bot{display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:22px max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));color:var(--fg)}
+.ovl-bot{display:flex;flex-wrap:wrap;align-items:center;align-content:flex-start;gap:14px;padding:26px max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));color:var(--fg)}
 .ovl-bot .btn{flex:1 1 auto}
 .ovl-m{width:100%;font:500 14px var(--mono);color:var(--fg-mute)}
+.ovl-r{width:100%;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg-mute);margin-top:auto}
 @media (prefers-reduced-motion:reduce){.ovl{animation:none}}
 
 /* seletor do protótipo */
