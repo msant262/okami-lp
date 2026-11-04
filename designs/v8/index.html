@@ -49,6 +49,32 @@
 .stage{position:relative}
 .stage .badge{position:absolute;left:-14px;bottom:28px;z-index:2;display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;background:var(--night);color:var(--fg);font:500 12px var(--mono);box-shadow:0 14px 30px -12px rgba(0,0,0,.6)}
 
+/* produtos no celular: carrossel com print mobile real */
+.pcar{display:none}
+@media (max-width:900px){
+  .vit{display:none}
+  .pcar{display:grid;gap:16px;margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)))}
+  .pc-track{display:grid;grid-auto-flow:column;grid-auto-columns:84%;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-inline:max(16px,env(safe-area-inset-left,0px));scroll-padding-inline:max(16px,env(safe-area-inset-left,0px));scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .pc-track::-webkit-scrollbar{display:none}
+  .pcc{scroll-snap-align:start;display:flex;flex-direction:column;border-radius:22px;background:#fbfaf7;border:1px solid var(--paper-line);overflow:hidden}
+  .pcc .ph{position:relative;height:340px;overflow:hidden;background:var(--paper-2);display:flex;justify-content:center;padding-top:22px}
+  .pcc .ph .phone{max-width:210px;height:auto;aspect-ratio:390/844;border-radius:32px;padding:8px;box-shadow:0 0 0 1px #2c2c3d,0 24px 40px -20px rgba(0,0,0,.6)}
+  .pcc .ph .phone img{border-radius:25px}
+  .pcc .ph::after{content:"";position:absolute;left:0;right:0;bottom:0;height:70px;background:linear-gradient(transparent,var(--paper-2))}
+  .pcc .bd{display:flex;flex-direction:column;gap:10px;padding:20px 20px 22px;flex:1}
+  .pcc .tp{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .pcc h3{font:400 40px/.95 var(--serif);color:var(--ink);letter-spacing:-.03em}
+  .pcc .tg{font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--k-ink);text-align:right}
+  .pcc p{font-size:15px;flex:1}
+  .pcc .st{display:flex;align-items:center;gap:8px;font:500 11.5px var(--mono);color:var(--ink-soft)}
+  .pcc .btn{align-self:stretch;margin-top:6px}
+  .pc-nav{display:flex;justify-content:space-between;align-items:center;padding-inline:max(16px,env(safe-area-inset-left,0px))}
+  .pc-n{font:500 12px var(--mono);color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .pc-dots{display:flex;gap:6px}
+  .pc-dots i{width:8px;height:8px;border-radius:50%;background:var(--paper-line);transition:width .25s,background .25s}
+  .pc-dots i.on{width:22px;border-radius:4px;background:var(--ink)}
+}
+
 /* 02 serviços */
 .sgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
 .sv{display:flex;flex-direction:column;gap:12px;min-height:230px;padding:26px;border-radius:16px;border:1px solid var(--line);background:var(--night-1);transition:transform .3s,border-color .3s}
@@ -314,6 +340,7 @@ body[data-hero=a] .hero-v:not(.ha),body[data-hero=b] .hero-v:not(.hb),body[data-
       <div class="top"><div><span class="kick">01 · <span data-i="prod_k"></span></span><h2 class="H" data-i="prod_h"></h2></div><p class="lede" data-i="prod_p"></p></div>
       <div class="vit"><div><div class="plist" id="plist" role="tablist" aria-label="Produtos"></div><a class="btn btn-ink go" id="pgo" href="#" target="_blank" rel="noopener"></a></div>
         <div class="stage"><div class="browser"><div class="bar"><i></i><i></i><i></i><span class="url" id="purl"></span></div><div class="shot" id="pshot"></div></div><span class="badge" id="pbadge"></span></div></div>
+      <div class="pcar"><div class="pc-track" id="pctrack" aria-label="Produtos"></div><div class="pc-nav"><span class="pc-n" id="pcn">1 / 4</span><span class="pc-dots" id="pcdots"></span></div></div>
     </div></section>
 
     <section class="ch maq k-c" id="servicos" data-r="m"><div class="dim"></div><div class="wrap">
@@ -404,6 +431,8 @@ function render(){
   $('#plist').innerHTML=OK.PRODUCTS.map((p,i)=>`<button type="button" role="tab" class="k-${p.c}" aria-selected="${i===sel}"><span class="nm">${E(p.name)}</span><span class="tg">${E(P(p.kind))}</span><span class="d">${E(P(p.d))}</span></button>`).join('');
   document.querySelectorAll('#plist button').forEach((b,i)=>{const go=()=>{if(sel!==i){sel=i;show()}};b.addEventListener('mouseenter',go);b.addEventListener('focus',go);b.addEventListener('click',go)});
   show();
+  $('#pctrack').innerHTML=OK.PRODUCTS.map(p=>`<article class="pcc k-${p.c}"><div class="ph"><div class="phone"><img src="img/${p.img}-m.jpg" alt="${E(p.name)} no celular" loading="lazy"></div></div><div class="bd"><div class="tp"><h3>${E(p.name)}</h3><span class="tg">${E(P(p.kind))}</span></div><p>${E(P(p.d))}</p><span class="st"><span class="dot"></span> ${OK.t('online')} · ${E(P(p.model))}</span><a class="btn btn-ink" href="${p.url}" target="_blank" rel="noopener">${OK.t('visit')} ${E(p.dom)} ↗</a></div></article>`).join('');
+  $('#pcdots').innerHTML=OK.PRODUCTS.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('');
   $('#sgrid').innerHTML=OK.SERVICES.map(s=>`<a class="sv k-${s.c}" href="${OK.link(s.path)}" target="_blank" rel="noopener"><span class="tg">${s.tag}</span><h3>${E(P(s.name))}</h3><p>${E(P(s.d))}</p><span class="io">$ ${E(P(s.fmt))}</span></a>`).join('');
   $('#webt').innerHTML=OKP.webTable();
   const t=OK.OSS.find(o=>o.store);
@@ -438,6 +467,8 @@ function onScroll(){
 }
 OK.onLang(render);
 OK.onLang(()=>CONTACT.render());
+const pct=document.getElementById('pctrack');
+pct.addEventListener('scroll',()=>{const c=pct.children[0];if(!c)return;const w=c.getBoundingClientRect().width+14;const i=Math.min(pct.children.length-1,Math.round(pct.scrollLeft/w));document.getElementById('pcn').textContent=`${i+1} / ${pct.children.length}`;document.querySelectorAll('#pcdots i').forEach((d,j)=>d.classList.toggle('on',j===i))},{passive:true});
 OK.init();
 CONTACT.init();
 
