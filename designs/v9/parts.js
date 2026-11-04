@@ -24,8 +24,8 @@
     const wrap = document.querySelector('.foot .wrap'); if (!wrap || wrap.querySelector('.sig')) return;
     wrap.insertAdjacentHTML('beforeend', `<div class="sig" aria-hidden="true">
       <span class="sig-glow"></span><img class="sig-wolf" src="wolf.png" alt="">
-      <div class="sig-w"><span class="sig-a">OKAMI</span><span class="sig-b">OPS</span><i class="sig-c"></i></div>
-      <div class="sig-w sig-hl"><span class="sig-a">OKAMI</span><span class="sig-b">OPS</span><i class="sig-c"></i></div>
+      <div class="sig-w"><span class="sig-a">OKAMI</span><span class="sig-b"><i>O</i><i>P</i><i>S</i></span><i class="sig-c"></i></div>
+      <div class="sig-w sig-hl"><span class="sig-a">OKAMI</span><span class="sig-b"><i>O</i><i>P</i><i>S</i></span><i class="sig-c"></i></div>
     </div>`);
     const x = wrap.querySelector('.sig'), w = x.querySelector('.sig-w');
     const fit = () => { x.style.fontSize = '100px'; x.style.fontSize = (100 * x.clientWidth / w.scrollWidth).toFixed(2) + 'px'; x.style.setProperty('--bx', w.querySelector('.sig-b').offsetLeft + 'px'); };

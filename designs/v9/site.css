@@ -507,3 +507,17 @@ body[data-hero=a] .hero-v:not(.ha),body[data-hero=b] .hero-v:not(.hb),body[data-
 .sig-glow{filter:none;width:1.6em;left:38%;top:-.5em;height:1.8em;background:radial-gradient(closest-side,rgba(255,122,61,.42),rgba(255,63,176,.14) 50%,rgba(6,6,9,0) 100%)}
 @keyframes sigg{to{left:44%;transform:scale(1.12)}}
 .sig-glow{top:0;height:1em;-webkit-mask-image:radial-gradient(closest-side,#000 40%,transparent);mask-image:radial-gradient(closest-side,#000 40%,transparent)}
+/* OPS em cores sólidas da marca: O ciano · P magenta · S laranja */
+.sig-w .sig-b{display:flex;background:none;color:inherit}
+.sig-b i{font-style:normal;display:block;color:transparent;-webkit-background-clip:text;background-clip:text}
+.sig-b i:nth-child(1){background-image:linear-gradient(180deg,var(--c) 0%,var(--c) 34%,rgba(63,216,212,.35) 66%,rgba(63,216,212,0) 94%)}
+.sig-b i:nth-child(2){background-image:linear-gradient(180deg,var(--m) 0%,var(--m) 34%,rgba(255,63,176,.35) 66%,rgba(255,63,176,0) 94%)}
+.sig-b i:nth-child(3){background-image:linear-gradient(180deg,var(--o) 0%,var(--o) 34%,rgba(255,122,61,.35) 66%,rgba(255,122,61,0) 94%)}
+.sig-w .sig-b{-webkit-mask-image:none;mask-image:none}
+.sig-hl .sig-b i{background-image:radial-gradient(.9em circle at calc(var(--mx) - var(--bx,0px) - var(--ix,0px)) var(--my),#fff 0%,rgba(255,255,255,.55) 22%,transparent 60%)}
+.sig-hl .sig-b i:nth-child(2){--ix:.6em} .sig-hl .sig-b i:nth-child(3){--ix:1.2em}
+/* cursor na cor do OKAMI */
+.sig-c{background:linear-gradient(180deg,#f4f4f8 0%,#d8d8e4 30%,#5a5a6e 62%,rgba(6,6,9,0) 92%)}
+/* lobo mais presente */
+.sig.in .sig-wolf{opacity:.5}
+.sig-wolf{filter:grayscale(1) brightness(.85) contrast(1.15);-webkit-mask-image:linear-gradient(90deg,transparent,#000 30%),linear-gradient(180deg,#000 55%,transparent 100%);mask-image:linear-gradient(90deg,transparent,#000 30%);}
