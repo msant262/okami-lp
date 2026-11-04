@@ -55,7 +55,7 @@
       dispatchEvent(new Event('resize')); onScroll();
     },
     init() {
-      let n = 'n2'; try { const s = localStorage.getItem('okami-nav'); if (['n1', 'n2', 'n3'].includes(s)) n = s; } catch (e) {}
+      const n = 'n1';
       document.querySelectorAll('.nsw button').forEach((b) => b.addEventListener('click', () => NAV.set(b.dataset.n)));
       const ovl = document.getElementById('ovl');
       const open = (o) => { ovl.hidden = !o; document.documentElement.style.overflow = o ? 'hidden' : ''; document.querySelectorAll('[data-menu]').forEach((b) => b.setAttribute('aria-expanded', o)); if (o) ovl.focus({ preventScroll: true }); };
@@ -64,6 +64,23 @@
       ovl.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => open(false)));
       addEventListener('keydown', (e) => { if (e.key === 'Escape' && !ovl.hidden) open(false); });
       NAV.set(n); clocks(); setInterval(clocks, 30000);
+      // trava a largura de cada item na maior entre PT/EN/DE: trocar o idioma não mexe a barra
+      const lock = () => {
+        const items = [...document.querySelectorAll('.nv a[data-ch], .nv .btn[data-i]')];
+        const cur = OK.lang;
+        items.forEach((el) => { el.style.minWidth = ''; });
+        const w = new Map(items.map((el) => [el, 0]));
+        ['pt', 'en', 'de'].forEach((l) => {
+          OK.withLang(l, () => items.forEach((el) => {
+            const t = el.matches('[data-i]') ? el : el.querySelector('[data-i]');
+            t.innerHTML = OK.t(t.dataset.i);
+            w.set(el, Math.max(w.get(el), el.getBoundingClientRect().width));
+          }));
+        });
+        OK.withLang(cur, () => items.forEach((el) => { const t = el.matches('[data-i]') ? el : el.querySelector('[data-i]'); t.innerHTML = OK.t(t.dataset.i); }));
+        items.forEach((el) => { el.style.minWidth = Math.ceil(w.get(el)) + 'px'; });
+      };
+      lock(); document.fonts && document.fonts.ready.then(lock); addEventListener('resize', lock);
       addEventListener('scroll', onScroll, { passive: true });
       OK.onLang(onScroll);
     },

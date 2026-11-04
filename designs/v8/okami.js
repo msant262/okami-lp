@@ -217,6 +217,7 @@
     esc: (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])),
     onLang(fn) { subs.push(fn); },
     extend(o) { Object.assign(UI, o); },
+    withLang(l, fn) { const prev = lang; lang = l; try { fn(); } finally { lang = prev; } },
     setLang(l) {
       if (!L.includes(l)) return;
       lang = l;

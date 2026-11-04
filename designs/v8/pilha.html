@@ -180,7 +180,11 @@ body[data-nav=n1] .nv:not(.n1),body[data-nav=n2] .nv:not(.n2),body[data-nav=n3] 
 .n1 .l{background:var(--paper);padding-left:max(24px,calc((100vw - var(--max))/2 + 24px));padding-right:24px;justify-content:space-between;border-bottom:1px solid var(--paper-line)}
 .n1 .r{background:var(--night);padding-right:max(24px,calc((100vw - var(--max))/2 + 24px));padding-left:24px;justify-content:flex-end;color:var(--fg);border-bottom:1px solid var(--line)}
 .n1 nav{display:flex;gap:4px}
-.n1 nav a{padding:8px 10px;border-radius:8px;font:400 19px var(--serif);color:var(--ink);transition:background .2s,color .2s}
+.n1 nav a{padding:6px 7px;border-radius:8px;font:400 18px var(--serif);color:var(--ink);transition:background .2s,color .2s;text-align:center;white-space:nowrap}
+.nv .btn[data-i]{justify-content:center}
+.n1 .l{gap:28px}
+.n1 nav{gap:2px}
+@media (max-width:1240px){.n1 .wm span{display:none}}
 .n1 nav a:hover{background:var(--paper-2)}
 .n1 nav a.on{font-style:italic;color:var(--o-ink)}
 .n1 .live{display:inline-flex;align-items:center;gap:8px;margin-right:auto;font:400 12px var(--mono);color:var(--fg-mute)}
@@ -548,7 +552,6 @@ body[data-hero=a] .hero-v:not(.ha),body[data-hero=b] .hero-v:not(.hb),body[data-
 <script>
 const $=s=>document.querySelector(s),E=OK.esc,P=OK.pick;
 $('#hdr').outerHTML=NAV.html;
-document.body.insertAdjacentHTML('beforeend',NAV.switcher);
 $('#hero').outerHTML=HEROES.c;
 $('#ft').outerHTML=OKP.footer();
 document.querySelector('.foot .wrap').insertAdjacentHTML('beforeend','<div class="foot-x" aria-hidden="true">OKAMI<em>OPS</em></div>');
