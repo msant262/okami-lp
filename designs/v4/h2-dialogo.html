@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OkamiOps · Diálogo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<style>
+/* Layout: cada assunto é um par de faixas. Lobo (papel) = o porquê. Máquina (noite) = o como. Filtro de leitura: ambos, só lobo, só máquina. */
+body[data-f=lobo] .band.maq,body[data-f=maq] .band.lobo{display:none}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+.seg button{min-height:34px;padding:0 12px;border:0;border-radius:999px;background:none;color:var(--fg-mute);font:500 12px var(--mono);cursor:pointer}
+.seg button[aria-checked=true]{background:var(--fg);color:var(--night)}
+.seg button[data-f=lobo][aria-checked=true]{background:var(--paper);color:var(--ink)}
+.seg button[data-f=maq][aria-checked=true]{background:var(--o);color:var(--night)}
+.seg-m{display:none}
+.pair{display:flex;align-items:center;gap:14px;margin-bottom:40px;font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.pair .n{color:var(--a)}
+.pair::after{content:"";flex:1;height:1px;background:var(--rule)}
+.pair .half{width:28px;height:28px;border-radius:50%;background:var(--night) url(wolf.png) center/84% no-repeat;flex:none;position:relative}
+.lobo .pair .half{clip-path:inset(0 50% 0 0)} .maq .pair .half{clip-path:inset(0 0 0 50%)}
+.band.maq.tight{padding-top:clamp(80px,8vw,112px)}
+
+/* lobo: linhas editoriais com revelação */
+.rev{position:relative;isolation:isolate;overflow:hidden}
+.rev::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--night);clip-path:inset(0 0 0 100%);transition:clip-path .55s cubic-bezier(.2,.7,.2,1)}
+.rev:hover::before,.rev:focus-visible::before{clip-path:inset(0 0 0 0)}
+.rows{border-top:2px solid var(--ink)}
+.row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) auto;gap:32px;align-items:center;padding:28px 24px;border-bottom:1px solid var(--paper-line)}
+.row .nm{font:400 clamp(42px,5.2vw,86px)/.92 var(--serif);color:var(--ink);letter-spacing:-.035em;transition:color .4s}
+.row .sub{display:block;font:500 13px var(--mono);color:var(--a);margin-top:10px;transition:color .4s}
+.row p{font-size:16px;transition:color .4s}
+.row .go{width:54px;height:54px;border-radius:50%;border:1px solid var(--ink);display:grid;place-items:center;font:500 20px var(--mono);color:var(--ink);transition:.4s}
+.row:hover .nm,.row:focus-visible .nm{color:var(--fg);font-style:italic}
+.row:hover .sub{color:var(--k)} .row:hover p{color:var(--fg-soft)}
+.row:hover .go{background:var(--k);border-color:var(--k);color:var(--night);transform:rotate(-45deg)}
+
+/* máquina: tabela de terminal */
+.term{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--night-1);font:400 13.5px var(--mono)}
+.term .t-h{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);background:var(--night-2);color:var(--fg-mute);font-size:12px}
+.term .t-h i{width:10px;height:10px;border-radius:50%;background:var(--night-3)}
+.term .cmd{padding:18px 20px 6px;color:var(--fg)} .term .cmd b{color:var(--o);font-weight:500}
+.tr{display:grid;grid-template-columns:var(--cols);gap:20px;align-items:center;padding:14px 20px;border-top:1px solid var(--line);color:var(--fg-soft);transition:background .2s}
+.tr.th{border-top:0;color:var(--fg-mute);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+a.tr:hover{background:var(--night-2)}
+.tr b{font-weight:500;color:var(--fg)}
+.tr .c{color:var(--k)}
+.tr>*{min-width:0;overflow-wrap:anywhere}
+.tr .ds{grid-column:1/-1;color:var(--fg-mute);font-size:12.5px;margin-top:-6px}
+.pill{font-size:11px;padding:2px 9px;border-radius:999px;border:1px solid currentColor;white-space:nowrap;justify-self:start}
+
+/* serviços máquina */
+.pipe{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.pipe a{display:flex;flex-direction:column;gap:10px;padding:24px;border:1px solid var(--line);border-radius:14px;background:var(--night-1);font:400 13px var(--mono);transition:border-color .25s}
+.pipe a:hover{border-color:var(--k)}
+.pipe .tg{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--k)}
+.pipe b{font:500 18px var(--mono);color:var(--fg)}
+.pipe .io{margin-top:auto;padding-top:12px;border-top:1px dashed var(--line);color:var(--fg)}
+.pipe .io::before{content:"$ ";color:var(--k)}
+.web{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;margin-top:56px;align-items:center}
+.web h3{font-size:calc(clamp(36px,3.6vw,56px) * var(--ds));line-height:1;margin:16px 0}
+
+/* comunidade lobo */
+.manif{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;align-items:center}
+.manif blockquote{margin:0;font:400 clamp(34px,4.2vw,64px)/1.05 var(--serif);color:var(--ink);letter-spacing:-.02em}
+.manif blockquote em{font-style:italic;color:var(--m-ink)}
+.tcard{border:2px solid var(--ink);padding:32px;display:grid;gap:14px;background:#fbfaf7}
+.tcard h3{font:400 clamp(44px,4.6vw,72px)/.92 var(--serif);color:var(--ink);letter-spacing:-.03em}
+.tcard .tg{font:500 12px var(--mono);color:var(--c-ink)}
+
+/* insights máquina */
+.metric{display:flex;flex-direction:column;gap:10px;padding:28px;border:1px solid var(--line);border-radius:14px;background:var(--night-1);transition:border-color .25s}
+.metric:hover{border-color:var(--k)}
+.metric .big{font:500 clamp(48px,4.8vw,76px)/.95 var(--mono);color:var(--k);letter-spacing:-.05em}
+.metric .big small{font-size:.38em;color:var(--fg-mute);letter-spacing:0}
+.metric span{font:400 13px var(--mono);color:var(--fg-mute)}
+
+/* empresa máquina: config */
+.yaml{border:1px solid var(--line);border-radius:14px;background:var(--night-1);padding:26px 28px;font:400 14px/1.9 var(--mono);color:var(--fg-soft);overflow-x:auto}
+.yaml .k{color:var(--c)} .yaml .v{color:var(--fg)} .yaml .cm{color:var(--fg-mute)} .yaml .t{color:var(--o)}
+.emp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:end}
+.emp h2{font-size:calc(clamp(52px,7vw,116px) * var(--ds));line-height:.9;margin:18px 0 22px}
+.estats{display:flex;gap:36px;flex-wrap:wrap}
+.estats div{display:grid;font-size:13px}
+.estats b{font:400 52px/1 var(--serif);color:var(--ink)}
+
+/* contato */
+.ctl h2{font-size:clamp(56px,9vw,150px);line-height:.88;margin:18px 0 26px}
+.ctl .copyrow{color:var(--ink);margin-top:10px} .ctl .copyrow small{color:var(--ink-soft)}
+.ctm form{display:grid;gap:16px;max-width:760px}
+
+@media (max-width:1060px){
+  .hd .tools .seg{display:none}
+  .seg-m{display:flex;justify-content:center;position:sticky;top:calc(68px + env(safe-area-inset-top,0px));z-index:50;padding:10px;background:var(--night);border-bottom:1px solid var(--line)}
+  .seg-m .seg{display:inline-flex}
+  .row{grid-template-columns:minmax(0,1fr) auto;gap:12px 20px;padding:22px 8px}
+  .row .go{grid-row:1/3;grid-column:2}
+  .pipe{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .web,.manif,.emp{grid-template-columns:1fr}
+  .tr{grid-template-columns:minmax(0,1fr) auto!important}
+  .tr .hide-s{display:none}
+  .tr.th{display:none}
+}
+@media (max-width:640px){.pipe{grid-template-columns:1fr}.tcard{padding:24px}.row .go{width:44px;height:44px}}
+</style>
+</head>
+<body data-f="both">
+<div id="hdr"></div>
+<div class="seg-m" id="segm"></div>
+<main id="top">
+  <div id="hero"></div>
+
+  <!-- 01 produtos -->
+  <section class="band lobo k-o" id="produtos"><div class="wrap">
+    <div class="pair"><span class="half"></span><span class="n">01</span><span data-i="nav_prod"></span> · <span data-i="why"></span></div>
+    <div class="head"><div><span class="kick" data-i="prod_k"></span><h2 class="H" data-i="prod_h"></h2></div><p class="lede" data-i="prod_p"></p></div>
+    <div class="rows" id="prow"></div>
+  </div></section>
+  <section class="band maq grid flipcut k-o tight"><div class="wrap">
+    <div class="pair"><span class="half"></span><span class="n">01</span><span data-i="nav_prod"></span> · <span data-i="how"></span></div>
+    <div class="term"><div class="t-h"><i></i><i></i><i></i>&nbsp; okamiops — ps</div><div class="cmd">❯ okami ps <b>--products</b></div><div id="pterm"></div></div>
+  </div></section>
+
+  <!-- 02 serviços -->
+  <section class="band lobo k-c" id="servicos"><div class="wrap">
+    <div class="pair"><span class="half"></span><span class="n">02</span><span data-i="nav_serv"></span> · <span data-i="why"></span></div>
+    <div class="head"><div><span class="kick" data-i="serv_k"></span><h2 class="H" data-i="serv_h"></h2></div><div class="side"><p class="lede" data-i="serv_p"></p><a class="btn btn-p" data-href="/servicos/" target="_blank" rel="noopener" data-i="plans"></a></div></div>
+    <div class="rows" id="srow"></div>
+  </div></section>
+  <section class="band maq grid flipcut k-c tight"><div class="wrap">
+    <div class="pair"><span class="half"></span><span class="n">02</span><span data-i="nav_serv"></span> · <span data-i="how"></span></div>
+    <div class="pipe" id="pipe"></div>
+    <div class="web"><div><span class="kick" data-i="web_k"></span><h3 class="H" data-i="web_h"></h3><p class="lede" data-i="web_p"></p><a class="btn btn-p" style="margin-top:22px" data-href="/agents/" target="_blank" rel="noopener" data-i="web_cta"></a></div><div id="webt"></div></div>
+  </div></section>
+
+  <!-- 03 comunidade -->
+  <section class="band lobo k-m" id="comunidade"><div class="wrap">
+    <div class="pair"><span class="half"></span><span class="n">03</span><span data-i="nav_comu"></span> · <span data-i="why"></span></div>
+    <div class="head"><div><span class="kick" data-i="comu_k"></span><h2 class="H" data-i="comu_h"></h2></div><p class="lede" data-i="comu_p"></p></div>
+    <div class="manif"><div id="tcard" class="tcard"></div><div class="status-t" style="padding:26px;display:grid;gap:18px" aria-hidden="true" id="quotas"></div></div>
+  </div></section>
+  <section class="band maq grid flipcut k-m tight"><div class="wrap">
+    <div class="pair"><span class="half"></span><span class="n">03</span><span data-i="nav_comu"></span> · <span data-i="how"></span></div>
+    <div class="term"><div class="t-h"><i></i><i></i><i></i>&nbsp; okamiops — ls</div><div class="cmd">❯ ls <b>~/okamiops/open-source</b> --long</div><div id="oterm"></div></div>
+  </div></section>
+
+  <!-- 04 insights -->
+  <section class="band lobo k-o" id="insights"><div class="wrap">
+    <div class="pair"><span class="half"></span><span class="n">04</span><span data-i="nav_ins"></span> · <span data-i="why"></span></div>
+    <div class="head"><div><span class="kick" data-i="ins_k"></span><h2 class="H" data-i="ins_h"></h2></div><div class="side"><p class="lede" data-i="ins_p"></p><a class="btn btn-g" data-href="/insights/" target="_blank" rel="noopener" data-i="all_ins"></a></div></div>
+    <div class="rows" id="irow"></div>
+  </div></section>
+  <section class="band maq grid flipcut k-o tight"><div class="wrap">
+    <div class="pair"><span class="half"></span><span class="n">04</span><span data-i="nav_ins"></span> · <span data-i="how"></span></div>
+    <div class="g3" id="metrics"></div>
+  </div></section>
+
+  <!-- 05 empresa -->
+  <section class="band lobo k-o" id="empresa"><div class="wrap">
+    <div class="pair"><span class="half"></span><span class="n">05</span><span data-i="nav_emp"></span> · <span data-i="why"></span></div>
+    <div class="emp"><div><span class="kick" data-i="emp_k"></span><h2 class="H" data-i="emp_h"></h2><p class="lede" data-i="emp_p"></p></div>
+      <div style="display:grid;gap:28px;justify-items:start"><div class="estats"><div><b>20+</b><span data-i="yrs_tech"></span></div><div><b>10+</b><span data-i="yrs_sec"></span></div><div><b>BR·DE</b><span data-i="stat_ops"></span></div></div><a class="btn btn-g" data-href="/empresa/" target="_blank" rel="noopener" data-i="emp_more"></a></div></div>
+  </div></section>
+  <section class="band maq grid flipcut k-o tight"><div class="wrap">
+    <div class="pair"><span class="half"></span><span class="n">05</span><span data-i="nav_emp"></span> · <span data-i="how"></span></div>
+    <pre class="yaml" id="yaml"></pre>
+  </div></section>
+
+  <!-- 06 contato -->
+  <section class="band lobo k-o ctl" id="contato"><div class="wrap">
+    <div class="pair"><span class="half"></span><span class="n">06</span><span data-i="ct_k"></span> · <span data-i="why"></span></div>
+    <span class="kick" data-i="ct_k"></span><h2 class="H" data-i="ct_h"></h2><p class="lede" data-i="ct_p"></p>
+    <div class="copyrow" style="margin-top:24px"><small data-i="sales"></small><span>contato@okamiops.com</span><button type="button" data-copy="contato@okamiops.com" data-i="copy"></button></div>
+    <div class="copyrow"><small>disclosure</small><span>security@okamiops.com</span><button type="button" data-copy="security@okamiops.com" data-i="copy"></button></div>
+  </div></section>
+  <section class="band maq grid flipcut k-o tight ctm"><div class="wrap">
+    <div class="pair"><span class="half"></span><span class="n">06</span><span data-i="ct_k"></span> · <span data-i="how"></span></div>
+    <form data-demo>
+      <div class="f2"><div class="field"><label for="f1" data-i="f_name"></label><input id="f1" autocomplete="name" required></div><div class="field"><label for="f2" data-i="f_email"></label><input id="f2" type="email" autocomplete="email" required></div></div>
+      <div class="field"><label for="f3" data-i="f_company"></label><input id="f3" autocomplete="organization"></div>
+      <div class="field"><label for="f4" data-i="f_msg"></label><textarea id="f4" rows="5" required></textarea></div>
+      <button class="btn btn-o" type="submit" style="justify-self:start;border-radius:8px" data-i="f_send"></button><p class="note" data-note hidden></p>
+    </form>
+  </div></section>
+</main>
+<div id="ft"></div>
+
+<script src="okami.js"></script>
+<script src="parts.js"></script>
+<script>
+const $=s=>document.querySelector(s),E=OK.esc,P=OK.pick;
+const SEG='<div class="seg" role="radiogroup" aria-label="Leitura"><button role="radio" data-f="both" aria-checked="true" data-i="both"></button><button role="radio" data-f="lobo" aria-checked="false" data-i="mode_l"></button><button role="radio" data-f="maq" aria-checked="false" data-i="mode_m"></button></div>';
+$('#hdr').outerHTML=OKP.header(SEG);
+$('#segm').innerHTML=SEG;
+$('#hero').outerHTML=OKP.hero();
+$('#ft').outerHTML=OKP.footer();
+function render(){
+  OKP.heroText();
+  $('#prow').innerHTML=OK.PRODUCTS.map(p=>`<a class="row rev k-${p.c}" href="${p.url}" target="_blank" rel="noopener"><div><span class="nm">${E(p.name)}</span><span class="sub">${E(p.dom)}</span></div><p>${E(P(p.d))}</p><span class="go" aria-hidden="true">→</span></a>`).join('');
+  $('#pterm').innerHTML=`<div class="tr th" style="--cols:1fr 1.2fr .8fr .8fr 1fr"><span>name</span><span class="hide-s">url</span><span>status</span><span class="hide-s">billing</span><span class="hide-s">type</span></div>`+OK.PRODUCTS.map(p=>`<a class="tr k-${p.c}" style="--cols:1fr 1.2fr .8fr .8fr 1fr" href="${p.url}" target="_blank" rel="noopener"><b>${E(p.id)}</b><span class="c hide-s">${E(p.dom)}</span><span><span class="dot"></span>&nbsp; ${OK.t('online')}</span><span class="hide-s">${E(P(p.model))}</span><span class="hide-s">${E(P(p.kind))}</span></a>`).join('');
+  $('#srow').innerHTML=OK.SERVICES.map(s=>`<a class="row rev k-${s.c}" href="${OK.link(s.path)}" target="_blank" rel="noopener"><div><span class="nm">${E(P(s.name))}</span><span class="sub">${s.tag}</span></div><p>${E(P(s.d))}</p><span class="go" aria-hidden="true">→</span></a>`).join('');
+  $('#pipe').innerHTML=OK.SERVICES.map(s=>`<a class="k-${s.c}" href="${OK.link(s.path)}" target="_blank" rel="noopener"><span class="tg">${s.tag}</span><b>${E(P(s.name))}</b><span>remote · BR/DE</span><span class="io">${E(P(s.fmt))}</span></a>`).join('');
+  $('#webt').innerHTML=OKP.webTable();
+  const t=OK.OSS.find(o=>o.store);
+  $('#tcard').innerHTML=`<span class="tg">★ ${E(t.plat)}</span><h3>${E(t.name)}</h3><p>${E(P(t.d))}</p><div>${OKP.store(t)}</div>`;
+  $('#quotas').innerHTML=OKP.quotas();
+  $('#oterm').innerHTML=`<div class="tr th" style="--cols:1.1fr .9fr 1.3fr .8fr"><span>name</span><span>platform</span><span class="hide-s">host</span><span class="hide-s">license</span></div>`+OK.OSS.map(o=>`<a class="tr k-${o.c}" style="--cols:1.1fr .9fr 1.3fr .8fr" href="${o.url}" target="_blank" rel="noopener"><b>${E(o.name)}</b><span class="pill c">${E(o.plat)}</span><span class="c hide-s">${E(o.dom)}</span><span class="hide-s">${o.store?'app store':'open-source'}</span><span class="ds">${E(P(o.d))}</span></a>`).join('');
+  $('#irow').innerHTML=OK.INSIGHTS.map(n=>`<a class="row rev k-${n.c}" href="${OK.link(n.path)}" target="_blank" rel="noopener"><div><span class="nm" style="font-size:clamp(28px,2.8vw,42px);line-height:1.08">${E(P(n.t))}</span><span class="sub">${E(n.cat)} · ${E(P(n.date))} · ${n.min} min</span></div><p>${E(P(n.lab))}</p><span class="go" aria-hidden="true">→</span></a>`).join('');
+  $('#metrics').innerHTML=OK.INSIGHTS.map(n=>`<a class="metric k-${n.c}" href="${OK.link(n.path)}" target="_blank" rel="noopener"><span>${E(n.cat.toLowerCase())} · ${E(P(n.date))}</span><span class="big">${E(n.big)}<small>${E(n.unit)}</small></span><span>${E(P(n.lab))}</span></a>`).join('');
+  const key=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+  $('#yaml').innerHTML=`<span class="cm"># okamiops.yaml · ${E(OK.t('emp_rules').toLowerCase())}</span>\n<span class="k">company</span>: <span class="v">OkamiOps</span>\n<span class="k">where</span>: <span class="v">[BR, DE]</span>  <span class="cm"># 100% remote</span>\n<span class="k">experience</span>: { <span class="k">tech</span>: <span class="t">20+</span>, <span class="k">cybersec</span>: <span class="t">10+</span> }\n<span class="k">rules</span>:\n`+OK.RULES.map(r=>`  <span class="k">${key(P(r[0]))}</span>: <span class="t">true</span>  <span class="cm"># ${E(P(r[1]))}</span>`).join('\n');
+}
+OK.onLang(render);
+OK.init();
+OKP.heroWire();
+OKP.burger();
+const segBtns=()=>[...document.querySelectorAll('.seg button')];
+segBtns().forEach(b=>b.addEventListener('click',()=>OKP.morph(b,()=>{document.body.dataset.f=b.dataset.f;segBtns().forEach(x=>x.setAttribute('aria-checked',x.dataset.f===b.dataset.f))})));
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OkamiOps · Faixas com chave</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<style>
+/* Layout: hero comparador; faixas intercaladas lobo/máquina com corte diagonal; cada faixa tem chave própria; botão global inverte todas. */
+.bar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:40px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.bar .idx{font:500 12px var(--mono);color:var(--mute);letter-spacing:.1em;text-transform:uppercase}
+.inv{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--fg);font:500 12px var(--mono);cursor:pointer}
+.inv:hover{border-color:var(--c);color:var(--c)}
+.pcard{min-height:300px}
+.pcard h3{font-size:calc(clamp(48px,5vw,84px) * var(--ds))}
+.web{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;margin-top:16px;align-items:stretch}
+.web .card{justify-content:center}
+.tally{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);padding:0;overflow:hidden;margin-bottom:16px}
+.tally .l{padding:40px;display:grid;gap:16px;align-content:center}
+.tally .l h3{font-size:calc(clamp(52px,6vw,96px) * var(--ds))}
+.tally .r{background:var(--night);padding:34px;display:grid;gap:18px;align-content:center}
+.emp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px}
+.emp h2{font-size:calc(clamp(52px,7vw,116px) * var(--ds));line-height:.9;margin:18px 0 22px}
+.estats{display:flex;gap:36px;flex-wrap:wrap;margin:28px 0}
+.estats div{display:grid;font-size:13px}
+.estats b{font-family:var(--disp);font-weight:var(--dw);font-size:calc(52px * var(--ds));line-height:1;color:var(--hd)}
+.rules{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;align-content:start;counter-reset:r}
+.rules div{padding:20px 0;border-top:1px solid var(--rule2);display:grid;gap:6px;counter-increment:r}
+.rules b{font:500 17px/1.25 var(--sans);color:var(--hd)}
+.maq .rules b{font:500 14px var(--mono)}
+.rules b::before{content:counter(r,decimal-leading-zero);display:block;font:500 12px var(--mono);color:var(--ao);margin-bottom:6px}
+.rules span{font-size:14.5px}
+@media (max-width:1060px){.web,.tally,.emp{grid-template-columns:1fr}}
+@media (max-width:640px){.rules{grid-template-columns:1fr}.tally .l,.tally .r{padding:24px}.bar{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div id="hdr"></div>
+<main id="top">
+  <div id="hero"></div>
+
+  <section class="band lobo k-o" id="produtos" data-m="lobo"><div class="wrap">
+    <div class="bar"><span class="idx">01 · <span data-i="nav_prod"></span></span><button class="sw bsw" role="switch" aria-checked="false" aria-label="Lobo ou Máquina"><span data-i="mode_l"></span><span data-i="mode_m"></span><i></i></button></div>
+    <div class="head"><div><span class="kick" data-i="prod_k"></span><h2 class="H" data-i="prod_h"></h2></div><p class="lede" data-i="prod_p"></p></div>
+    <div class="g2" id="prods"></div>
+  </div></section>
+
+  <section class="band maq grid flipcut k-c" id="servicos" data-m="maq"><div class="wrap">
+    <div class="bar"><span class="idx">02 · <span data-i="nav_serv"></span></span><button class="sw bsw" role="switch" aria-checked="true" aria-label="Lobo ou Máquina"><span data-i="mode_l"></span><span data-i="mode_m"></span><i></i></button></div>
+    <div class="head"><div><span class="kick" data-i="serv_k"></span><h2 class="H" data-i="serv_h"></h2></div><div class="side"><p class="lede" data-i="serv_p"></p><a class="btn btn-p" data-href="/servicos/" target="_blank" rel="noopener" data-i="plans"></a></div></div>
+    <div class="g2" id="servs"></div>
+    <div class="web"><div class="card k-c"><span class="kick" data-i="web_k"></span><h3 class="H" data-i="web_h"></h3><p class="biz" data-i="web_p"></p><a class="btn btn-p" style="align-self:flex-start" data-href="/agents/" target="_blank" rel="noopener" data-i="web_cta"></a></div><div id="webt"></div></div>
+  </div></section>
+
+  <section class="band lobo k-m" id="comunidade" data-m="lobo"><div class="wrap">
+    <div class="bar"><span class="idx">03 · <span data-i="nav_comu"></span></span><button class="sw bsw" role="switch" aria-checked="false" aria-label="Lobo ou Máquina"><span data-i="mode_l"></span><span data-i="mode_m"></span><i></i></button></div>
+    <div class="head"><div><span class="kick" data-i="comu_k"></span><h2 class="H" data-i="comu_h"></h2></div><p class="lede" data-i="comu_p"></p></div>
+    <div class="card tally k-c" id="tally"></div>
+    <div class="g4" id="oss"></div>
+  </div></section>
+
+  <section class="band maq grid flipcut k-o" id="insights" data-m="maq"><div class="wrap">
+    <div class="bar"><span class="idx">04 · <span data-i="nav_ins"></span></span><button class="sw bsw" role="switch" aria-checked="true" aria-label="Lobo ou Máquina"><span data-i="mode_l"></span><span data-i="mode_m"></span><i></i></button></div>
+    <div class="head"><div><span class="kick" data-i="ins_k"></span><h2 class="H" data-i="ins_h"></h2></div><div class="side"><p class="lede" data-i="ins_p"></p><a class="btn btn-p" data-href="/insights/" target="_blank" rel="noopener" data-i="all_ins"></a></div></div>
+    <div class="g3" id="ins"></div>
+  </div></section>
+
+  <section class="band lobo k-o" id="empresa" data-m="lobo"><div class="wrap">
+    <div class="bar"><span class="idx">05 · <span data-i="nav_emp"></span></span><button class="sw bsw" role="switch" aria-checked="false" aria-label="Lobo ou Máquina"><span data-i="mode_l"></span><span data-i="mode_m"></span><i></i></button></div>
+    <div class="emp"><div><span class="kick" data-i="emp_k"></span><h2 class="H" data-i="emp_h"></h2><p class="lede" data-i="emp_p"></p>
+      <div class="estats"><div><b>20+</b><span data-i="yrs_tech"></span></div><div><b>10+</b><span data-i="yrs_sec"></span></div><div><b>BR·DE</b><span data-i="stat_ops"></span></div></div>
+      <a class="btn btn-g" data-href="/empresa/" target="_blank" rel="noopener" data-i="emp_more"></a></div>
+      <div class="rules" id="rules"></div></div>
+  </div></section>
+
+  <section class="band maq grid flipcut k-o" id="contato" data-m="maq"><div id="ct"></div></section>
+</main>
+<div id="ft"></div>
+
+<script src="okami.js"></script>
+<script src="parts.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+$('#hdr').outerHTML=OKP.header('<button class="inv btn-hide" id="inv">⇄ <span data-i="invert"></span></button>');
+$('#hero').outerHTML=OKP.hero();
+$('#ct').outerHTML=OKP.contact();
+$('#ft').outerHTML=OKP.footer();
+function render(){
+  OKP.heroText();
+  $('#prods').innerHTML=OK.PRODUCTS.map(p=>OKP.prodCard(p,'pcard')).join('');
+  $('#servs').innerHTML=OK.SERVICES.map(s=>OKP.servCard(s)).join('');
+  $('#webt').innerHTML=OKP.webTable();
+  const t=OK.OSS.find(o=>o.store);
+  $('#tally').innerHTML=`<div class="l"><span class="tg">★ ${OK.esc(t.plat)}</span><h3 class="H">${OK.esc(t.name)}</h3><p class="biz">${OK.esc(OK.pick(t.d))}</p>${OKP.dl([['dist','App Store · iOS 17+'],['backend','none'],['web',OK.esc(t.dom)]])}<div>${OKP.store(t)}</div></div><div class="r" aria-hidden="true">${OKP.quotas()}</div>`;
+  $('#oss').innerHTML=OK.OSS.filter(o=>!o.store).map(o=>OKP.ossCard(o)).join('')+`<a class="card k-m" href="https://github.com/OkamiOps" target="_blank" rel="noopener"><span class="tg">GitHub</span><h3 class="H">OkamiOps</h3><p class="biz" style="font-size:14.5px">github.com/OkamiOps</p><span class="go">${OK.t('open')} ↗</span></a>`;
+  $('#ins').innerHTML=OK.INSIGHTS.map(n=>OKP.insCard(n)).join('');
+  $('#rules').innerHTML=OKP.rules();
+}
+OK.onLang(render);
+OK.init();
+OKP.heroWire();
+OKP.burger();
+const bands=[...document.querySelectorAll('.band')];
+const setBand=(b,m)=>{b.dataset.m=m;b.classList.toggle('lobo',m==='lobo');b.classList.toggle('maq',m==='maq');b.classList.toggle('grid',m==='maq');const s=b.querySelector('.bsw');if(s)s.setAttribute('aria-checked',m==='maq')};
+document.querySelectorAll('.bsw').forEach(s=>s.addEventListener('click',()=>{const b=s.closest('.band');OKP.morph(s,()=>setBand(b,b.dataset.m==='lobo'?'maq':'lobo'))}));
+$('#inv').addEventListener('click',e=>OKP.morph(e.currentTarget,()=>bands.forEach(b=>setBand(b,b.dataset.m==='lobo'?'maq':'lobo'))));
+</script>
+</body>
+</html>

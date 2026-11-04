@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OkamiOps · Xadrez</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<style>
+/* Layout: faixas intercaladas; dentro delas os cards formam um tabuleiro lobo/máquina. Cada card gira (3D) e mostra o outro lado. */
+.flip{position:relative;perspective:1600px;min-width:0}
+.inner{display:grid;height:100%;transition:transform .75s cubic-bezier(.65,0,.35,1);transform-style:preserve-3d}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;height:100%}
+.face.back{transform:rotateY(180deg);pointer-events:none}
+.flip.on .inner{transform:rotateY(180deg)}
+.flip.on .front{pointer-events:none} .flip.on .back{pointer-events:auto}
+@media (hover:hover){
+  .flip:not(.on):hover .inner,.flip:not(.on):focus-within .inner{transform:rotateY(180deg)}
+  .flip:not(.on):hover .front{pointer-events:none} .flip:not(.on):hover .back{pointer-events:auto}
+  .flip.on:hover .inner,.flip.on:focus-within .inner{transform:rotateY(0)}
+  .flip.on:hover .front{pointer-events:auto} .flip.on:hover .back{pointer-events:none}
+}
+.fbtn{position:absolute;z-index:5;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--night-2);color:var(--fg);font:500 14px var(--mono);cursor:pointer;display:grid;place-items:center;box-shadow:0 6px 20px -8px rgba(0,0,0,.5)}
+.fbtn:hover{border-color:var(--c);color:var(--c)}
+@media (hover:hover){.fbtn{opacity:0;transition:opacity .2s}.flip:hover .fbtn,.fbtn:focus-visible{opacity:1}}
+.face.card{border-width:1px}
+.lobo.band .face.lobo{border-color:var(--paper-line)}
+.maq.band .face.maq{border-color:var(--line)}
+.pcard{min-height:320px}
+.pcard h3{font-size:calc(clamp(48px,5vw,84px) * var(--ds))}
+.hint2{display:flex;align-items:center;gap:10px;font:500 12px var(--mono);color:var(--mute);margin-top:-28px;margin-bottom:28px}
+.hint2 .sq{display:inline-grid;grid-template-columns:1fr 1fr;width:22px;height:22px;border-radius:4px;overflow:hidden;border:1px solid var(--rule2)}
+.hint2 .sq i:nth-child(1),.hint2 .sq i:nth-child(4){background:var(--paper)} .hint2 .sq i:nth-child(2),.hint2 .sq i:nth-child(3){background:var(--night)}
+.web{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;margin-top:56px;align-items:center}
+.web h3{font-size:calc(clamp(36px,3.6vw,56px) * var(--ds));line-height:1;margin:16px 0}
+.feat{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);border-radius:16px;overflow:hidden;border:1px solid var(--rule);margin-bottom:16px}
+.feat .l{padding:40px;display:grid;gap:16px;align-content:center;background:var(--card)}
+.feat .l h3{font-size:calc(clamp(52px,6vw,96px) * var(--ds));line-height:.92}
+.feat .tg{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ac)}
+.feat .r{background:var(--night);padding:34px;display:grid;gap:18px;align-content:center}
+.rule-t{display:flex;flex-direction:column;gap:10px;min-height:170px}
+.rule-t .n{font:500 12px var(--mono);color:var(--ao)}
+.rule-t b{font-family:var(--disp);font-weight:var(--dw);letter-spacing:var(--dls);font-size:calc(30px * var(--ds));line-height:1.08;color:var(--hd)}
+.maq .rule-t b{font-size:18px;letter-spacing:-.02em}
+.rule-t .cfg{font:400 12.5px var(--mono);color:var(--ac)}
+.lobo .rule-t .cfg{display:none}
+.emp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:end;margin-bottom:48px}
+.emp h2{font-size:calc(clamp(52px,7vw,116px) * var(--ds));line-height:.9;margin:18px 0 22px}
+.estats{display:flex;gap:36px;flex-wrap:wrap}
+.estats div{display:grid;font-size:13px}
+.estats b{font-family:var(--disp);font-weight:var(--dw);font-size:calc(52px * var(--ds));line-height:1;color:var(--hd)}
+.hd .flipall{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--fg);font:500 12px var(--mono);cursor:pointer}
+.hd .flipall:hover{border-color:var(--c);color:var(--c)}
+.hd .flipall[aria-pressed=true]{background:var(--fg);color:var(--night)}
+@media (max-width:1060px){.web,.feat,.emp{grid-template-columns:1fr}.hd .flipall{display:none}}
+@media (max-width:640px){.feat .l,.feat .r{padding:24px}.pcard{min-height:0}}
+@media (prefers-reduced-motion:reduce){.inner{transition:none}}
+</style>
+</head>
+<body>
+<div id="hdr"></div>
+<main id="top">
+  <div id="hero"></div>
+
+  <section class="band lobo k-o" id="produtos" data-m="lobo"><div class="wrap">
+    <div class="head"><div><span class="kick" data-i="prod_k"></span><h2 class="H" data-i="prod_h"></h2></div><p class="lede" data-i="prod_p"></p></div>
+    <p class="hint2"><span class="sq"><i></i><i></i><i></i><i></i></span><span data-i="mode_hint"></span></p>
+    <div class="g2 checker" id="prods"></div>
+  </div></section>
+
+  <section class="band maq grid flipcut k-c" id="servicos" data-m="maq"><div class="wrap">
+    <div class="head"><div><span class="kick" data-i="serv_k"></span><h2 class="H" data-i="serv_h"></h2></div><div class="side"><p class="lede" data-i="serv_p"></p><a class="btn btn-p" data-href="/servicos/" target="_blank" rel="noopener" data-i="plans"></a></div></div>
+    <div class="g2 checker" id="servs"></div>
+    <div class="web"><div><span class="kick" data-i="web_k"></span><h3 class="H" data-i="web_h"></h3><p class="lede" data-i="web_p"></p><a class="btn btn-p" style="margin-top:22px" data-href="/agents/" target="_blank" rel="noopener" data-i="web_cta"></a></div><div id="webt"></div></div>
+  </div></section>
+
+  <section class="band lobo k-m" id="comunidade" data-m="lobo"><div class="wrap">
+    <div class="head"><div><span class="kick" data-i="comu_k"></span><h2 class="H" data-i="comu_h"></h2></div><p class="lede" data-i="comu_p"></p></div>
+    <div class="feat" id="feat"></div>
+    <div class="g4 checker" id="oss"></div>
+  </div></section>
+
+  <section class="band maq grid flipcut k-o" id="insights" data-m="maq"><div class="wrap">
+    <div class="head"><div><span class="kick" data-i="ins_k"></span><h2 class="H" data-i="ins_h"></h2></div><div class="side"><p class="lede" data-i="ins_p"></p><a class="btn btn-p" data-href="/insights/" target="_blank" rel="noopener" data-i="all_ins"></a></div></div>
+    <div class="g3 checker" id="ins"></div>
+  </div></section>
+
+  <section class="band lobo k-o" id="empresa" data-m="lobo"><div class="wrap">
+    <div class="emp"><div><span class="kick" data-i="emp_k"></span><h2 class="H" data-i="emp_h"></h2><p class="lede" data-i="emp_p"></p></div>
+      <div style="display:grid;gap:28px;justify-items:start"><div class="estats"><div><b>20+</b><span data-i="yrs_tech"></span></div><div><b>10+</b><span data-i="yrs_sec"></span></div><div><b>BR·DE</b><span data-i="stat_ops"></span></div></div><a class="btn btn-g" data-href="/empresa/" target="_blank" rel="noopener" data-i="emp_more"></a></div></div>
+    <div class="g3 checker" id="rules"></div>
+  </div></section>
+
+  <section class="band maq grid flipcut k-o" id="contato" data-m="maq"><div id="ct"></div></section>
+</main>
+<div id="ft"></div>
+
+<script src="okami.js"></script>
+<script src="parts.js"></script>
+<script>
+const $=s=>document.querySelector(s),E=OK.esc,P=OK.pick;
+$('#hdr').outerHTML=OKP.header('<button class="flipall btn-hide" id="flipall" aria-pressed="false">⇄ <span data-i="flip_all"></span></button>');
+$('#hero').outerHTML=OKP.hero();
+$('#ct').outerHTML=OKP.contact();
+$('#ft').outerHTML=OKP.footer();
+const tile=(f)=>`<div class="flip"><button class="fbtn" type="button" aria-label="${OK.t('flip')}">⇄</button><div class="inner">${f('face front')}${f('face back')}</div></div>`;
+const key=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'');
+let allOn=false;
+function render(){
+  OKP.heroText();
+  $('#prods').innerHTML=OK.PRODUCTS.map(p=>tile(c=>OKP.prodCard(p,c+' pcard'))).join('');
+  $('#servs').innerHTML=OK.SERVICES.map(s=>tile(c=>OKP.servCard(s,c))).join('');
+  $('#webt').innerHTML=OKP.webTable();
+  const t=OK.OSS.find(o=>o.store);
+  $('#feat').innerHTML=`<div class="l"><span class="tg">★ ${E(t.plat)}</span><h3 class="H">${E(t.name)}</h3><p class="biz">${E(P(t.d))}</p><div>${OKP.store(t)}</div></div><div class="r" aria-hidden="true">${OKP.quotas()}</div>`;
+  $('#oss').innerHTML=OK.OSS.filter(o=>!o.store).map(o=>tile(c=>OKP.ossCard(o,c))).join('')+tile(c=>`<a class="card ${c} k-m" href="https://github.com/OkamiOps" target="_blank" rel="noopener"><span class="tg">GitHub</span><h3 class="H">OkamiOps</h3><p class="biz" style="font-size:14.5px">github.com/OkamiOps</p><span class="go">${OK.t('open')} ↗</span></a>`);
+  $('#ins').innerHTML=OK.INSIGHTS.map(n=>tile(c=>OKP.insCard(n,c))).join('');
+  $('#rules').innerHTML=OK.RULES.map((r,i)=>tile(c=>`<div class="card ${c} k-o rule-t"><span class="n">${String(i+1).padStart(2,'0')}</span><b>${E(P(r[0]))}</b><span class="biz" style="font-size:14.5px">${E(P(r[1]))}</span><span class="cfg">${key(P(r[0]))}: true</span></div>`)).join('');
+  checker();wireTiles();
+}
+function checker(){
+  document.querySelectorAll('.checker').forEach(g=>{
+    const band=g.closest('.band').dataset.m, other=band==='lobo'?'maq':'lobo';
+    const cols=getComputedStyle(g).gridTemplateColumns.split(' ').filter(Boolean).length||1;
+    [...g.children].forEach((el,i)=>{
+      const r=Math.floor(i/cols),c=i%cols, front=((r+c)%2===0)?other:band, back=front==='lobo'?'maq':'lobo';
+      el.querySelector('.front').classList.remove('lobo','maq');el.querySelector('.front').classList.add(front);
+      el.querySelector('.back').classList.remove('lobo','maq');el.querySelector('.back').classList.add(back);
+      el.classList.toggle('on',allOn);
+    });
+  });
+}
+function wireTiles(){document.querySelectorAll('.fbtn').forEach(b=>b.addEventListener('click',()=>b.parentElement.classList.toggle('on')))}
+OK.onLang(render);
+OK.init();
+OKP.heroWire();
+OKP.burger();
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(checker,150)});
+$('#flipall').addEventListener('click',e=>{allOn=!allOn;e.currentTarget.setAttribute('aria-pressed',allOn);document.querySelectorAll('.flip').forEach(f=>f.classList.toggle('on',allOn))});
+</script>
+</body>
+</html>
