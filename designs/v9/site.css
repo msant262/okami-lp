@@ -92,8 +92,8 @@
   .foot-b{flex-direction:column;align-items:flex-start;gap:14px;line-height:1.6}
 }
 @media (max-width:560px){
-  .mt{grid-template-columns:1fr}
-  .mt button{justify-self:start}
+  .ctx-side .mt{grid-template-columns:1fr}
+  .ctx-side .mt button{justify-self:start}
 }
 
 /* 02 serviços */
@@ -357,14 +357,14 @@ body[data-hero=a] .hero-v:not(.ha),body[data-hero=b] .hero-v:not(.hb),body[data-
 .done p{font-size:15.5px;max-width:460px}
 #ctform[hidden],.done[hidden]{display:none}
 .ctx-side{display:grid;gap:12px;align-content:start}
-.mt{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:18px 18px 18px 20px;border:1px solid #2a2a3d;border-radius:16px;background:var(--night-1);transition:border-color .2s}
-.mt:hover{border-color:#4a4a62}
-.mt-t{display:grid;gap:4px;min-width:0}
-.mt small{font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg-mute)}
-.mt b{font:500 clamp(17px,1.6vw,22px)/1.2 var(--mono);color:var(--fg);letter-spacing:-.03em;overflow-wrap:anywhere;user-select:all}
-.mt span{font-size:13.5px;line-height:1.45;color:var(--fg-mute)}
-.mt button{align-self:center;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid #3a3a50;background:none;color:var(--fg);font:500 12px var(--mono);cursor:pointer;white-space:nowrap}
-.mt button:hover{background:var(--fg);color:var(--night)}
+.ctx-side .mt{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:18px 18px 18px 20px;border:1px solid #2a2a3d;border-radius:16px;background:var(--night-1);transition:border-color .2s}
+.ctx-side .mt:hover{border-color:#4a4a62}
+.ctx-side .mt-t{display:grid;gap:4px;min-width:0}
+.ctx-side .mt small{font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg-mute)}
+.ctx-side .mt b{font:500 clamp(17px,1.6vw,22px)/1.2 var(--mono);color:var(--fg);letter-spacing:-.03em;overflow-wrap:anywhere;user-select:all}
+.ctx-side .mt span{font-size:13.5px;line-height:1.45;color:var(--fg-mute)}
+.ctx-side .mt button{align-self:center;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid #3a3a50;background:none;color:var(--fg);font:500 12px var(--mono);cursor:pointer;white-space:nowrap}
+.ctx-side .mt button:hover{background:var(--fg);color:var(--night)}
 .tz2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
 .tz2 div{display:grid;gap:2px;padding:14px 18px;border-radius:14px;background:var(--night-2)}
 .tz2 small{font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg-mute)}
