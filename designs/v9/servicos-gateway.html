@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gateway multi-LLM: uma API, vários modelos · OkamiOps</title>
+<meta name="description" content="Uma API. Vários modelos. Roteamento por política de custo, latência e dados. Uma API. 12 modelos por baixo. Roteamento por política de custo, latência ou">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="servicos">
+<div id="hdr"></div>
+<main id="top">
+  <header class="ph">
+    <div class="ph-l"><nav class="crumb" aria-label="Você está em"><a href="index.html">Início</a><span aria-hidden="true">/</span><a href="servicos.html">Serviços</a><span aria-hidden="true">/</span><span aria-current="page">Gateway</span></nav>
+      <span class="kicker">SVC · 02 · GATEWAY</span>
+      <h1>Uma API para o seu app. <em>Vários modelos por baixo</em>.</h1>
+      <p class="lede">Uma API. 12 modelos por baixo. Roteamento por política de custo, latência ou dado regulado — com fallback automático e log auditável. Você troca de provedor sem refazer pipeline. Sem vendor lock-in. Sem agente proprietário.</p>
+      <div class="acts"><a class="btn btn-ink" href="index.html#contato">Ver demonstração</a><a class="btn btn-line-p" href="#metodo">Ler a arquitetura</a></div>
+    </div>
+    <div class="ph-r"><span class="lb">Em resumo</span><dl class="kvt"><dt>Fase 01</dt><dd><b class="w">PoC</b><br><span class=dim>Setup do gateway em ambiente de staging com 2-3 modelos, integração com sua aplicação e medição de baseline.</span></dd><dt>Fase 02</dt><dd><b class="w">Política</b><br><span class=dim>Definição das regras de roteamento por tipo de tarefa, dado e SLA — com tabela de custo/latência comparada.</span></dd><dt>Fase 03</dt><dd><b class="w">Produção</b><br><span class=dim>Deploy em produção com fallback chain, audit logs e dashboards de custo/latência/qualidade.</span></dd><dt>Fase 04</dt><dd><b class="w">Evolução</b><br><span class=dim>Adição contínua de modelos novos, ajuste de políticas e relatórios mensais de economia gerada.</span></dd></dl></div>
+  </header>
+  <section class="sx lobo k-o"><div class="wrap gen">
+    <div class="head"><div><span class=kick>01 · Benefícios</span><h2 class=H>Benefícios de Gateway multi-LLM para <em>AppSec e IA</em></h2></div><p class=lede>Uma API. Vários modelos. Roteamento por política de custo, latência e dados.</p></div>
+    <div class="feat6" style="--cols:3"><div class="fc"><span class="tg">SEM LOCK-IN</span><h3>Troque o modelo sem refatorar</h3><p>Anthropic, OpenAI, Google, Mistral, Llama self-host, Qwen, Kimi, GLM — comute por política, não por código.</p></div><div class="fc"><span class="tg">POLICY ENGINE</span><h3>Roteamento por custo / latência / dados</h3><p>Defina regras: tarefa pesada → Opus; classificação simples → Flash; dado regulado → modelo self-hosted.</p></div><div class="fc"><span class="tg">FALLBACK</span><h3>Cadeia automática de 3+ níveis</h3><p>Se o provedor primário falhar, latência estoura ou cota acaba — o gateway escala para o próximo sem perder a requisição.</p></div><div class="fc"><span class="tg">AUDIT-READY</span><h3>Logs estruturados por tenant</h3><p>Cada chamada gravada com tenant, política aplicada, custo e latência. Pronto para LGPD, GDPR e auditoria interna.</p></div><div class="fc"><span class="tg">ECONOMIA</span><h3>60-97% de redução vs single-vendor</h3><p>Roteamento cost-optimal mantém qualidade enquanto evita o modelo mais caro para tarefas que não precisam dele.</p></div><div class="fc"><span class="tg">OBSERVABILIDADE</span><h3>OpenTelemetry nativo</h3><p>Métricas, traces e logs integrados ao seu stack de observabilidade existente. Sem agente proprietário.</p></div></div>
+  </div></section>
+  <section class="sx maq k-c"><div class="wrap gen">
+    <div class="head"><div><span class=kick>02 · Método</span><h2 class=H>Da prova de conceito ao <em>production-grade</em></h2></div></div>
+    <div class="nis" style="--cols:4"><div class="ni"><span class="nn">01</span><div><h3>PoC</h3><p>Setup do gateway em ambiente de staging com 2-3 modelos, integração com sua aplicação e medição de baseline.</p></div></div><div class="ni"><span class="nn">02</span><div><h3>Política</h3><p>Definição das regras de roteamento por tipo de tarefa, dado e SLA — com tabela de custo/latência comparada.</p></div></div><div class="ni"><span class="nn">03</span><div><h3>Produção</h3><p>Deploy em produção com fallback chain, audit logs e dashboards de custo/latência/qualidade.</p></div></div><div class="ni"><span class="nn">04</span><div><h3>Evolução</h3><p>Adição contínua de modelos novos, ajuste de políticas e relatórios mensais de economia gerada.</p></div></div></div>
+  </div></section>
+  <section class="sx lobo k-m"><div class="wrap gen">
+    <div class="head"><div><span class=kick>03 · Entregáveis</span><h2 class=H>Entregáveis de <em>Gateway multi-LLM</em></h2></div><p class=lede>Uma API. Vários modelos. Roteamento por política de custo, latência e dados.</p></div>
+    <div class="split2"><div class="col"><p class="meta">// entregáveis</p><p>Uma API. Vários modelos. Roteamento por política de custo, latência e dados.</p><p><a class="lnk" href="index.html#contato">Ver demonstração →</a></p></div><div class="col"><div class="lists2"><ul class="checks"><li>Gateway provisionado em sua infra ou multi-tenant gerenciado</li><li>Pacote de modelos pré-integrados (Anthropic, OpenAI, Google, Mistral, Qwen, Kimi, GLM)</li><li>Policy templates por caso de uso (chat, classificação, geração estruturada, embeddings)</li></ul><ul class="checks"><li>Audit log streaming para seu SIEM</li><li>Dashboard de custo e latência</li><li>Runbook operacional e SLA documentado</li></ul></div></div></div>
+  </div></section>
+  <section class="sx maq k-o"><div class="wrap gen">
+    <div class="head"><div><span class=kick>04 · FAQ</span><h2 class=H>FAQ sobre <em>Gateway multi-LLM</em></h2></div></div>
+    <div class="split2"><div class="col"><p class="meta">// dúvidas frequentes</p><dl class="kvt"><dt>Benefícios</dt><dd>6</dd><dt>Fases</dt><dd>4</dd><dt>Entregáveis</dt><dd>6</dd><dt>FAQ</dt><dd>3</dd></dl></div><div class="col"><div class="faq"><details><summary>Posso rodar self-hosted?</summary><p>Sim. O Gateway pode rodar na sua VPC, Kubernetes próprio ou multi-tenant gerenciado por nós. Sem dado sensível saindo do seu perímetro.</p></details><details><summary>Como funciona o fallback?</summary><p>Cada política define uma cadeia ordenada. Se o primário retornar erro, timeout ou cota esgotada, o gateway tenta o próximo automaticamente — registrando o motivo.</p></details><details><summary>Tem suporte a modelos locais?</summary><p>Sim. Llama, Mistral e Qwen self-hosted são suportados nativamente via API compatível OpenAI.</p></details></div></div></div>
+  </div></section>
+  <section class="sx lobo k-c"><div class="wrap gen">
+    <div class="head"><div><span class=kick>05 · Contato</span></div></div>
+    <h2 id="pronto-para-escapar-do-vendor-lock-in">Pronto para escapar do <em>vendor lock-in</em>?</h2><p>Em 2 semanas você roda uma PoC com 3 modelos e métricas reais de custo, latência e qualidade.</p><p><a class="lnk" href="index.html#contato">Agendar PoC →</a></p><p><a class="lnk" href="servicos.html">Todos os serviços e planos →</a></p>
+  </div></section>
+
+  <div id="end"></div>
+</main>
+<div id="ft"></div>
+<script src="okami.js"></script>
+<script src="routes.js"></script>
+<script src="parts.js"></script>
+<script src="extra.js"></script>
+<script src="contact.js"></script>
+<script src="nav.js"></script>
+<script src="page.js"></script>
+<script>
+PAGE.init();
+</script>
+</body>
+</html>

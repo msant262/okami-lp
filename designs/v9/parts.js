@@ -103,7 +103,7 @@
         <div><span class="wordmark"><img src="wolf.png" alt="" width="32" height="32">OKAMI<b>OPS</b></span><p data-i="foot"></p></div>
         <div><h4 data-i="nav_prod"></h4><ul>${OK.PRODUCTS.map((p) => `<li><a href="${p.url}" target="_blank" rel="noopener">${E(p.name)}</a></li>`).join('')}</ul></div>
         <div><h4>OkamiOps</h4><ul><li><a href="servicos.html" data-i="nav_serv"></a></li><li><a href="planos.html">Planos</a></li><li><a href="comunidade.html" data-i="nav_comu"></a></li><li><a href="insights.html" data-i="nav_ins"></a></li><li><a href="empresa.html" data-i="nav_emp"></a></li><li><a href="https://github.com/OkamiOps" target="_blank" rel="noopener">github.com/OkamiOps</a></li></ul></div>
-        </div><div class="foot-b"><span>© 2026 OKAMIOPS · CNPJ 66.637.891/0001-08 · <span data-i="where"></span></span><nav><a data-href="/status/" target="_blank" rel="noopener">Status</a><a data-href="/security/" target="_blank" rel="noopener">Security</a><a data-href="/privacidade/" target="_blank" rel="noopener" data-i="privacy"></a><a data-href="/termos/" target="_blank" rel="noopener" data-i="terms"></a></nav></div></div></footer>
+        </div><div class="foot-b"><span>© 2026 OKAMIOPS · CNPJ 66.637.891/0001-08 · <span data-i="where"></span></span><nav><a href="mapa.html">Mapa do site</a><a href="status.html">Status</a><a href="security.html">Security</a><a href="privacidade.html" data-i="privacy"></a><a href="termos.html" data-i="terms"></a></nav></div></div></footer>
         `;
     },
   };

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Status operacional · OkamiOps</title>
+<meta name="description" content="Status operacional, continuidade e canais para comunicar indisponibilidade em ativos públicos da OkamiOps.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="status">
+<div id="hdr"></div>
+<main id="top">
+  <header class="ph">
+    <div class="ph-l"><nav class="crumb" aria-label="Você está em"><a href="index.html">Início</a><span aria-hidden="true">/</span><span aria-current="page">Status</span></nav>
+      <span class="kicker">okamiops.com/status/ · verificado no seu navegador ao abrir esta página</span>
+      <h1>Tudo <em>operacional</em>. E você pode conferir, não só acreditar.</h1>
+      <p class="lede">Esta página não é um banner verde: ao carregar, o seu navegador testa os componentes do site e mostra o resultado. Para o que depende de terceiros, apontamos direto para a página de status deles. Serviços gerenciados para clientes têm canal de status próprio, por contrato.</p>
+      <div class="acts"><a class="btn btn-ink" href="#componentes">Ver componentes</a><a class="btn btn-ink" href="mailto:contato@okamiops.com">Reportar indisponibilidade</a></div>
+    </div>
+    <div class="ph-r"><span class="lb">Em resumo</span><dl class="kvt"><dt>Site</dt><dd><b class="w">…</b><br><span class=dim>okamiops.com · verificando agora</span></dd><dt>Camada para agentes</dt><dd><b class="w">…</b><br><span class=dim>llms.txt · sitemap · 4 feeds JSON</span></dd><dt>Incidentes abertos</dt><dd><b class="w">0</b><br><span class=dim>nenhum registrado desde o lançamento</span></dd><dt>Verificado em</dt><dd><b class="w">…</b><br><span class=dim>horário do seu aparelho · recarregue para repetir</span></dd></dl></div>
+  </header>
+  <section class="sx maq k-o"><div class="wrap gen">
+    <div class="head"><div><span class=kick>01 · Componentes</span><h2 class=H>Seis componentes, <em>cada um</em> com o seu jeito de verificar.</h2></div><p class=lede>O que é nosso, o navegador testa agora. O que é de terceiros, linkamos a fonte oficial: preferimos que você veja o status da Cloudflare na Cloudflare a repetir o que ela diz.</p></div>
+    <div class="split2"><div class="col"><div class="pn"><div class="pn-h"><span>okamiops.com · verificação ao vivo</span><span>verificando…</span></div><div class="sr3"><div><b>Site público</b><span>página inicial, PT · EN · DE · 87 páginas pré-renderizadas</span></div><i>verificando…</i></div><div class="sr3"><div><b>Camada para agentes</b><span>/llms.txt · /sitemap.xml · /api/products.json · services · insights · tools</span></div><i>verificando…</i></div><div class="sr3"><div><b>Formulários</b><span>/api/lead · contato, fila do Mentor e Baseline, entregues por e-mail</span></div><i>verificando…</i></div><div class="sr3"><div><b>Downloads</b><span>Baseline SecOps · liberado por token após o formulário</span></div><i>verificando…</i></div><div class="sr3"><div><b>Repositórios</b><span>github.com/OkamiOps · código dos 7 produtos open-source</span></div><i>status do GitHub</i></div><div class="sr3"><div><b>Okami Tally na App Store</b><span>distribuição e atualizações pelo App Store da Apple</span></div><i>status da Apple</i></div></div></div><div class="col"><p class="meta">// como ler</p><dl class="kvt"><dt>operacional</dt><dd>O navegador fez uma requisição ao componente agora e recebeu resposta 200. O tempo é o medido pelo seu aparelho.</dd><dt>degradado</dt><dd>Respondeu, mas devagar (acima de 2 s) ou com erro em parte dos feeds.</dd><dt>indisponível</dt><dd>Sem resposta ou erro 5xx. Se você vê isto e esta página abriu, o problema é parcial: avise.</dd><dt>status de terceiro</dt><dd>Não testamos por você; o link leva à página oficial do provedor.</dd></dl></div></div>
+  </div></section>
+  <section class="sx lobo k-c"><div class="wrap gen">
+    <div class="head"><div><span class=kick>02 · Como o site fica no ar</span><h2 class=H>Estático, no edge, <em>sem banco</em>: pouca coisa para cair.</h2></div><p class=lede>O site é pré-renderizado no build e servido pela rede global da Cloudflare. Não existe servidor de aplicação, banco de dados nem sessão. As dependências que podem afetar você são quatro, e todas têm página de status pública.</p></div>
+    <div class="srows"><a class="srow3" href="https://www.cloudflarestatus.com" target="_blank" rel="noopener"><span class="tg">Edge e DNS</span><h3>Cloudflare: serve as páginas, os feeds e os formulários em centenas de pontos de presença. Se cair, cai o site inteiro.</h3><span class="re">cloudflarestatus.com ↗</span></a><a class="srow3" href="https://resend-status.com" target="_blank" rel="noopener"><span class="tg">E-mail dos formulários</span><h3>Resend: entrega as mensagens do contato, da fila e do Baseline. Se cair, o formulário avisa e o e-mail direto continua funcionando.</h3><span class="re">resend-status.com ↗</span></a><a class="srow3" href="https://www.githubstatus.com" target="_blank" rel="noopener"><span class="tg">Código</span><h3>GitHub: hospeda os repositórios dos produtos e as releases. Não afeta o site, afeta quem quer clonar ou baixar.</h3><span class="re">githubstatus.com ↗</span></a><a class="srow3" href="https://developer.apple.com/system-status/" target="_blank" rel="noopener"><span class="tg">App Store</span><h3>Apple: distribui o Okami Tally. Não afeta o app já instalado, que não tem backend.</h3><span class="re">developer.apple.com/system-status ↗</span></a></div><div class="feat6" style="--cols:3"><div class="fc"><span class="tg">Deploy</span><h3>Build verificado</h3><p>Cada deploy passa por build, testes e uma checagem que confere as 87 páginas, os feeds, o llms.txt e o sitemap antes de ir para o ar. Deploy quebrado não publica.</p></div><div class="fc"><span class="tg">Manutenção</span><h3>Sem janela</h3><p>Deploys são atômicos e não derrubam o site. Se um dia houver manutenção com impacto, ela entra nesta página com antecedência.</p></div><div class="fc"><span class="tg">Clientes</span><h3>Status por contrato</h3><p>Gateway, monitor e infraestrutura que operamos para clientes têm SLA, canal de incidente e status próprios, definidos em contrato. Esta página cobre só o okamiops.com.</p></div></div>
+  </div></section>
+  <section class="sx maq k-m"><div class="wrap gen">
+    <div class="head"><div><span class=kick>03 · Incidentes e histórico</span><h2 class=H>Quando algo cair, você lê aqui <em>o que</em> caiu, por quê e o que mudou.</h2></div><p class=lede>Cada incidente entra com início, fim, causa e correção. Post-mortem sem culpa, no mesmo padrão que pedimos aos clientes.</p></div>
+    <div class="split2"><div class="col"><figure class="fig3"><figcaption>Histórico <span>últimos 90 dias</span></figcaption><ol class="tl3"><li class="now"><b>set 2026</b><span>Site v3 no ar: novo design, camada para agentes, página de status com verificação no navegador.</span></li><li class="past"><b>jun 2026</b><span>Migração para Cloudflare Workers com deploy automático a partir do repositório.</span></li><li class="past"><b>desde então</b><span>Nenhum incidente com impacto registrado.</span></li></ol></figure></div><div class="col"><div class="feat6" style="--cols:2"><div class="fc"><span class="tg">01</span><h3>Detecção</h3><p>Observabilidade do worker ligada e alertas para erro 5xx. Você também pode avisar: um e-mail com a URL e o horário basta.</p></div><div class="fc"><span class="tg">02</span><h3>Comunicação</h3><p>Incidentes com impacto entram nesta página enquanto estão abertos. Clientes afetados são avisados pelo canal do contrato.</p></div><div class="fc"><span class="tg">03</span><h3>Post-mortem</h3><p>Causa, linha do tempo e ação corretiva publicadas aqui em até 5 dias úteis após o fim do incidente.</p></div><div class="fc"><span class="tg">04</span><h3>Segurança</h3><p>Incidente que envolva dados pessoais segue a política de privacidade: aviso aos titulares e à autoridade nos prazos legais.</p></div></div></div></div>
+  </div></section>
+
+  <div id="end"></div>
+</main>
+<div id="ft"></div>
+<script src="okami.js"></script>
+<script src="routes.js"></script>
+<script src="parts.js"></script>
+<script src="extra.js"></script>
+<script src="contact.js"></script>
+<script src="nav.js"></script>
+<script src="page.js"></script>
+<script>
+PAGE.init();
+(async () => {
+  const rows = [...document.querySelectorAll('.sr3')], head = document.querySelector('.pn-h span:last-child');
+  const t0 = performance.now(); let ok = false;
+  try { ok = (await fetch(location.href, { cache: 'no-store' })).ok; } catch (e) {}
+  const ms = Math.round(performance.now() - t0);
+  rows.forEach((r) => {
+    const i = r.querySelector('i'); if (!i || !/verificando/.test(i.textContent)) return;
+    if (/Site público/.test(r.textContent)) { i.textContent = ok ? `operacional · ${ms} ms` : 'sem resposta'; i.className = ok ? 'ok' : 'bad'; }
+    else { i.textContent = 'testado no site real'; }
+  });
+  if (head) head.textContent = ok ? 'site respondeu agora' : 'falha ao verificar';
+  const dd = document.querySelectorAll('.ph-r .kvt dd b.w'); if (dd[0]) dd[0].textContent = ok ? 'OK' : 'falhou'; if (dd[1] && dd[1].textContent === '…') dd[1].textContent = 'no site real'; dd.forEach((b) => { if (b.textContent === '…') b.textContent = new Date().toLocaleTimeString('pt-BR'); });
+})();
+</script>
+</body>
+</html>

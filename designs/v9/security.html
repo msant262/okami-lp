@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Security disclosure · OkamiOps</title>
+<meta name="description" content="Canal de divulgação responsável para vulnerabilidades em okamiops.com e ativos oficialmente operados pela OkamiOps.">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="inner.css">
+</head>
+<body data-page="security">
+<div id="hdr"></div>
+<main id="top">
+  <header class="ph">
+    <div class="ph-l"><nav class="crumb" aria-label="Você está em"><a href="index.html">Início</a><span aria-hidden="true">/</span><span aria-current="page">Security</span></nav>
+      <span class="kicker">okamiops.com/security/ · divulgação coordenada · RFC 9116</span>
+      <h1>Achou uma falha? <em>Conta pra gente</em> antes de contar pro mundo.</h1>
+      <p class="lede">Somos uma empresa de segurança: recebemos reports de vulnerabilidade com prioridade, respondemos com prazo e não processamos quem pesquisa de boa fé. Esta página é a nossa política de divulgação e o resumo do que já protege este site.</p>
+      <div class="acts"><a class="btn btn-ink" href="mailto:security@okamiops.com">security@okamiops.com</a><a class="btn btn-line-p" href="https://okamiops.com/pt/.well-known/security.txt" target="_blank" rel="noopener">/.well-known/security.txt ↗</a></div>
+    </div>
+    <div class="ph-r"><span class="lb">Em resumo</span><dl class="kvt"><dt>Primeira resposta</dt><dd><b class="w">3</b><br><span class=dim>dias úteis para confirmar o recebimento</span></dd><dt>Correção</dt><dd><b class="w">90</b><br><span class=dim>dias no máximo antes da divulgação coordenada</span></dd><dt>Escopo</dt><dd><b class="w">site + 8</b><br><span class=dim>okamiops.com, API e os produtos publicados</span></dd><dt>Safe harbor</dt><dd><b class="w">sim</b><br><span class=dim>pesquisa de boa fé não vira processo</span></dd></dl></div>
+  </header>
+  <section class="sx maq k-o"><div class="wrap gen">
+    <div class="head"><div><span class=kick>01 · Como reportar</span><h2 class=H>Quatro passos, <em>sem formulário</em> e sem plataforma de bug bounty.</h2></div><p class=lede>Um e-mail bem escrito vale mais do que um ticket. Conte o que encontrou, como reproduzir e qual o impacto. Nós fazemos o resto e mantemos você informado até o fim.</p></div>
+    <div class="split2"><div class="col"><div class="nis"><div class="ni"><span class="nn">01</span><div><h3>Envie para security@okamiops.com</h3><p>Assunto começando com <b>[disclosure]</b>. Se preferir criptografar, peça a chave PGP no mesmo endereço e enviamos a chave e o fingerprint por outro canal.</p></div></div><div class="ni"><span class="nn">02</span><div><h3>Inclua o que permite reproduzir</h3><p>URL ou componente afetado, passos, payload, requisição e resposta, versão do produto, impacto estimado e, se tiver, prova de conceito. Capturas e vídeos ajudam; dados de terceiros, não: pare no primeiro indício e nos avise.</p></div></div><div class="ni"><span class="nn">03</span><div><h3>Triagem em até 3 dias úteis</h3><p>Confirmamos o recebimento, classificamos a severidade com CVSS 4.0 e combinamos um prazo. Você recebe um ponto de contato nomeado e atualizações a cada mudança de estado.</p></div></div><div class="ni"><span class="nn">04</span><div><h3>Correção e divulgação coordenada</h3><p>Corrigimos, publicamos a nota no repositório afetado e creditamos quem reportou, se quiser crédito. O prazo máximo é de 90 dias: passado ele, você pode publicar com ou sem a nossa correção.</p></div></div></div></div><div class="col"><div class="term2"><div class="t-h"><span>/.well-known/security.txt</span><b>RFC 9116</b></div><pre><span class="c">$ curl -s https://okamiops.com/.well-known/security.txt</span>
+Contact: mailto:security@okamiops.com
+Policy: https://okamiops.com/security/
+Preferred-Languages: pt, en, de
+Canonical: https://okamiops.com/.well-known/security.txt
+Expires: 2027-09-09T00:00:00.000Z</pre></div><p>Arquivo publicado na raiz do site, no formato que scanners e pesquisadores já procuram.</p></div></div>
+  </div></section>
+  <section class="sx lobo k-c"><div class="wrap gen">
+    <div class="head"><div><span class=kick>02 · Escopo e regras</span><h2 class=H>O que está dentro, o que está <em>fora</em>, e o que pedimos em troca.</h2></div><p class=lede>Escopo claro protege as duas partes. O que vale para os nossos sistemas não vale para os dos clientes: eles só entram com autorização escrita e prévia.</p></div>
+    <div class="feat6" style="--cols:3"><div class="fc"><span class="tg">Em escopo</span><h3>Nossos ativos</h3><ul class="checks"><li>okamiops.com, www e os subdomínios dos produtos</li><li>A API do site: /api/lead, /api/baseline-unlock e os feeds /api/*.json</li><li>Os repositórios públicos em github.com/OkamiOps</li><li>Os oito produtos publicados, incluindo o Okami Tally na App Store</li></ul></div><div class="fc"><span class="tg">Fora de escopo</span><h3>O que não recebe triagem</h3><ul class="checks"><li>Sistemas de clientes, mesmo os que operamos, sem autorização escrita deles</li><li>Negação de serviço, testes volumétricos e força bruta</li><li>Engenharia social, phishing contra a equipe e acesso físico</li><li>Saída de scanner sem prova de exploração e "boas práticas" de SPF, DMARC ou cabeçalhos sem impacto demonstrado</li></ul></div><div class="fc"><span class="tg">Safe harbor</span><h3>O acordo de boa fé</h3><ul class="checks"><li>Você não acessa, altera nem guarda dados que não sejam seus; ao encontrar dados de terceiros, para e avisa</li><li>Não degrada o serviço, não usa a falha além do necessário para provar que existe</li><li>Não publica antes da correção ou do prazo de 90 dias, e não condiciona o report a pagamento</li><li>Em troca, tratamos a pesquisa como autorizada, não acionamos a justiça e não pedimos que terceiros o façam</li></ul></div></div>
+  </div></section>
+  <section class="sx maq k-m"><div class="wrap gen">
+    <div class="head"><div><span class=kick>03 · O que já protege este site</span><h2 class=H>Cabeçalhos que você pode <em>conferir</em> agora, com um curl.</h2></div><p class=lede>Não pedimos confiança: o site é estático, pré-renderizado, servido no edge, sem scripts de terceiros e sem rastreadores. Cada resposta sai com esta política.</p></div>
+    <div class="split2"><div class="col"><dl class="kvt"><dt>Content-Security-Policy</dt><dd>default-src 'self' · script-src com nonce por resposta · sem 'unsafe-inline' em scripts · connect-src 'self' · form-action 'self' · object-src 'none'</dd><dt>Strict-Transport-Security</dt><dd>max-age de 1 ano, includeSubDomains, preload</dd><dt>X-Frame-Options</dt><dd>DENY (frame-ancestors 'none')</dd><dt>Referrer-Policy</dt><dd>strict-origin-when-cross-origin</dd><dt>Permissions-Policy</dt><dd>câmera, microfone, geolocalização, pagamento e USB desligados</dd><dt>Cross-Origin-*</dt><dd>Opener-Policy same-origin · Resource-Policy same-origin · X-Content-Type-Options nosniff</dd><dt>Fontes e scripts</dt><dd>Tudo servido do próprio domínio. Zero CDN de terceiros, zero pixel, zero analytics.</dd></dl></div><div class="col"><div class="feat6" style="--cols:2"><div class="fc"><span class="tg">01</span><h3>Formulários sem banco</h3><p>Contato, fila de espera e download vão por e-mail para a nossa caixa. Honeypot contra bots, verificação de origem e limite de tamanho por campo. Nada fica guardado no site.</p></div><div class="fc"><span class="tg">02</span><h3>Downloads com token</h3><p>O material gratuito só é servido com um token HMAC de curta duração emitido após o envio do formulário. Sem link permanente circulando.</p></div><div class="fc"><span class="tg">03</span><h3>Sem cookies, sem sessão</h3><p>Não existe login nem sessão. A única coisa que o navegador guarda é a sua preferência de idioma, localmente.</p></div><div class="fc"><span class="tg">04</span><h3>Ferramentas para agentes com freio</h3><p>As ferramentas WebMCP nunca executam ação com efeito por conta própria: preenchem e devolvem "aguardando confirmação humana".</p></div></div></div></div>
+  </div></section>
+  <section class="sx lobo k-o"><div class="wrap gen">
+    <div class="head"><div><span class=kick>04 · Produtos</span><h2 class=H>Nos produtos, o padrão é <em>local-first</em>: o dado fica com você.</h2></div><p class=lede>A mesma regra que aplicamos em consultoria vale para o que publicamos. Cada repositório tem a sua política de segurança e recebe correções pelo mesmo canal desta página.</p></div>
+    <div class="feat6" style="--cols:3"><div class="fc"><span class="tg">Dados</span><h3>Sem telemetria</h3><p>Nenhum produto envia uso, prompts ou código para servidores da OkamiOps. Os apps falam apenas com os provedores que você conectou.</p></div><div class="fc"><span class="tg">Segredos</span><h3>Chaves no Keychain</h3><p>Nos apps de macOS e iPhone, tokens OAuth e chaves de API vivem no Keychain do sistema, nunca em texto plano. Histórico em SQLite local.</p></div><div class="fc"><span class="tg">Código</span><h3>Aberto para auditar</h3><p>Sete dos oito produtos têm o código público no GitHub. Falhas em produto são corrigidas no repositório com nota de versão e crédito ao pesquisador.</p></div></div>
+  </div></section>
+
+  <div id="end"></div>
+</main>
+<div id="ft"></div>
+<script src="okami.js"></script>
+<script src="routes.js"></script>
+<script src="parts.js"></script>
+<script src="extra.js"></script>
+<script src="contact.js"></script>
+<script src="nav.js"></script>
+<script src="page.js"></script>
+<script>
+PAGE.init();
+</script>
+</body>
+</html>
