@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Okami · Design B · Console</title>
+<meta name="description" content="Okami: produtos SaaS, serviços de IA sob medida e ferramentas open source.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+<style>
+:root{
+  --bg:#0b0c0e;--panel:#111316;--panel2:#15181c;--line:#22262c;--line2:#2e333a;
+  --ink:#eef0f2;--text:#b8bdc4;--muted:#7c838c;
+  --acc:#ff731d;--ok:#3ddc97;--cy:#00e5ff;--mg:#e040fb;
+  --sans:'Space Grotesk',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+  --max:1240px;--r:10px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--text);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(100% - 40px,var(--max));margin-inline:auto}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+.mono{font-family:var(--mono)}
+h1,h2,h3{color:var(--ink);margin:0;font-weight:600;letter-spacing:-.025em}
+
+/* top bar */
+.bar{position:sticky;top:0;z-index:40;background:rgba(11,12,14,.86);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.bar-in{display:flex;align-items:center;gap:28px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;font:600 15px var(--mono);color:var(--ink)}
+.logo img{width:28px;height:28px;border-radius:6px}
+.logo span{color:var(--muted)}
+.links{display:flex;gap:2px;margin-right:auto}
+.links a{font:500 13px var(--mono);padding:8px 12px;border-radius:6px;color:var(--text)}
+.links a:hover{background:var(--panel2);color:var(--ink)}
+.links a .k{color:var(--muted);margin-right:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;padding:0 18px;border-radius:8px;font:600 14px var(--sans);border:1px solid var(--line2);color:var(--ink);background:var(--panel);transition:background .15s,border-color .15s,transform .15s;white-space:nowrap;cursor:pointer}
+.btn:hover{background:var(--panel2);border-color:#3d434b}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#140800}
+.btn.pri:hover{background:#ff8638;transform:translateY(-1px)}
+.btn.sm{min-height:36px;font-size:13px;padding:0 14px}
+.menu-btn{display:none}
+
+/* hero */
+.hero{padding:88px 0 72px;border-bottom:1px solid var(--line);background:radial-gradient(ellipse 60% 80% at 85% 0%,rgba(255,115,29,.09),transparent 60%)}
+.hero-g{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.status-line{display:inline-flex;align-items:center;gap:10px;font:500 12px var(--mono);color:var(--text);padding:6px 12px;border:1px solid var(--line2);border-radius:6px;background:var(--panel)}
+.status-line i{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 10px var(--ok)}
+.hero h1{font-size:clamp(38px,5.4vw,66px);line-height:1.04;margin:24px 0 20px}
+.hero h1 em{font-style:normal;color:var(--acc)}
+.hero p{font-size:18px;max-width:520px;margin:0 0 32px}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+.stats{display:flex;gap:32px;margin-top:40px;padding-top:24px;border-top:1px dashed var(--line2)}
+.stats div{font:500 12px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.stats b{display:block;font:600 30px var(--sans);color:var(--ink);letter-spacing:-.02em;text-transform:none}
+
+.term{border:1px solid var(--line2);border-radius:12px;background:#08090b;box-shadow:0 30px 80px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.02);overflow:hidden;font:400 13.5px/1.75 var(--mono)}
+.term-h{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--panel)}
+.term-h i{width:11px;height:11px;border-radius:50%;background:#3a3f46}
+.term-h i:nth-child(1){background:#ff5f57}.term-h i:nth-child(2){background:#febc2e}.term-h i:nth-child(3){background:#28c840}
+.term-h span{margin-left:10px;font-size:12px;color:var(--muted)}
+.term pre{margin:0;padding:20px 22px;white-space:pre-wrap;color:var(--text);min-height:300px}
+.c-p{color:var(--acc)}.c-ok{color:var(--ok)}.c-m{color:var(--muted)}.c-cy{color:var(--cy)}.c-mg{color:var(--mg)}.c-w{color:var(--ink)}
+.cursor{display:inline-block;width:8px;height:16px;background:var(--acc);vertical-align:-3px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* tabs */
+.catalog{padding:80px 0 40px}
+.cat-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+.cat-head h2{font-size:clamp(30px,3.6vw,44px)}
+.cat-head p{margin:8px 0 0;max-width:560px;color:var(--muted)}
+.tabs{position:sticky;top:60px;z-index:30;display:flex;gap:0;border-bottom:1px solid var(--line);background:var(--bg);overflow-x:auto;scrollbar-width:none}
+.tab{position:relative;display:flex;align-items:center;gap:10px;padding:16px 22px;font:500 14px var(--mono);color:var(--muted);background:none;border:0;cursor:pointer;white-space:nowrap;transition:color .15s}
+.tab:hover{color:var(--ink)}
+.tab .cnt{font-size:11px;padding:2px 7px;border-radius:4px;background:var(--panel2);color:var(--text);border:1px solid var(--line)}
+.tab[aria-selected=true]{color:var(--ink)}
+.tab[aria-selected=true]::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;background:var(--tc,var(--acc))}
+.tab[aria-selected=true] .cnt{background:color-mix(in srgb,var(--tc) 18%,transparent);border-color:color-mix(in srgb,var(--tc) 40%,transparent);color:var(--ink)}
+.panel{padding:32px 0 0;animation:fade .35s ease}
+.panel[hidden]{display:none}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}}
+.panel-intro{display:flex;justify-content:space-between;gap:24px;align-items:center;margin-bottom:22px;flex-wrap:wrap}
+.panel-intro p{margin:0;color:var(--text);max-width:640px}
+
+/* produtos table */
+.tbl{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.tr{display:grid;grid-template-columns:44px 1.1fr 1.6fr 140px 120px 32px;align-items:center;gap:20px;padding:22px 24px;border-top:1px solid var(--line);transition:background .15s}
+.tr:first-child{border-top:0}
+.tr.th{padding:12px 24px;background:var(--panel);font:500 11px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+a.tr:hover{background:var(--panel)}
+a.tr:hover .arr{color:var(--ink);transform:translate(3px,-3px)}
+.sq{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;font:700 18px var(--sans);color:#0a0a0a;background:var(--pc)}
+.nm h3{font-size:19px}
+.nm span{font:400 13px var(--mono);color:var(--pc)}
+.ds{font-size:15px;color:var(--text)}
+.chip{display:inline-flex;align-items:center;gap:7px;font:500 12px var(--mono);color:var(--text)}
+.chip::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.mdl{font:500 12px var(--mono);color:var(--muted)}
+.arr{color:var(--muted);transition:transform .15s,color .15s}
+
+/* serviços */
+.svc-g{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.svc{padding:24px;border:1px solid var(--line);border-radius:12px;background:var(--panel);transition:border-color .15s}
+.svc:hover{border-color:var(--line2)}
+.svc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.svc-top i{width:40px;height:40px;border-radius:8px;display:grid;place-items:center;font-size:16px;color:var(--cy);background:rgba(0,229,255,.08);border:1px solid rgba(0,229,255,.2)}
+.svc-top span{font:500 12px var(--mono);color:var(--muted)}
+.svc h3{font-size:18px;margin-bottom:6px}
+.svc p{margin:0;font-size:14.5px;color:var(--muted)}
+.flow{display:grid;grid-template-columns:repeat(3,1fr);margin-top:12px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.flow div{padding:20px 24px;border-left:1px solid var(--line);font-size:14px;color:var(--muted)}
+.flow div:first-child{border-left:0}
+.flow b{display:block;font:600 13px var(--mono);color:var(--cy);margin-bottom:4px}
+.flow strong{color:var(--ink);font-weight:600}
+
+/* comunidade */
+.tally{display:grid;grid-template-columns:1.3fr 1fr;gap:0;border:1px solid var(--line2);border-radius:12px;overflow:hidden;margin-bottom:12px;background:linear-gradient(120deg,rgba(224,64,251,.08),transparent 50%),var(--panel)}
+.tally-l{padding:32px}
+.tally-l .lbl{font:500 12px var(--mono);color:var(--mg);margin-bottom:12px;display:block}
+.tally-l h3{font-size:30px;margin-bottom:10px}
+.tally-l p{margin:0 0 22px;color:var(--text)}
+.feat-list{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:6px;font:400 13px var(--mono);color:var(--muted)}
+.feat-list li::before{content:"→ ";color:var(--mg)}
+.store{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 18px;border-radius:8px;background:var(--ink);color:#000;font:600 14px var(--sans)}
+.store i{font-size:20px}
+.tally-r{border-left:1px solid var(--line);padding:28px;display:flex;flex-direction:column;justify-content:center;gap:16px;background:#08090b}
+.meter{font:500 12px var(--mono)}
+.meter div{display:flex;justify-content:space-between;color:var(--text);margin-bottom:6px}
+.meter div span{color:var(--muted)}
+.meter i{display:block;height:8px;border-radius:2px;background:repeating-linear-gradient(90deg,var(--c) 0 6px,transparent 6px 8px) 0 0/var(--w) 100% no-repeat,repeating-linear-gradient(90deg,var(--line2) 0 6px,transparent 6px 8px)}
+.repos{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.repo{display:flex;flex-direction:column;gap:10px;padding:22px;border:1px solid var(--line);border-radius:12px;background:var(--panel);transition:border-color .15s}
+.repo:hover{border-color:var(--line2)}
+.repo-t{display:flex;align-items:center;gap:10px;font:500 14px var(--mono);color:var(--ink)}
+.repo-t i{color:var(--muted)}
+.repo-t b{font-weight:600}
+.repo p{margin:0;font-size:14px;color:var(--muted);flex:1}
+.clone{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:6px;background:#08090b;border:1px solid var(--line);font:400 12px var(--mono);color:var(--text);overflow:hidden}
+.clone code{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clone button{flex:none;background:none;border:0;color:var(--muted);cursor:pointer;padding:4px;min-width:28px;min-height:28px}
+.clone button:hover{color:var(--ink)}
+.meta{display:flex;gap:14px;font:400 12px var(--mono);color:var(--muted)}
+.meta span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--lc);margin-right:6px;vertical-align:-1px}
+
+/* about + cta */
+.why{padding:80px 0;border-top:1px solid var(--line);margin-top:80px}
+.why-g{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.why-g div{padding:26px;border-left:1px solid var(--line)}
+.why-g div:first-child{border-left:0}
+.why-g i{color:var(--acc);font-size:18px;margin-bottom:14px;display:block}
+.why-g h3{font-size:16px;margin-bottom:6px}
+.why-g p{margin:0;font-size:14px;color:var(--muted)}
+.cta{padding:0 0 96px}
+.cta-box{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;padding:40px;border:1px solid var(--line2);border-radius:12px;background:radial-gradient(ellipse at 0% 0%,rgba(255,115,29,.14),transparent 60%),var(--panel)}
+.cta-box h2{font-size:clamp(26px,3vw,36px);margin-bottom:8px}
+.cta-box p{margin:0;color:var(--muted)}
+footer{border-top:1px solid var(--line);padding:28px 0;font:400 12px var(--mono);color:var(--muted)}
+.ft{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.ft nav{display:flex;gap:18px;flex-wrap:wrap}
+.ft a:hover{color:var(--ink)}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:1024px){
+  .hero-g{grid-template-columns:1fr}
+  .tr{grid-template-columns:44px 1fr 120px 24px}
+  .tr .ds,.tr .mdl{display:none}
+  .tr.th{display:none}
+  .svc-g,.repos{grid-template-columns:repeat(2,1fr)}
+  .tally{grid-template-columns:1fr}.tally-r{border-left:0;border-top:1px solid var(--line)}
+  .why-g{grid-template-columns:1fr 1fr}
+  .why-g div:nth-child(3){border-left:0}
+  .why-g div:nth-child(n+3){border-top:1px solid var(--line)}
+}
+@media (max-width:760px){
+  .links{display:none;position:absolute;top:60px;left:0;right:0;flex-direction:column;padding:10px 20px 16px;background:var(--bg);border-bottom:1px solid var(--line)}
+  .links.open{display:flex}
+  .links a{padding:14px 8px}
+  .menu-btn{display:inline-flex;margin-left:auto;width:44px;padding:0}
+  .bar .btn.pri{display:none}
+  .hero{padding:56px 0 48px}
+  .stats{gap:20px}
+  .stats b{font-size:24px}
+  .tr{grid-template-columns:40px 1fr 20px;padding:18px;gap:14px}
+  .tr .chip{display:none}
+  .tab{flex:1;justify-content:center;padding:14px 6px;gap:6px;font-size:12.5px}
+  .tab>i{display:none}
+  .sq{width:40px;height:40px}
+  .nm .dsm{display:block!important;font:400 13px var(--sans);color:var(--muted);margin-top:2px}
+  .svc-g,.repos,.flow{grid-template-columns:1fr}
+  .flow div{border-left:0;border-top:1px solid var(--line)}.flow div:first-child{border-top:0}
+  .why-g{grid-template-columns:1fr}.why-g div{border-left:0!important;border-top:1px solid var(--line)}.why-g div:first-child{border-top:0}
+  .cta-box{grid-template-columns:1fr;padding:28px 22px}
+  .row .btn{flex:1 1 100%}
+  .term pre{font-size:12px;padding:16px;min-height:0}
+  .tally-l{padding:24px}
+}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap bar-in">
+    <a class="logo" href="#top"><img src="../assets/images/logo-sem-fundo.jpg" alt="" width="28" height="28">okami<span>/ops</span></a>
+    <nav class="links" id="links" aria-label="Principal">
+      <a href="#catalogo" data-go="produtos"><span class="k">01</span>produtos</a>
+      <a href="#catalogo" data-go="servicos"><span class="k">02</span>serviços</a>
+      <a href="#catalogo" data-go="comunidade"><span class="k">03</span>comunidade</a>
+      <a href="#contato"><span class="k">04</span>contato</a>
+    </nav>
+    <a class="btn pri sm" href="https://wa.me/5511983539463" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i>Diagnóstico gratuito</a>
+    <button class="btn sm menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="links"><i class="fas fa-bars"></i></button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-g">
+      <div>
+        <span class="status-line"><i></i>todos os sistemas operacionais</span>
+        <h1>Produtos, serviços e código aberto. <em>Um time só.</em></h1>
+        <p>A Okami constrói e opera SaaS próprios, entrega IA sob medida para empresas e publica as ferramentas que usa no dia a dia. Segurança desde a primeira linha.</p>
+        <div class="row">
+          <a class="btn pri" href="#catalogo">Explorar catálogo <i class="fas fa-arrow-right"></i></a>
+          <a class="btn" href="https://apps.apple.com/de/app/okami-tally/id6795536973" target="_blank" rel="noopener"><i class="fab fa-apple"></i>Okami Tally</a>
+        </div>
+        <div class="stats">
+          <div><b>4</b>produtos no ar</div>
+          <div><b>6</b>frentes de serviço</div>
+          <div><b>7</b>projetos abertos</div>
+        </div>
+      </div>
+      <div class="term" aria-label="Terminal ilustrativo">
+        <div class="term-h"><i></i><i></i><i></i><span>~/okami — zsh</span></div>
+<pre><span class="c-p">❯</span> <span class="c-w">okami ls --all</span>
+
+<span class="c-m"># produtos</span>            <span class="c-m">status</span>
+  viberadar.si        <span class="c-ok">● online</span>
+  menko.cloud         <span class="c-ok">● online</span>
+  rakkan.org          <span class="c-ok">● online</span>
+  seubrasil.com       <span class="c-ok">● online</span>
+
+<span class="c-m"># serviços</span>
+  <span class="c-cy">automacao  chatbots  dados  sistemas  apis  consultoria</span>
+
+<span class="c-m"># comunidade</span>
+  <span class="c-mg">agent  monitor  code  maturity  tally  sentinel  uni</span>
+
+<span class="c-p">❯</span> <span class="cursor"></span></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="catalog" id="catalogo">
+    <div class="wrap">
+      <div class="cat-head">
+        <div><h2>Catálogo Okami</h2><p>Escolha uma aba. Tudo que a Okami faz, separado pelo que você precisa.</p></div>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Catálogo">
+        <button class="tab" role="tab" id="t-produtos" aria-controls="p-produtos" aria-selected="true" style="--tc:var(--acc)"><i class="fas fa-layer-group"></i>Produtos<span class="cnt">4</span></button>
+        <button class="tab" role="tab" id="t-servicos" aria-controls="p-servicos" aria-selected="false" tabindex="-1" style="--tc:var(--cy)"><i class="fas fa-wand-magic-sparkles"></i>Serviços<span class="cnt">6</span></button>
+        <button class="tab" role="tab" id="t-comunidade" aria-controls="p-comunidade" aria-selected="false" tabindex="-1" style="--tc:var(--mg)"><i class="fas fa-code-branch"></i>Comunidade<span class="cnt">7</span></button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-produtos" aria-labelledby="t-produtos">
+        <div class="panel-intro"><p>SaaS da Okami em produção, com clientes pagantes. Cada um nasceu de uma dor real e roda na mesma base de segurança que entregamos aos clientes.</p></div>
+        <div class="tbl">
+          <div class="tr th"><span></span><span>Produto</span><span>O que resolve</span><span>Status</span><span>Modelo</span><span></span></div>
+          <a class="tr" href="https://viberadar.si/" target="_blank" rel="noopener" style="--pc:#E25BD8"><span class="sq">V</span><div class="nm"><h3>Viberadar</h3><span>viberadar.si</span><span class="dsm" hidden>Descoberta de apps e prompts</span></div><span class="ds">Descubra apps, compare assinaturas e encontre prompts completos. Em 4 idiomas.</span><span class="chip">online</span><span class="mdl">assinatura</span><i class="fas fa-arrow-up-right arr"></i></a>
+          <a class="tr" href="https://menko.cloud/" target="_blank" rel="noopener" style="--pc:#3DD6C6"><span class="sq">M</span><div class="nm"><h3>Menko</h3><span>menko.cloud</span><span class="dsm" hidden>Cartões de visita digitais</span></div><span class="ds">Cartões de visita digitais para equipes e empresas.</span><span class="chip">online</span><span class="mdl">assinatura</span><i class="fas fa-arrow-up-right arr"></i></a>
+          <a class="tr" href="https://www.rakkan.org/" target="_blank" rel="noopener" style="--pc:#FF7A59"><span class="sq">R</span><div class="nm"><h3>Rakkan</h3><span>rakkan.org</span><span class="dsm" hidden>Propostas, contratos e atendimento</span></div><span class="ds">Propostas, contratos e atendimento num fluxo só. Trial de 15 dias.</span><span class="chip">online</span><span class="mdl">assinatura</span><i class="fas fa-arrow-up-right arr"></i></a>
+          <a class="tr" href="https://seubrasil.com/" target="_blank" rel="noopener" style="--pc:#F5C542"><span class="sq">S</span><div class="nm"><h3>seubrasil</h3><span>seubrasil.com</span><span class="dsm" hidden>Apuração e dados políticos</span></div><span class="ds">Apuração e dados políticos acessíveis para entender o país com números.</span><span class="chip">online</span><span class="mdl">patrocínio</span><i class="fas fa-arrow-up-right arr"></i></a>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-servicos" aria-labelledby="t-servicos" hidden>
+        <div class="panel-intro"><p>O mesmo time que constrói nossos produtos resolve o seu problema. Sem contrato longo, com resultado medido.</p><a class="btn pri sm" href="https://wa.me/5511983539463" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i>Pedir diagnóstico</a></div>
+        <div class="svc-g">
+          <article class="svc"><div class="svc-top"><i class="fas fa-robot"></i><span>01</span></div><h3>Automação com IA</h3><p>Fluxos inteligentes que eliminam tarefas repetitivas.</p></article>
+          <article class="svc"><div class="svc-top"><i class="fas fa-comments"></i><span>02</span></div><h3>Chatbots inteligentes</h3><p>Atendimento e qualificação 24/7 no WhatsApp e no site.</p></article>
+          <article class="svc"><div class="svc-top"><i class="fas fa-chart-line"></i><span>03</span></div><h3>Análise de dados</h3><p>Dashboards claros para decidir com segurança.</p></article>
+          <article class="svc"><div class="svc-top"><i class="fas fa-screwdriver-wrench"></i><span>04</span></div><h3>Sistemas customizados</h3><p>Software que se adapta ao seu processo.</p></article>
+          <article class="svc"><div class="svc-top"><i class="fas fa-link"></i><span>05</span></div><h3>Integração de APIs</h3><p>CRM, financeiro e estoque conversando entre si.</p></article>
+          <article class="svc"><div class="svc-top"><i class="fas fa-lightbulb"></i><span>06</span></div><h3>Consultoria em IA</h3><p>Prioridades, riscos e custo-benefício com clareza.</p></article>
+        </div>
+        <div class="flow">
+          <div><b>01 · diagnóstico</b><strong>30 min, gratuito.</strong> Mapeamos gargalos e oportunidades.</div>
+          <div><b>02 · build</b><strong>Sob medida.</strong> Ciclos curtos, entrega visível.</div>
+          <div><b>03 · operação</b><strong>Em produção.</strong> Treinamento e evolução contínua.</div>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-comunidade" aria-labelledby="t-comunidade" hidden>
+        <div class="panel-intro"><p>Ferramentas abertas, feitas em público. Use, audite, contribua. IA e segurança não deveriam ser caixa-preta.</p><a class="btn sm" href="#"><i class="fab fa-github"></i>github.com/okamiops</a></div>
+        <div class="tally">
+          <div class="tally-l">
+            <span class="lbl">// destaque · iOS</span>
+            <h3>Okami Tally</h3>
+            <p>Suas cotas de IA em vários serviços, numa tela só. Quanto resta, quando renova e o ritmo seguro por dia.</p>
+            <ul class="feat-list"><li>Claude, Codex, Cursor, Grok, MiniMax e endpoints próprios</li><li>Widgets, Lock Screen e Dynamic Island</li><li>Sem servidor intermediário, credenciais no Keychain</li></ul>
+            <div class="row"><a class="store" href="https://apps.apple.com/de/app/okami-tally/id6795536973" target="_blank" rel="noopener"><i class="fab fa-apple"></i>Baixar na App Store</a><a class="btn" href="#"><i class="fab fa-github"></i>Código</a></div>
+          </div>
+          <div class="tally-r" aria-hidden="true">
+            <div class="meter" style="--c:var(--acc);--w:72%"><div>claude · 5h<span>72% · renova 2h14</span></div><i></i></div>
+            <div class="meter" style="--c:var(--cy);--w:41%"><div>codex · semanal<span>41% · renova 3d</span></div><i></i></div>
+            <div class="meter" style="--c:var(--mg);--w:88%"><div>cursor · créditos<span>88% · atenção</span></div><i></i></div>
+            <div class="meter" style="--c:var(--ok);--w:23%"><div>grok · semanal<span>23% · folga</span></div><i></i></div>
+          </div>
+        </div>
+        <div class="repos">
+          <article class="repo"><div class="repo-t"><i class="fas fa-book-bookmark"></i>okamiops/<b>okami-agent</b></div><p>Base para agentes e orquestração multi-agente.</p><div class="clone"><code>git clone okamiops/okami-agent</code><button aria-label="Copiar comando"><i class="far fa-copy"></i></button></div><div class="meta"><span style="--lc:#3178c6">TypeScript</span></div></article>
+          <article class="repo"><div class="repo-t"><i class="fas fa-book-bookmark"></i>okamiops/<b>okami-monitor</b></div><p>Chamados, receita e saúde de vários produtos num painel federado.</p><div class="clone"><code>git clone okamiops/okami-monitor</code><button aria-label="Copiar comando"><i class="far fa-copy"></i></button></div><div class="meta"><span style="--lc:#3178c6">TypeScript</span></div></article>
+          <article class="repo"><div class="repo-t"><i class="fas fa-book-bookmark"></i>okamiops/<b>okami-code</b></div><p>Ferramental de desenvolvimento assistido por IA.</p><div class="clone"><code>git clone okamiops/okami-code</code><button aria-label="Copiar comando"><i class="far fa-copy"></i></button></div><div class="meta"><span style="--lc:#3178c6">TypeScript</span></div></article>
+          <article class="repo"><div class="repo-t"><i class="fas fa-book-bookmark"></i>okamiops/<b>okami-maturity</b></div><p>Avaliação de maturidade em segurança e engenharia.</p><div class="clone"><code>git clone okamiops/okami-maturity</code><button aria-label="Copiar comando"><i class="far fa-copy"></i></button></div><div class="meta"><span style="--lc:#3178c6">TypeScript</span></div></article>
+          <article class="repo"><div class="repo-t"><i class="fas fa-book-bookmark"></i>okamiops/<b>okami-sentinel</b></div><p>Vigilância contínua de segurança para aplicações.</p><div class="clone"><code>git clone okamiops/okami-sentinel</code><button aria-label="Copiar comando"><i class="far fa-copy"></i></button></div><div class="meta"><span style="--lc:#3178c6">TypeScript</span></div></article>
+          <article class="repo"><div class="repo-t"><i class="fas fa-book-bookmark"></i>okamiops/<b>okami-uni</b></div><p>Trilhas abertas de aprendizado em IA e segurança.</p><div class="clone"><code>git clone okamiops/okami-uni</code><button aria-label="Copiar comando"><i class="far fa-copy"></i></button></div><div class="meta"><span style="--lc:#3178c6">TypeScript</span></div></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="why">
+    <div class="wrap">
+      <div class="why-g">
+        <div><i class="fas fa-shield-halved"></i><h3>Segurança primeiro</h3><p>AppSec e DevSecOps desde o desenho, não no fim.</p></div>
+        <div><i class="fas fa-flask"></i><h3>Testado em casa</h3><p>Usamos nos nossos produtos antes de entregar pra você.</p></div>
+        <div><i class="fas fa-code"></i><h3>Código aberto</h3><p>Transparência que você pode auditar.</p></div>
+        <div><i class="fas fa-gauge-high"></i><h3>Resultado medido</h3><p>Sucesso é métrica no seu negócio, não discurso.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta" id="contato">
+    <div class="wrap">
+      <div class="cta-box">
+        <div><h2>Tem um problema que software resolve?</h2><p>Resposta em até 24h úteis com o melhor próximo passo.</p></div>
+        <div class="row"><a class="btn pri" href="https://wa.me/5511983539463" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i>WhatsApp</a><a class="btn" href="mailto:contato@okami.com"><i class="fas fa-envelope"></i>E-mail</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap ft"><span>© 2026 okami · custom solutions, ai innovation</span><nav><a href="https://viberadar.si/">viberadar</a><a href="https://menko.cloud/">menko</a><a href="https://www.rakkan.org/">rakkan</a><a href="https://seubrasil.com/">seubrasil</a></nav></div>
+</footer>
+
+<script>
+const tabs=[...document.querySelectorAll('[role=tab]')];
+function sel(id,focus){tabs.forEach(t=>{const on=t.id==='t-'+id;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1;document.getElementById(t.getAttribute('aria-controls')).hidden=!on;if(on&&focus)t.focus()});try{history.replaceState(null,'','#'+id)}catch(e){}}
+tabs.forEach((t,i)=>{t.addEventListener('click',()=>sel(t.id.slice(2)));t.addEventListener('keydown',e=>{const d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;if(d){e.preventDefault();sel(tabs[(i+d+tabs.length)%tabs.length].id.slice(2),true)}})});
+document.querySelectorAll('[data-go]').forEach(a=>a.addEventListener('click',()=>{sel(a.dataset.go);links.classList.remove('open')}));
+const h=location.hash.slice(1);if(['produtos','servicos','comunidade'].includes(h))sel(h);
+const mb=document.getElementById('menuBtn'),links=document.getElementById('links');
+mb.addEventListener('click',()=>{const o=links.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
+document.querySelectorAll('.clone button').forEach(b=>b.addEventListener('click',()=>{navigator.clipboard?.writeText(b.previousElementSibling.textContent);b.innerHTML='<i class="fas fa-check"></i>';setTimeout(()=>b.innerHTML='<i class="far fa-copy"></i>',1400)}));
+</script>
+</body>
+</html>
