@@ -80,6 +80,34 @@
   .pc-dots i.on{width:22px;border-radius:4px;background:var(--ink)}
 }
 
+/* rodapé */
+.foot{padding-block:clamp(56px,6vw,88px) 0;overflow:hidden}
+.foot-g{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,4vw,64px)}
+.foot .wordmark{font-size:18px}
+.foot .wordmark img{width:44px;height:44px}
+.foot-g p{font-size:16px;line-height:1.55;color:var(--fg-soft);max-width:420px;margin-top:18px}
+.foot h4{font-size:11px;color:var(--fg-mute);margin-bottom:6px}
+.foot ul{gap:0}
+.foot ul a{display:flex;justify-content:space-between;align-items:center;min-height:44px;border-bottom:1px solid var(--line);font-size:15.5px;color:var(--fg-soft);transition:color .2s,padding .2s}
+.foot ul a::after{content:"↗";font:400 13px var(--mono);color:var(--fg-mute);opacity:0;transition:opacity .2s}
+.foot ul a:hover{color:var(--fg);padding-left:6px}
+.foot ul a:hover::after{opacity:1}
+.foot-b{margin-top:clamp(40px,5vw,64px);padding-top:22px;align-items:center}
+.foot-b nav a{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border:1px solid var(--line);border-radius:999px;transition:border-color .2s,color .2s}
+.foot-b nav a:hover{border-color:var(--fg-mute)}
+.foot-b nav{gap:8px}
+.foot-x{margin-top:clamp(28px,4vw,48px);padding-bottom:clamp(12px,2vw,28px);font:400 100px/.9 var(--serif);letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1px #34344a;white-space:nowrap;user-select:none;pointer-events:none;width:max-content}
+.foot-x em{font-style:italic;-webkit-text-stroke-color:rgba(255,122,61,.45)}
+@media (max-width:760px){
+  .foot-g{grid-template-columns:1fr 1fr;gap:36px 20px}
+  .foot-g>div:first-child{grid-column:1/-1}
+  .foot-b{flex-direction:column;align-items:flex-start;gap:14px;line-height:1.6}
+}
+@media (max-width:560px){
+  .mt{grid-template-columns:1fr}
+  .mt button{justify-self:start}
+}
+
 /* 02 serviços */
 .sgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
 .sv{display:flex;flex-direction:column;gap:12px;min-height:230px;padding:26px;border-radius:16px;border:1px solid var(--line);background:var(--night-1);transition:transform .3s,border-color .3s}
@@ -229,16 +257,21 @@ body[data-hero=a] .hero-v:not(.ha),body[data-hero=b] .hero-v:not(.hb),body[data-
 .done h3{font:400 clamp(34px,3vw,46px)/1 var(--serif);color:var(--ink);letter-spacing:-.02em}
 .done p{font-size:15.5px;max-width:460px}
 #ctform[hidden],.done[hidden]{display:none}
-.ctx-side{display:grid;gap:10px;align-content:start;padding-top:6px}
+.ctx-side{display:grid;gap:12px;align-content:start}
+.mt{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:18px 18px 18px 20px;border:1px solid #2a2a3d;border-radius:16px;background:var(--night-1);transition:border-color .2s}
+.mt:hover{border-color:#4a4a62}
+.mt-t{display:grid;gap:4px;min-width:0}
+.mt small{font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg-mute)}
+.mt b{font:500 clamp(17px,1.6vw,22px)/1.2 var(--mono);color:var(--fg);letter-spacing:-.03em;overflow-wrap:anywhere;user-select:all}
+.mt span{font-size:13.5px;line-height:1.45;color:var(--fg-mute)}
+.mt button{align-self:center;min-height:40px;padding:0 16px;border-radius:999px;border:1px solid #3a3a50;background:none;color:var(--fg);font:500 12px var(--mono);cursor:pointer;white-space:nowrap}
+.mt button:hover{background:var(--fg);color:var(--night)}
+.tz2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.tz2 div{display:grid;gap:2px;padding:14px 18px;border-radius:14px;background:var(--night-2)}
+.tz2 small{font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg-mute)}
+.tz2 b{font:500 28px/1 var(--mono);color:var(--fg);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.rm{font:500 11.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-mute);margin-top:4px}
 .ctx-side .lb{font:500 11.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg-mute)}
-.ml{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font:500 clamp(20px,1.9vw,28px) var(--mono);color:var(--fg);letter-spacing:-.03em}
-.ml span{user-select:all;overflow-wrap:anywhere}
-.ml.sm{font-size:16px;margin-top:14px}
-.ml button{border:1px solid #3a3a50;background:none;border-radius:999px;padding:3px 12px;min-height:30px;font:500 11px var(--mono);color:var(--fg-soft);cursor:pointer}
-.ml button:hover{border-color:var(--fg);color:var(--fg)}
-.ml-n{font-size:14.5px;color:var(--fg-mute);max-width:380px}
-.tz{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);font:400 12.5px var(--mono);color:var(--fg-mute)}
-.tz b{color:var(--fg);font-weight:500;font-variant-numeric:tabular-nums}
 @media (max-width:900px){
   .ctx-g{grid-template-columns:1fr}
   .ctx-h{font-size:clamp(56px,16vw,96px)}
@@ -387,11 +420,10 @@ body[data-hero=a] .hero-v:not(.ha),body[data-hero=b] .hero-v:not(.hb),body[data-
         </div>
         <div class="ctx-side">
           <span class="lb" data-i="direct"></span>
-          <div class="ml"><span>contato@okamiops.com</span><button type="button" data-copy="contato@okamiops.com" data-i="copy"></button></div>
-          <p class="ml-n" data-i="ct_p"></p>
-          <div class="ml sm"><span>security@okamiops.com</span><button type="button" data-copy="security@okamiops.com" data-i="copy"></button></div>
-          <p class="ml-n" data-i="secq"></p>
-          <div class="tz"><span><span data-i="sp"></span> <b id="clk-sp">--:--</b></span><span><span data-i="ber"></span> <b id="clk-ber">--:--</b></span><span data-i="remote"></span></div>
+          <div class="mt"><div class="mt-t"><small data-i="sales"></small><b>contato@okamiops.com</b><span data-i="ct_p"></span></div><button type="button" data-copy="contato@okamiops.com" data-i="copy"></button></div>
+          <div class="mt"><div class="mt-t"><small>disclosure</small><b>security@okamiops.com</b><span data-i="secq"></span></div><button type="button" data-copy="security@okamiops.com" data-i="copy"></button></div>
+          <div class="tz2"><div><small data-i="sp"></small><b id="clk-sp">--:--</b></div><div><small data-i="ber"></small><b id="clk-ber">--:--</b></div></div>
+          <p class="rm" data-i="remote"></p>
         </div>
       </div>
     </div></section>
@@ -410,6 +442,9 @@ const $=s=>document.querySelector(s),E=OK.esc,P=OK.pick;
 $('#hdr').outerHTML=OKP.header();
 $('#hero').outerHTML=HEROES.c;
 $('#ft').outerHTML=OKP.footer();
+document.querySelector('.foot .wrap').insertAdjacentHTML('beforeend','<div class="foot-x" aria-hidden="true">OKAMI<em>OPS</em></div>');
+function fitX(){const x=document.querySelector('.foot-x');if(!x)return;x.style.fontSize='100px';const w=x.parentElement.clientWidth-parseFloat(getComputedStyle(x.parentElement).paddingLeft)-parseFloat(getComputedStyle(x.parentElement).paddingRight);x.style.fontSize=(100*w/x.scrollWidth).toFixed(1)+'px'}
+addEventListener('resize',fitX);document.fonts&&document.fonts.ready.then(fitX);fitX();
 const CH=[...document.querySelectorAll('.ch')];
 CH.slice(0,-1).forEach(c=>c.insertAdjacentHTML('afterend','<div class="hold" aria-hidden="true"></div>'));
 const NAMES={produtos:'nav_prod',servicos:'nav_serv',comunidade:'nav_comu',insights:'nav_ins',empresa:'nav_emp',contato:'ct_k'};
@@ -469,7 +504,9 @@ function onScroll(){
     if(c.getBoundingClientRect().top<vh*.5)cur=i;
   });
   document.querySelectorAll('#rail a').forEach((a,i)=>a.classList.toggle('on',i===cur));
-  $('#rail').style.opacity=CH[0].getBoundingClientRect().top<vh*.6?1:0;
+  const ftop=document.querySelector('.foot')?.getBoundingClientRect().top??1e9;
+  $('#rail').style.opacity=(CH[0].getBoundingClientRect().top<vh*.6&&ftop>vh*.7)?1:0;
+  $('#rail').style.pointerEvents=$('#rail').style.opacity==='1'?'':'none';
 }
 OK.onLang(render);
 OK.onLang(()=>CONTACT.render());
