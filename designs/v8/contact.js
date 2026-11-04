@@ -20,24 +20,15 @@
     again: ['Escrever outra', 'Write another', 'Neue Nachricht'],
     chip_oss: ['Open source', 'Open source', 'Open Source'],
   });
-  const picked = new Set();
-  const chips = () => [['nav_prod', OK.t('nav_prod')], ...OK.SERVICES.map((s) => [s.path, OK.pick(s.name)]), ['web', 'WebMCP'], ['oss', OK.t('chip_oss')]];
   function clocks() {
     const f = (tz) => { try { return new Intl.DateTimeFormat(OK.lang === 'pt' ? 'pt-BR' : OK.lang, { hour: '2-digit', minute: '2-digit', timeZone: tz }).format(new Date()); } catch (e) { return '--:--'; } };
     const a = document.getElementById('clk-sp'), b = document.getElementById('clk-ber');
     if (a) a.textContent = f('America/Sao_Paulo');
     if (b) b.textContent = f('Europe/Berlin');
   }
+  OK.extend({ direct: ['ou direto', 'or directly', 'oder direkt'], optional: ['opcional', 'optional', 'optional'] });
   window.CONTACT = {
-    render() {
-      const box = document.getElementById('chips');
-      if (!box) return;
-      box.innerHTML = chips().map(([k, label]) => `<button type="button" class="chip" data-k="${OK.esc(k)}" aria-pressed="${picked.has(k)}">${OK.esc(label)}</button>`).join('');
-      box.querySelectorAll('.chip').forEach((c) => c.addEventListener('click', () => {
-        const k = c.dataset.k; picked.has(k) ? picked.delete(k) : picked.add(k); c.setAttribute('aria-pressed', picked.has(k));
-      }));
-      clocks();
-    },
+    render() { clocks(); },
     init() {
       const form = document.getElementById('ctform'), done = document.getElementById('ctdone');
       form.addEventListener('submit', (e) => {
@@ -45,8 +36,8 @@
         if (!form.reportValidity()) return;
         form.hidden = true; done.hidden = false; done.querySelector('button').focus();
       });
-      done.querySelector('button').addEventListener('click', () => { form.reset(); picked.clear(); CONTACT.render(); done.hidden = true; form.hidden = false; form.querySelector('input').focus(); });
-      CONTACT.render(); setInterval(clocks, 30000);
+      done.querySelector('button').addEventListener('click', () => { form.reset(); done.hidden = true; form.hidden = false; form.querySelector('input').focus(); });
+      clocks(); setInterval(clocks, 30000);
     },
   };
 })();

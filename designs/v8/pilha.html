@@ -181,51 +181,42 @@ body[data-hero=a] .hero-v:not(.ha),body[data-hero=b] .hero-v:not(.hb),body[data-
   .hc-r{background:var(--night);padding-inline:20px;padding-top:120px}
 }
 
-/* 06 contato: papel | noite, espelhando o hero */
-.ctc{background:linear-gradient(90deg,var(--paper) 50%,var(--night) 50%)}
-.ctc-g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(80px,9vw,150px);align-items:start}
-.ctc-l{color:var(--ink-soft);display:grid;gap:24px}
-.ctc-l .kick{color:var(--o-ink)}
-.ctc-l h2{font:400 clamp(52px,6.4vw,108px)/.9 var(--serif);color:var(--ink);letter-spacing:-.045em}
-.ctc-l h2 em{font-style:italic;color:var(--o-ink)}
-.steps{list-style:none;margin:6px 0 0;padding:0;display:grid;counter-reset:s}
-.steps li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:2px 14px;padding:16px 0;border-top:1px solid var(--paper-line);counter-increment:s}
-.steps li::before{content:counter(s,decimal-leading-zero);grid-row:span 2;font:500 13px/1.9 var(--mono);color:var(--o-ink)}
-.steps b{font:400 clamp(22px,2vw,28px)/1.15 var(--serif);color:var(--ink);letter-spacing:-.01em}
-.steps span{font-size:15px}
-.mails{display:grid;gap:10px;padding-top:18px;border-top:1px solid var(--ink)}
-.mails .copyrow{color:var(--ink)}
-.mails .copyrow small{color:var(--ink-soft);min-width:190px}
-.where{font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
-.ctc-r{color:var(--fg-soft);display:grid;gap:22px}
-.clk{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid var(--line);font:400 12.5px var(--mono)}
-.clk .cmd{color:var(--fg)} .clk .cmd b{color:var(--o);font-weight:500}
-.clk .tz{color:var(--fg-mute)} .clk .tz b{color:var(--fg);font-weight:500;font-variant-numeric:tabular-nums}
-#ctform{display:grid;gap:16px}
-.need{border:0;margin:0;padding:0;display:grid;gap:12px}
-.need legend{padding:0;margin-bottom:12px;font:500 12px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--fg)}
-.need legend small{font-weight:400;text-transform:none;letter-spacing:0;color:var(--fg-mute);margin-left:8px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{min-height:38px;padding:0 14px;border-radius:999px;border:1px solid #3a3a50;background:none;color:var(--fg-soft);font:500 13px var(--sans);cursor:pointer;transition:background .2s,border-color .2s,color .2s}
-.chip:hover{border-color:var(--fg);color:var(--fg)}
-.chip[aria-pressed=true]{background:var(--o);border-color:var(--o);color:var(--night)}
-.chip[aria-pressed=true]:hover{background:#ff8f5c;border-color:#ff8f5c;color:var(--night)}
-#ctform[hidden],.done[hidden]{display:none}
-.chip[aria-pressed=true]::before{content:"✓ "}
-.field input:user-invalid,.field textarea:user-invalid{border-color:var(--m)}
-.sendrow{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
-.sendrow .btn{border-radius:8px;min-width:200px}
-.sendrow span{font:400 12.5px var(--mono);color:var(--fg-mute)}
-.done{display:grid;gap:14px;justify-items:start;padding:32px;border:1px solid var(--line);border-radius:18px;background:var(--night-1)}
-.done .ck{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--ok);color:var(--night);font:700 22px var(--sans)}
-.done h3{font:400 clamp(34px,3vw,46px)/1 var(--serif);color:var(--fg);letter-spacing:-.02em}
+/* 06 contato: último pôster da página */
+.ctx .kick{color:var(--o)}
+.ctx-h{font:400 clamp(64px,10.5vw,184px)/.86 var(--serif);color:var(--fg);letter-spacing:-.055em;margin:18px 0 clamp(36px,4vw,64px)}
+.ctx-h em{font-style:italic;color:var(--o)}
+.ctx-g{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(32px,5vw,88px);align-items:start}
+.ctx-card{background:var(--paper);color:var(--ink-soft);border-radius:22px;padding:clamp(24px,3vw,40px)}
+#ctform{display:grid;gap:18px}
+.fl{display:grid;gap:6px}
+.fl label{font:500 11.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.fl label small{font-weight:400;text-transform:none;letter-spacing:0;opacity:.75}
+.fl input,.fl textarea{width:100%;border:0;border-bottom:1.5px solid var(--paper-line);background:transparent;padding:10px 0;font:400 18px var(--sans);color:var(--ink);border-radius:0;resize:vertical;transition:border-color .2s}
+.fl input:focus,.fl textarea:focus{outline:none;border-bottom-color:var(--ink)}
+.fl input:user-invalid,.fl textarea:user-invalid{border-bottom-color:var(--m-ink)}
+.sendrow{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:6px}
+.sendrow .btn{min-width:210px;border-radius:999px}
+.sendrow>span{font:400 12.5px var(--mono);color:var(--ink-soft)}
+.sendrow .btn span{font:inherit;color:inherit}
+.done{display:grid;gap:12px;justify-items:start}
+.done .ck{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--paper);font:700 20px var(--sans)}
+.done h3{font:400 clamp(34px,3vw,46px)/1 var(--serif);color:var(--ink);letter-spacing:-.02em}
 .done p{font-size:15.5px;max-width:460px}
+#ctform[hidden],.done[hidden]{display:none}
+.ctx-side{display:grid;gap:10px;align-content:start;padding-top:6px}
+.ctx-side .lb{font:500 11.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--fg-mute)}
+.ml{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font:500 clamp(20px,1.9vw,28px) var(--mono);color:var(--fg);letter-spacing:-.03em}
+.ml span{user-select:all;overflow-wrap:anywhere}
+.ml.sm{font-size:16px;margin-top:14px}
+.ml button{border:1px solid #3a3a50;background:none;border-radius:999px;padding:3px 12px;min-height:30px;font:500 11px var(--mono);color:var(--fg-soft);cursor:pointer}
+.ml button:hover{border-color:var(--fg);color:var(--fg)}
+.ml-n{font-size:14.5px;color:var(--fg-mute);max-width:380px}
+.tz{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);font:400 12.5px var(--mono);color:var(--fg-mute)}
+.tz b{color:var(--fg);font-weight:500;font-variant-numeric:tabular-nums}
 @media (max-width:900px){
-  .ctc{background:var(--paper)}
-  .ctc-g{grid-template-columns:1fr;gap:0}
-  .ctc-l{padding-bottom:48px}
-  .ctc-r{padding-top:40px;background:var(--night);box-shadow:0 0 0 100vmax var(--night);clip-path:inset(0 -100vmax -100vmax)}
-  .mails .copyrow small{min-width:0;width:100%}
+  .ctx-g{grid-template-columns:1fr}
+  .ctx-h{font-size:clamp(56px,16vw,96px)}
+  .sendrow .btn{width:100%}
 }
 
 /* 04 insights: vitrine com gráfico real */
@@ -303,7 +294,7 @@ body[data-hero=a] .hero-v:not(.ha),body[data-hero=b] .hero-v:not(.hb),body[data-
   .ghw{grid-column:1/-1}
 }
 @media (max-width:900px){
-  .ch{position:relative;top:auto!important;min-height:0}
+  .ch{position:relative;top:auto!important;min-height:0;padding-block:72px 64px}
   .ch>.wrap{transform:none}
   .rail{display:none}
   .ch .top,.vit,.web,.egrid,.ctg2,.ivit{grid-template-columns:1fr}
@@ -354,31 +345,27 @@ body[data-hero=a] .hero-v:not(.ha),body[data-hero=b] .hero-v:not(.hb),body[data-
       <div class="rules" id="rules"></div>
     </div></section>
 
-    <section class="ch ctc k-o" id="contato" data-r="l"><div class="dim"></div><div class="wrap ctc-g">
-      <div class="ctc-l">
-        <span class="kick">06 · <span data-i="ct_k"></span></span>
-        <h2 data-i="ct_h"></h2>
-        <ol class="steps">
-          <li><b data-i="st1"></b><span data-i="st1d"></span></li>
-          <li><b data-i="st2"></b><span data-i="st2d"></span></li>
-          <li><b data-i="st3"></b><span data-i="st3d"></span></li>
-        </ol>
-        <div class="mails">
-          <div class="copyrow"><small data-i="sales"></small><span>contato@okamiops.com</span><button type="button" data-copy="contato@okamiops.com" data-i="copy"></button></div>
-          <div class="copyrow"><small data-i="secq"></small><span>security@okamiops.com</span><button type="button" data-copy="security@okamiops.com" data-i="copy"></button></div>
+    <section class="ch maq k-o ctx" id="contato" data-r="m"><div class="dim"></div><div class="wrap">
+      <span class="kick">06 · <span data-i="ct_k"></span></span>
+      <h2 class="ctx-h" data-i="ct_h"></h2>
+      <div class="ctx-g">
+        <div class="ctx-card">
+          <form id="ctform" novalidate>
+            <div class="f2"><div class="fl"><label for="f1" data-i="f_name"></label><input id="f1" autocomplete="name" required></div><div class="fl"><label for="f2" data-i="f_email"></label><input id="f2" type="email" autocomplete="email" required></div></div>
+            <div class="fl"><label for="f3"><span data-i="f_company"></span> <small data-i="optional"></small></label><input id="f3" autocomplete="organization"></div>
+            <div class="fl"><label for="f4" data-i="f_msg"></label><textarea id="f4" rows="3" required></textarea></div>
+            <div class="sendrow"><button class="btn btn-ink" type="submit"><span data-i="f_send"></span> →</button><span data-i="reply"></span></div>
+          </form>
+          <div class="done" id="ctdone" hidden><span class="ck" aria-hidden="true">✓</span><h3 data-i="ok_t"></h3><p data-i="ok_b"></p><button type="button" class="btn btn-line-p" data-i="again"></button></div>
         </div>
-        <p class="where"><span data-i="remote"></span></p>
-      </div>
-      <div class="ctc-r">
-        <div class="clk"><span class="cmd">❯ okami contact <b>--new</b></span><span class="tz"><span data-i="now_in"></span> <span data-i="sp"></span> <b id="clk-sp">--:--</b> · <span data-i="ber"></span> <b id="clk-ber">--:--</b></span></div>
-        <form id="ctform" novalidate>
-          <fieldset class="need"><legend><span data-i="need"></span> <small data-i="need_h"></small></legend><div class="chips" id="chips"></div></fieldset>
-          <div class="f2"><div class="field"><label for="f1" data-i="f_name"></label><input id="f1" autocomplete="name" required></div><div class="field"><label for="f2" data-i="f_email"></label><input id="f2" type="email" autocomplete="email" required></div></div>
-          <div class="field"><label for="f3" data-i="f_company"></label><input id="f3" autocomplete="organization"></div>
-          <div class="field"><label for="f4" data-i="f_msg"></label><textarea id="f4" rows="4" required></textarea></div>
-          <div class="sendrow"><button class="btn btn-o" type="submit" data-i="f_send"></button><span data-i="reply"></span></div>
-        </form>
-        <div class="done" id="ctdone" hidden><span class="ck" aria-hidden="true">✓</span><h3 data-i="ok_t"></h3><p data-i="ok_b"></p><button type="button" class="btn btn-line-n" data-i="again"></button></div>
+        <div class="ctx-side">
+          <span class="lb" data-i="direct"></span>
+          <div class="ml"><span>contato@okamiops.com</span><button type="button" data-copy="contato@okamiops.com" data-i="copy"></button></div>
+          <p class="ml-n" data-i="ct_p"></p>
+          <div class="ml sm"><span>security@okamiops.com</span><button type="button" data-copy="security@okamiops.com" data-i="copy"></button></div>
+          <p class="ml-n" data-i="secq"></p>
+          <div class="tz"><span><span data-i="sp"></span> <b id="clk-sp">--:--</b></span><span><span data-i="ber"></span> <b id="clk-ber">--:--</b></span><span data-i="remote"></span></div>
+        </div>
       </div>
     </div></section>
   </div>
