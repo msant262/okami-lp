@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OkamiOps · Linhas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="duo.css">
+<style>
+/* Layout: cada item é uma linha de ponta a ponta com duas metades (pitch lobo | spec máquina). Os lados alternam a cada linha: tabuleiro em zigue-zague. Filtro mostra só uma metade. */
+:root{--gut:max(24px,calc((100vw - var(--max))/2 + 24px));--inner:clamp(36px,5vw,80px)}
+.trow{position:relative;display:grid;grid-template-columns:1fr 1fr}
+.trow>.cell{padding-block:clamp(40px,4.4vw,64px);transition:background .45s,color .45s}
+.trow>.cell:first-child{padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:var(--inner)}
+.trow>.cell:last-child{padding-right:max(var(--gut),env(safe-area-inset-right,0px));padding-left:var(--inner)}
+.trow::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--seam);opacity:.35;transition:opacity .3s;pointer-events:none}
+a.trow:hover::after{opacity:1}
+.cell.lobo{border-top:1px solid var(--paper-line)}
+.cell.maq{border-top:1px solid var(--line)}
+a.trow:hover .cell.lobo{background:#fbfaf7}
+a.trow:hover .cell.maq{background:var(--night-1)}
+a.trow:hover .half-l .H{font-style:italic;color:var(--a)}
+.maq .half-l .H{font-style:normal}
+a.trow:hover .maq .half-l .H{color:var(--a)}
+.cell.maq .half-l .H em::before{content:none}
+
+/* cabeçalho de cada tópico: porquê | como */
+.thead>.cell{padding-block:clamp(96px,9vw,136px) clamp(40px,4vw,56px);display:flex;flex-direction:column;gap:18px;justify-content:flex-end}
+.thead h2{font-size:calc(clamp(46px,6vw,96px) * var(--ds));line-height:.94}
+.thead .maq .cmd{font:500 14px var(--mono);color:var(--fg)} .thead .maq .cmd b{color:var(--a);font-weight:500}
+.thead .lede{max-width:520px}
+.thead::after{opacity:1}
+
+/* tamanhos específicos */
+.r-prod .half-l .H{font-size:calc(clamp(48px,5.6vw,92px) * var(--ds))}
+.r-oss>.cell,.r-rule>.cell{padding-block:30px}
+.r-oss .half-l .H,.r-rule .half-l .H{font-size:calc(clamp(30px,2.8vw,44px) * var(--ds))}
+.r-oss .half-l .biz,.r-rule .half-l .biz{font-size:15px}
+.tally .half-l .H{font-size:calc(clamp(56px,6vw,100px) * var(--ds))}
+.tally .q-wrap{display:grid;gap:18px;align-content:center;height:100%}
+.emp-stats{display:flex;gap:32px;flex-wrap:wrap;margin-top:8px}
+.emp-stats div{display:grid;font-size:13px}
+.emp-stats b{font:400 48px/1 var(--serif);color:var(--ink)}
+.ct .copyrow{color:var(--ink)} .ct .copyrow small{color:var(--ink-soft)}
+.ct form{display:grid;gap:16px}
+
+/* filtro */
+body[data-f=lobo] .trow>.cell.maq,body[data-f=maq] .trow>.cell.lobo{display:none}
+body[data-f=lobo] .trow,body[data-f=maq] .trow{grid-template-columns:1fr}
+body[data-f=lobo] .trow>.cell,body[data-f=maq] .trow>.cell{padding-left:max(var(--gut),env(safe-area-inset-left,0px))!important;padding-right:max(var(--gut),env(safe-area-inset-right,0px))!important}
+body[data-f=lobo] .trow::after,body[data-f=maq] .trow::after{display:none}
+body[data-f] .thead .cell.maq .why-how,body[data-f] .thead .cell.lobo .why-how{display:inline-flex}
+
+@media (max-width:900px){
+  .trow{grid-template-columns:1fr}
+  .trow>.cell{padding-left:max(20px,env(safe-area-inset-left,0px))!important;padding-right:max(20px,env(safe-area-inset-right,0px))!important}
+  .trow>.cell.lobo{order:1}.trow>.cell.maq{order:2}
+  .trow::after{display:none}
+  .trow>.cell.maq{border-top:0;padding-top:24px}
+  .thead>.cell.maq{padding-top:28px}
+}
+</style>
+</head>
+<body data-f="both">
+<div id="hdr"></div>
+<div class="seg-m" id="segm"></div>
+<main id="top">
+  <div id="hero"></div>
+  <div id="topics"></div>
+</main>
+<div id="ft"></div>
+
+<script src="okami.js"></script>
+<script src="parts.js"></script>
+<script src="duo.js"></script>
+<script>
+const $=s=>document.querySelector(s),E=OK.esc,P=OK.pick;
+$('#hdr').outerHTML=OKP.header(DUO.seg());
+$('#segm').innerHTML=DUO.seg();
+$('#hero').outerHTML=OKP.hero();
+$('#ft').outerHTML=OKP.footer();
+
+const lobo=(k,html,extra='')=>`<div class="cell lobo k-${k} ${extra}"><div class="half-l">${html}</div></div>`;
+const maq=(k,html,extra='')=>`<div class="cell maq k-${k} ${extra}"><div class="half-m">${html}</div></div>`;
+let flip=0; // alterna o lado a cada linha, pela página inteira
+const row=(it,cls,tag='a')=>{const l=lobo(it.k,it.pitch),m=maq(it.k,it.spec);const cells=(flip++%2===0)?l+m:m+l;
+  return it.href?`<a class="trow ${cls}" href="${it.href}" target="_blank" rel="noopener">${cells}</a>`:`<div class="trow ${cls}">${cells}</div>`};
+const thead=(id,n,k,kick,h,p,cmd,extra='')=>`<div class="trow thead" id="${id}">${lobo(k,`<span class="why-how l"><i></i>${n} · <span data-i="why"></span></span><span class="kick" data-i="${kick}"></span><h2 class="H" data-i="${h}"></h2>`)}${maq(k,`<span class="why-how m"><i></i>${n} · <span data-i="how"></span></span><span class="cmd">${cmd}</span><p class="lede" data-i="${p}"></p>${extra}`)}</div>`;
+
+function render(){
+  OKP.heroText(); flip=0;
+  const t=OK.OSS.find(o=>o.store);
+  let h='';
+  h+=thead('produtos','01','o','prod_k','prod_h','prod_p','❯ okami ps <b>--products</b>');
+  h+=DUO.items('prod').map(it=>row(it,'r-prod')).join('');
+  h+=thead('servicos','02','c','serv_k','serv_h','serv_p','❯ okami services <b>--remote</b>',`<a class="btn btn-p" style="align-self:flex-start" data-href="/servicos/" target="_blank" rel="noopener" data-i="plans"></a>`);
+  h+=DUO.items('serv').map(it=>row(it,'r-serv')).join('');
+  h+=`<div class="trow">${lobo('c',`<span class="kick" data-i="web_k"></span><h3 class="H" data-i="web_h"></h3><p class="biz" data-i="web_p"></p><a class="btn btn-p" style="align-self:flex-start" data-href="/agents/" target="_blank" rel="noopener" data-i="web_cta"></a>`)}${maq('c',OKP.webTable())}</div>`;flip++;
+  h+=thead('comunidade','03','m','comu_k','comu_h','comu_p','❯ ls <b>~/okamiops/open-source</b>');
+  h+=`<div class="trow tally">${maq('c',`<div class="q-wrap">${OKP.quotas()}</div>`)}${lobo('c',`<span class="tg">★ ${E(t.plat)}</span><h3 class="H">${E(t.name)}</h3><p class="biz">${E(P(t.d))}</p><div>${OKP.store(t)}</div>`)}</div>`;flip++;
+  h+=DUO.items('oss').map(it=>row(it,'r-oss')).join('');
+  h+=thead('insights','04','o','ins_k','ins_h','ins_p','❯ okami insights <b>--latest 3</b>',`<a class="btn btn-p" style="align-self:flex-start" data-href="/insights/" target="_blank" rel="noopener" data-i="all_ins"></a>`);
+  h+=DUO.items('ins').map(it=>row(it,'r-ins')).join('');
+  h+=thead('empresa','05','o','emp_k','emp_h','emp_p','❯ cat <b>okamiops.yaml</b>',`<div class="kv"><dt>tech</dt><dd>20+ <span data-i="yrs_tech"></span></dd><dt>cybersec</dt><dd>10+ <span data-i="yrs_sec"></span></dd><dt>where</dt><dd>BR · DE · 100% remote</dd></div><a class="btn btn-g" style="align-self:flex-start" data-href="/empresa/" target="_blank" rel="noopener" data-i="emp_more"></a>`);
+  h+=DUO.items('rule').map(it=>row(it,'r-rule')).join('');
+  h+=`<div class="trow thead ct" id="contato">${lobo('o',`<span class="why-how l"><i></i>06 · <span data-i="why"></span></span><span class="kick" data-i="ct_k"></span><h2 class="H" data-i="ct_h"></h2><p class="lede" data-i="ct_p"></p><div class="copyrow" style="margin-top:8px"><small data-i="sales"></small><span>contato@okamiops.com</span><button type="button" data-copy="contato@okamiops.com" data-i="copy"></button></div><div class="copyrow"><small>disclosure</small><span>security@okamiops.com</span><button type="button" data-copy="security@okamiops.com" data-i="copy"></button></div>`)}${maq('o',`<span class="why-how m"><i></i>06 · <span data-i="how"></span></span><span class="cmd">❯ okami contact <b>--new</b></span><form data-demo><div class="f2"><div class="field"><label for="f1" data-i="f_name"></label><input id="f1" autocomplete="name" required></div><div class="field"><label for="f2" data-i="f_email"></label><input id="f2" type="email" autocomplete="email" required></div></div><div class="field"><label for="f3" data-i="f_company"></label><input id="f3" autocomplete="organization"></div><div class="field"><label for="f4" data-i="f_msg"></label><textarea id="f4" rows="4" required></textarea></div><button class="btn btn-o" type="submit" style="justify-self:start;border-radius:8px" data-i="f_send"></button><p class="note" data-note hidden></p></form>`)}</div>`;
+  $('#topics').innerHTML=h;
+  // o render criou elementos com data-i: aplica o texto sem disparar outro render
+  document.querySelectorAll('#topics [data-i]').forEach(el=>{el.innerHTML=OK.t(el.dataset.i)});
+  document.querySelectorAll('#topics [data-href]').forEach(el=>{el.href=OK.link(el.dataset.href)});
+  document.querySelectorAll('#topics [data-copy]').forEach(b=>b.onclick=()=>{try{navigator.clipboard.writeText(b.dataset.copy)}catch(e){}b.textContent=OK.t('copied');setTimeout(()=>b.textContent=OK.t('copy'),1400)});
+  document.querySelectorAll('#topics form[data-demo]').forEach(f=>f.onsubmit=e=>{e.preventDefault();const n=f.querySelector('[data-note]');n.hidden=false;n.textContent=OK.t('f_demo')});
+}
+OK.onLang(render);
+OK.init();
+OKP.heroWire();
+OKP.burger();
+DUO.wireSeg();
+</script>
+</body>
+</html>

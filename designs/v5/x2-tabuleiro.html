@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OkamiOps · Tabuleiro</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="duo.css">
+<style>
+/* Layout: cabeçalho dividido porquê|como de ponta a ponta; abaixo, faixa com tabuleiro de cards que giram. Filtro: Ambos = xadrez, Lobo = tudo claro, Máquina = tudo escuro. */
+:root{--gut:max(24px,calc((100vw - var(--max))/2 + 24px));--inner:clamp(36px,5vw,80px)}
+.split{position:relative;display:grid;grid-template-columns:1fr 1fr}
+.split>div{padding-block:clamp(96px,9vw,136px) clamp(44px,4vw,60px);display:flex;flex-direction:column;gap:18px;justify-content:flex-end;min-width:0}
+.split>div:first-child{padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:var(--inner)}
+.split>div:last-child{padding-right:max(var(--gut),env(safe-area-inset-right,0px));padding-left:var(--inner)}
+.split::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--seam)}
+.split h2{font-size:calc(clamp(46px,6vw,96px) * var(--ds));line-height:.94}
+.split .cmd{font:500 14px var(--mono);color:var(--fg)} .split .cmd b{color:var(--a);font-weight:500}
+.board{padding-block:clamp(40px,4vw,64px) clamp(88px,9vw,128px)}
+.board .wrap{position:relative;z-index:1}
+
+.flip{position:relative;perspective:1600px;min-width:0}
+.inner{display:grid;height:100%;transition:transform .75s cubic-bezier(.65,0,.35,1);transform-style:preserve-3d}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;height:100%;display:flex;flex-direction:column;gap:12px;padding:28px;border-radius:16px;border:1px solid var(--rule);background:var(--card);color:var(--tx)}
+.face.back{transform:rotateY(180deg);pointer-events:none}
+.face.lobo .half-m{display:none} .face.maq .half-l{display:none}
+.face.maq .half-m .H{font-size:calc(clamp(34px,3.2vw,50px) * var(--ds));line-height:1;margin-bottom:4px}
+.face .half-l,.face .half-m{flex:1}
+.flip.on .inner{transform:rotateY(180deg)}
+.flip.on .front{pointer-events:none} .flip.on .back{pointer-events:auto}
+@media (hover:hover){
+  .flip:not(.on):hover .inner,.flip:not(.on):focus-within .inner{transform:rotateY(180deg)}
+  .flip:not(.on):hover .front{pointer-events:none} .flip:not(.on):hover .back{pointer-events:auto}
+  .flip.on:hover .inner,.flip.on:focus-within .inner{transform:rotateY(0)}
+  .flip.on:hover .front{pointer-events:auto} .flip.on:hover .back{pointer-events:none}
+}
+.fbtn{position:absolute;z-index:5;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--night-2);color:var(--fg);font:500 14px var(--mono);cursor:pointer;display:grid;place-items:center}
+@media (hover:hover){.fbtn{opacity:0;transition:opacity .2s}.flip:hover .fbtn,.fbtn:focus-visible{opacity:1}}
+.p-big .half-l .H{font-size:calc(clamp(48px,5vw,84px) * var(--ds))}
+.p-big .face{min-height:320px}
+.g-oss .half-l .H{font-size:calc(clamp(30px,2.6vw,40px) * var(--ds))}
+.g-oss .half-l .biz{font-size:14.5px}
+.face a.cover{position:absolute;inset:0;border-radius:inherit;z-index:1}
+.face .go,.face .store{position:relative;z-index:2}
+.web{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px;margin-top:48px;align-items:center}
+.web h3{font-size:calc(clamp(34px,3.4vw,52px) * var(--ds));line-height:1;margin:14px 0}
+.feat{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);border-radius:16px;overflow:hidden;border:1px solid var(--rule);margin-bottom:16px}
+.feat .l{padding:40px;display:grid;gap:14px;align-content:center;background:var(--paper);color:var(--ink-soft)}
+.feat .l h3{font:400 clamp(52px,6vw,96px)/.92 var(--serif);color:var(--ink);letter-spacing:-.035em}
+.feat .l .tg{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--c-ink)}
+.feat .r{background:var(--night);padding:34px;display:grid;gap:18px;align-content:center}
+.ctw{padding-block:clamp(40px,4vw,64px) clamp(88px,9vw,128px)}
+
+@media (max-width:900px){
+  .split{grid-template-columns:1fr}
+  .split>div{padding-left:max(20px,env(safe-area-inset-left,0px))!important;padding-right:max(20px,env(safe-area-inset-right,0px))!important}
+  .split>div:last-child{padding-top:28px}
+  .split::after{display:none}
+  .web,.feat{grid-template-columns:1fr}
+  .feat .l,.feat .r{padding:24px}
+}
+@media (prefers-reduced-motion:reduce){.inner{transition:none}}
+</style>
+</head>
+<body data-f="both">
+<div id="hdr"></div>
+<div class="seg-m" id="segm"></div>
+<main id="top">
+  <div id="hero"></div>
+  <div id="topics"></div>
+</main>
+<div id="ft"></div>
+
+<script src="okami.js"></script>
+<script src="parts.js"></script>
+<script src="duo.js"></script>
+<script>
+const $=s=>document.querySelector(s),E=OK.esc,P=OK.pick;
+$('#hdr').outerHTML=OKP.header(DUO.seg());
+$('#segm').innerHTML=DUO.seg();
+$('#hero').outerHTML=OKP.hero();
+$('#ft').outerHTML=OKP.footer();
+const face=(it,pos)=>`<div class="face ${pos} k-${it.k}">${it.href?`<a class="cover" href="${it.href}" target="_blank" rel="noopener" aria-label="${E(it.name)}" tabindex="-1"></a>`:''}<div class="half-l">${it.pitch}</div><div class="half-m"><h3 class="H">${E(it.name)}</h3>${it.spec}</div></div>`;
+const tile=it=>`<div class="flip"><button class="fbtn" type="button" aria-label="${OK.t('flip')}">⇄</button><div class="inner">${face(it,'front')}${face(it,'back')}</div></div>`;
+const head=(id,n,k,kick,h,p,cmd,extra='')=>`<div class="split" id="${id}"><div class="lobo k-${k}"><span class="why-how l"><i></i>${n} · <span data-i="why"></span></span><span class="kick" data-i="${kick}"></span><h2 class="H" data-i="${h}"></h2></div><div class="maq grid k-${k}" style="position:relative"><span class="why-how m"><i></i>${n} · <span data-i="how"></span></span><span class="cmd">${cmd}</span><p class="lede" data-i="${p}"></p>${extra}</div></div>`;
+const board=(mode,k,inner)=>`<section class="board band ${mode} ${mode==='maq'?'grid':''} k-${k}" data-m="${mode}"><div class="wrap">${inner}</div></section>`;
+
+function render(){
+  OKP.heroText();
+  const t=OK.OSS.find(o=>o.store);
+  let h='';
+  h+=head('produtos','01','o','prod_k','prod_h','prod_p','❯ okami ps <b>--products</b>');
+  h+=board('lobo','o',`<div class="g2 checker p-big">${DUO.items('prod').map(tile).join('')}</div>`);
+  h+=head('servicos','02','c','serv_k','serv_h','serv_p','❯ okami services <b>--remote</b>',`<a class="btn btn-p" style="align-self:flex-start" data-href="/servicos/" target="_blank" rel="noopener" data-i="plans"></a>`);
+  h+=board('maq','c',`<div class="g2 checker">${DUO.items('serv').map(tile).join('')}</div><div class="web"><div><span class="kick" data-i="web_k"></span><h3 class="H" data-i="web_h"></h3><p class="lede" data-i="web_p"></p><a class="btn btn-p" style="margin-top:20px" data-href="/agents/" target="_blank" rel="noopener" data-i="web_cta"></a></div>${OKP.webTable()}</div>`);
+  h+=head('comunidade','03','m','comu_k','comu_h','comu_p','❯ ls <b>~/okamiops/open-source</b>');
+  h+=board('lobo','m',`<div class="feat"><div class="l"><span class="tg">★ ${E(t.plat)}</span><h3>${E(t.name)}</h3><p>${E(P(t.d))}</p><div>${OKP.store(t)}</div></div><div class="r" aria-hidden="true">${OKP.quotas()}</div></div><div class="g4 checker g-oss">${DUO.items('oss').map(tile).join('')}${tile({name:'OkamiOps',k:'m',href:'https://github.com/OkamiOps',pitch:`<span class="tg">GitHub</span><h3 class="H">OkamiOps</h3><p class="biz">${E(OK.t('comu_p'))}</p><span class="go">${OK.t('open')} ↗</span>`,spec:`<span class="cmd">❯ gh repo list <b>OkamiOps</b></span>${DUO.kv([['repos','7 open-source'],['app','1 iOS']])}`})}</div>`);
+  h+=head('insights','04','o','ins_k','ins_h','ins_p','❯ okami insights <b>--latest 3</b>',`<a class="btn btn-p" style="align-self:flex-start" data-href="/insights/" target="_blank" rel="noopener" data-i="all_ins"></a>`);
+  h+=board('maq','o',`<div class="g3 checker">${DUO.items('ins').map(tile).join('')}</div>`);
+  h+=head('empresa','05','o','emp_k','emp_h','emp_p','❯ cat <b>okamiops.yaml</b>',`${DUO.kv([['tech','20+'],['cybersec','10+'],['where','BR · DE · 100% remote']])}<a class="btn btn-g" style="align-self:flex-start" data-href="/empresa/" target="_blank" rel="noopener" data-i="emp_more"></a>`);
+  h+=board('lobo','o',`<div class="g3 checker">${DUO.items('rule').map(tile).join('')}</div>`);
+  h+=`<div class="band maq grid k-o ctw" id="contato">${OKP.contact()}</div>`;
+  $('#topics').innerHTML=h;
+  document.querySelectorAll('#topics [data-i]').forEach(el=>{el.innerHTML=OK.t(el.dataset.i)});
+  document.querySelectorAll('#topics [data-href]').forEach(el=>{el.href=OK.link(el.dataset.href)});
+  document.querySelectorAll('#topics [data-copy]').forEach(b=>b.onclick=()=>{try{navigator.clipboard.writeText(b.dataset.copy)}catch(e){}b.textContent=OK.t('copied');setTimeout(()=>b.textContent=OK.t('copy'),1400)});
+  document.querySelectorAll('#topics form[data-demo]').forEach(f=>f.onsubmit=e=>{e.preventDefault();const n=f.querySelector('[data-note]');n.hidden=false;n.textContent=OK.t('f_demo')});
+  document.querySelectorAll('.fbtn').forEach(b=>b.onclick=()=>b.parentElement.classList.toggle('on'));
+  checker();
+}
+function checker(){
+  const f=document.body.dataset.f;
+  document.querySelectorAll('.checker').forEach(g=>{
+    const band=g.closest('.band').dataset.m, other=band==='lobo'?'maq':'lobo';
+    const cols=getComputedStyle(g).gridTemplateColumns.split(' ').filter(Boolean).length||1;
+    [...g.children].forEach((el,i)=>{
+      const r=Math.floor(i/cols),c=i%cols;
+      let front=f==='lobo'?'lobo':f==='maq'?'maq':(((r+c)%2===0)?other:band);
+      const back=front==='lobo'?'maq':'lobo';
+      const fr=el.querySelector('.front'),bk=el.querySelector('.back');
+      fr.classList.remove('lobo','maq');fr.classList.add(front);
+      bk.classList.remove('lobo','maq');bk.classList.add(back);
+      el.classList.remove('on');
+    });
+  });
+}
+OK.onLang(render);
+OK.init();
+OKP.heroWire();
+OKP.burger();
+DUO.wireSeg(checker);
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(checker,150)});
+</script>
+</body>
+</html>

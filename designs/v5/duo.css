@@ -1,0 +1,31 @@
+/* v5 · metades lobo/máquina e filtro de leitura */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+.seg button{min-height:34px;padding:0 12px;border:0;border-radius:999px;background:none;color:var(--fg-mute);font:500 12px var(--mono);cursor:pointer}
+.seg button:hover{color:var(--fg)}
+.seg button[aria-checked=true]{background:var(--fg);color:var(--night)}
+.seg button[data-f=lobo][aria-checked=true]{background:var(--paper);color:var(--ink)}
+.seg button[data-f=maq][aria-checked=true]{background:var(--o);color:var(--night)}
+.seg-m{display:none}
+@media (max-width:1060px){
+  .hd .tools .seg{display:none}
+  .seg-m{display:flex;justify-content:center;position:sticky;top:calc(68px + env(safe-area-inset-top,0px));z-index:50;padding:10px;background:var(--night);border-bottom:1px solid var(--line)}
+}
+
+/* conteúdo das metades */
+.half-l,.half-m{min-width:0;display:flex;flex-direction:column;gap:12px}
+.half-l .tg,.half-m .tg{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--a)}
+.half-l .H{font-size:calc(clamp(36px,3.8vw,60px) * var(--ds));line-height:.98}
+.half-l .H.ins-t{font-size:clamp(26px,2.4vw,36px);line-height:1.1}
+.half-l .biz{font-size:16px}
+.half-l .go{margin-top:auto;padding-top:8px;font:500 13px var(--mono);color:var(--hd)}
+.half-m{font:400 13px/1.6 var(--mono);color:var(--fg-soft)}
+.half-m .cmd{color:var(--fg)} .half-m .cmd b{color:var(--a);font-weight:500}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px 18px;margin:4px 0 0}
+.kv dt{color:var(--fg-mute)} .kv dd{margin:0;color:var(--fg);overflow-wrap:anywhere}
+.half-m .big{font:500 clamp(40px,4vw,64px)/.95 var(--mono);color:var(--a);letter-spacing:-.05em;margin-top:6px}
+.half-m .big small{font-size:.38em;color:var(--fg-mute);letter-spacing:0}
+.half-m .lab{color:var(--fg-mute)}
+.lobo .half-l .tg{color:var(--a)}
+.why-how{display:inline-flex;align-items:center;gap:8px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.why-how i{width:18px;height:18px;border-radius:50%;background:var(--night) url(wolf.png) center/84% no-repeat;flex:none}
+.lobo .why-how i,.why-how.l i{clip-path:inset(0 50% 0 0)} .maq .why-how i,.why-how.m i{clip-path:inset(0 0 0 50%)}

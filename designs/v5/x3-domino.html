@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>OkamiOps · Dominó</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="modes.css">
+<link rel="stylesheet" href="duo.css">
+<style>
+/* Layout: faixas intercaladas; cada item é uma peça de dominó (metade lobo | metade máquina). As peças trocam de orientação por linha e formam um xadrez. */
+.board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.domino{position:relative;display:grid;grid-template-columns:1fr 1fr;border-radius:18px;overflow:hidden;transition:transform .3s,box-shadow .3s;min-width:0}
+.domino.wide{grid-column:1/-1}
+.domino>.cell{padding:26px;display:flex;min-width:0;transition:background .45s}
+.domino>.cell.lobo{background:var(--card);border:1px solid var(--paper-line)}
+.domino>.cell.maq{background:var(--night-1);border:1px solid var(--line)}
+.domino>.cell:first-child{border-right:0;border-radius:18px 0 0 18px}
+.domino>.cell:last-child{border-left:0;border-radius:0 18px 18px 0}
+.domino::after{content:"";position:absolute;left:50%;top:14%;bottom:14%;width:2px;margin-left:-1px;background:var(--seam);opacity:.45;transition:opacity .3s,top .3s,bottom .3s}
+.domino .pin{position:absolute;left:50%;top:50%;width:30px;height:30px;transform:translate(-50%,-50%) scale(.6);border-radius:50%;background:var(--night) url(wolf.png) center/82% no-repeat;box-shadow:0 0 0 2px var(--night),0 0 0 3px var(--o);opacity:0;transition:opacity .3s,transform .3s;z-index:2}
+a.domino:hover,a.domino:focus-visible{transform:translateY(-5px);box-shadow:0 24px 50px -24px rgba(0,0,0,.55)}
+.domino:hover::after,.domino:focus-visible::after{opacity:1;top:0;bottom:0}
+.domino:hover .pin,.domino:focus-visible .pin{opacity:1;transform:translate(-50%,-50%) scale(1)}
+a.domino:hover .half-l .H{color:var(--a)}
+.lobo .domino>.cell.lobo{border-color:var(--paper-line)}
+.maq .domino>.cell.maq{border-color:#2a2a3d}
+.d-prod .half-l .H{font-size:calc(clamp(42px,4.2vw,68px) * var(--ds))}
+.d-prod>.cell{min-height:280px}
+.d-oss .half-l .H,.d-rule .half-l .H{font-size:calc(clamp(28px,2.4vw,38px) * var(--ds))}
+.d-oss .half-l .biz,.d-rule .half-l .biz{font-size:14.5px}
+.d-oss .half-m .kv,.d-rule .half-m .kv{font-size:12px}
+.legend{display:flex;align-items:center;gap:12px;font:500 12px var(--mono);color:var(--mute);margin:-24px 0 28px}
+.legend .mini{display:inline-grid;grid-template-columns:1fr 1fr;width:40px;height:20px;border-radius:5px;overflow:hidden;border:1px solid var(--rule2)}
+.legend .mini i:first-child{background:var(--paper)} .legend .mini i:last-child{background:var(--night)}
+.tally .half-l .H{font-size:calc(clamp(52px,5.6vw,92px) * var(--ds))}
+.tally .half-m{justify-content:center;gap:18px}
+
+/* filtro: peça vira uma só metade */
+body[data-f=lobo] .domino>.cell.maq,body[data-f=maq] .domino>.cell.lobo{display:none}
+body[data-f=lobo] .domino,body[data-f=maq] .domino{grid-template-columns:1fr}
+body[data-f] .domino>.cell{border-radius:18px!important}
+body[data-f=both] .domino>.cell:first-child{border-radius:18px 0 0 18px!important}
+body[data-f=both] .domino>.cell:last-child{border-radius:0 18px 18px 0!important}
+body[data-f=lobo] .domino>.cell.lobo,body[data-f=maq] .domino>.cell.maq{border-width:1px!important;border-style:solid}
+body[data-f=lobo] .domino::after,body[data-f=maq] .domino::after,body[data-f=lobo] .pin,body[data-f=maq] .pin{display:none}
+
+@media (max-width:1100px){.board{grid-template-columns:1fr}}
+@media (max-width:640px){
+  .domino{grid-template-columns:1fr}
+  .domino>.cell:first-child{border-right:1px solid;border-bottom:0;border-radius:18px 18px 0 0!important}
+  .domino>.cell:last-child{border-left:1px solid;border-top:0;border-radius:0 0 18px 18px!important}
+  .domino>.cell.lobo{border-color:var(--paper-line)} .domino>.cell.maq{border-color:var(--line)}
+  .domino::after{left:14%;right:14%;top:50%;bottom:auto;width:auto;height:2px;margin:-1px 0 0;background:linear-gradient(90deg,var(--o) 0 33.3%,var(--c) 33.3% 66.6%,var(--m) 66.6%)}
+  .domino:hover::after{left:0;right:0;top:50%;bottom:auto}
+  .d-prod>.cell{min-height:0}
+  body[data-f] .domino>.cell{border-radius:18px!important;border-width:1px!important}
+}
+</style>
+</head>
+<body data-f="both">
+<div id="hdr"></div>
+<div class="seg-m" id="segm"></div>
+<main id="top">
+  <div id="hero"></div>
+
+  <section class="band lobo k-o" id="produtos" data-m="lobo"><div class="wrap">
+    <div class="head"><div><span class="why-how"><i></i>01</span><br><span class="kick" data-i="prod_k"></span><h2 class="H" data-i="prod_h"></h2></div><p class="lede" data-i="prod_p"></p></div>
+    <p class="legend"><span class="mini"><i></i><i></i></span><span><span data-i="why"></span> · <span data-i="how"></span></span></p>
+    <div class="board" id="b-prod"></div>
+  </div></section>
+
+  <section class="band maq grid flipcut k-c" id="servicos" data-m="maq"><div class="wrap">
+    <div class="head"><div><span class="why-how"><i></i>02</span><br><span class="kick" data-i="serv_k"></span><h2 class="H" data-i="serv_h"></h2></div><div class="side"><p class="lede" data-i="serv_p"></p><a class="btn btn-p" data-href="/servicos/" target="_blank" rel="noopener" data-i="plans"></a></div></div>
+    <div class="board" id="b-serv"></div>
+  </div></section>
+
+  <section class="band lobo k-m" id="comunidade" data-m="lobo"><div class="wrap">
+    <div class="head"><div><span class="why-how"><i></i>03</span><br><span class="kick" data-i="comu_k"></span><h2 class="H" data-i="comu_h"></h2></div><p class="lede" data-i="comu_p"></p></div>
+    <div class="board" id="b-oss"></div>
+  </div></section>
+
+  <section class="band maq grid flipcut k-o" id="insights" data-m="maq"><div class="wrap">
+    <div class="head"><div><span class="why-how"><i></i>04</span><br><span class="kick" data-i="ins_k"></span><h2 class="H" data-i="ins_h"></h2></div><div class="side"><p class="lede" data-i="ins_p"></p><a class="btn btn-p" data-href="/insights/" target="_blank" rel="noopener" data-i="all_ins"></a></div></div>
+    <div class="board" id="b-ins"></div>
+  </div></section>
+
+  <section class="band lobo k-o" id="empresa" data-m="lobo"><div class="wrap">
+    <div class="head"><div><span class="why-how"><i></i>05</span><br><span class="kick" data-i="emp_k"></span><h2 class="H" data-i="emp_h"></h2></div><div class="side"><p class="lede" data-i="emp_p"></p><a class="btn btn-g" data-href="/empresa/" target="_blank" rel="noopener" data-i="emp_more"></a></div></div>
+    <div class="board" id="b-rule"></div>
+  </div></section>
+
+  <section class="band maq grid flipcut k-o" id="contato" data-m="maq"><div id="ct"></div></section>
+</main>
+<div id="ft"></div>
+
+<script src="okami.js"></script>
+<script src="parts.js"></script>
+<script src="duo.js"></script>
+<script>
+const $=s=>document.querySelector(s),E=OK.esc,P=OK.pick;
+$('#hdr').outerHTML=OKP.header(DUO.seg());
+$('#segm').innerHTML=DUO.seg();
+$('#hero').outerHTML=OKP.hero();
+$('#ct').outerHTML=OKP.contact();
+$('#ft').outerHTML=OKP.footer();
+const piece=(it,cls='')=>{const L=`<div class="cell lobo k-${it.k}"><div class="half-l">${it.pitch}</div></div>`,M=`<div class="cell maq k-${it.k}"><div class="half-m">${it.spec}</div></div>`;
+  const body=`${L}${M}<span class="pin" aria-hidden="true"></span>`;
+  return it.href?`<a class="domino ${cls}" href="${it.href}" target="_blank" rel="noopener">${body}</a>`:`<div class="domino ${cls}">${body}</div>`};
+function render(){
+  OKP.heroText();
+  const t=OK.OSS.find(o=>o.store);
+  $('#b-prod').innerHTML=DUO.items('prod').map(it=>piece(it,'d-prod')).join('');
+  $('#b-serv').innerHTML=DUO.items('serv').map(it=>piece(it,'d-serv')).join('')+piece({k:'c',href:null,pitch:`<span class="kick" data-i="web_k">${OK.t('web_k')}</span><h3 class="H">${OK.t('web_h')}</h3><p class="biz">${OK.t('web_p')}</p><a class="btn btn-p" style="align-self:flex-start;margin-top:auto" href="${OK.link('/agents/')}" target="_blank" rel="noopener">${OK.t('web_cta')}</a>`,spec:OKP.webTable()},'wide');
+  $('#b-oss').innerHTML=piece({k:'c',href:null,pitch:`<span class="tg">★ ${E(t.plat)}</span><h3 class="H">${E(t.name)}</h3><p class="biz">${E(P(t.d))}</p><div style="margin-top:auto">${OKP.store(t)}</div>`,spec:`<span class="cmd">❯ tally <b>--quotas</b></span>${OKP.quotas()}`},'wide tally')+DUO.items('oss').map(it=>piece(it,'d-oss')).join('')+piece({k:'m',href:'https://github.com/OkamiOps',pitch:`<span class="tg">GitHub</span><h3 class="H">OkamiOps</h3><p class="biz">github.com/OkamiOps</p><span class="go">${OK.t('open')} ↗</span>`,spec:`<span class="cmd">❯ gh repo list <b>OkamiOps</b></span>${DUO.kv([['repos','7 open-source'],['app','1 iOS']])}`},'d-oss');
+  const ins=DUO.items('ins');
+  $('#b-ins').innerHTML=ins.map((it,i)=>piece(it,i===ins.length-1&&ins.length%2?'wide':'')).join('');
+  $('#b-rule').innerHTML=DUO.items('rule').map(it=>piece(it,'d-rule')).join('');
+  arrange();
+}
+// orientação por linha: linha par = lobo|máquina, linha ímpar = máquina|lobo
+function arrange(){
+  document.querySelectorAll('.board').forEach(b=>{
+    const cols=getComputedStyle(b).gridTemplateColumns.split(' ').filter(Boolean).length||1;
+    let slot=0;
+    [...b.children].forEach(d=>{
+      const span=d.classList.contains('wide')?cols:1;
+      if(slot%cols+span>cols)slot+=cols-slot%cols;
+      const row=Math.floor(slot/cols);slot+=span;
+      const l=d.querySelector('.cell.lobo'),m=d.querySelector('.cell.maq');
+      const mobile=matchMedia('(max-width:640px)').matches;
+      if(row%2===0||mobile){d.insertBefore(l,m)}else{d.insertBefore(m,l)}
+    });
+  });
+}
+OK.onLang(render);
+OK.init();
+OKP.heroWire();
+OKP.burger();
+DUO.wireSeg();
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(arrange,150)});
+</script>
+</body>
+</html>
