@@ -36,6 +36,7 @@
     </div></section>`;
 
   window.HEROES = {
+    c: C,
     html: A + B + C,
     switcher: `<div class="hsw" role="radiogroup" aria-label="Hero"><span data-i="hsw"></span><button type="button" role="radio" data-h="a">A</button><button type="button" role="radio" data-h="b">B</button><button type="button" role="radio" data-h="c">C</button></div>`,
     pin() {
